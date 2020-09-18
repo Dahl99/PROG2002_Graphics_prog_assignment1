@@ -12,7 +12,22 @@ add_subdirectory(external/glfw-3.3.2)
 add_subdirectory(external/glew-cmake-2.1.0)
 
 add_executable(Assignment1
-	src/main.cpp)
+	src/main.cpp
+	
+	src/framework/shader.hpp
+	src/framework/shader.cpp
+
+	src/framework/texture.hpp
+	src/framework/texture.cpp
+
+	src/framework/tilemap.hpp
+	src/framework/tilemap.cpp
+
+	src/framework/vao.hpp
+	src/framework/vao.cpp
+	
+	src/framework/vbo.hpp
+	src/framework/vbo.cpp)
 
 target_compile_definitions(Assignment1 PRIVATE GLEW_STATIC)
 
