@@ -3,12 +3,13 @@ cmake_minimum_required(VERSION 3.12)
 project(Assignment1)
 
 find_package(OpenGL REQUIRED)
-find_package(glm REQUIRED)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-# set(glm_DIR external/cmake/glm) # if necessary
+
+set(glm_DIR external/glm/cmake/glm) # if necessary
+find_package(glm REQUIRED)
 
 add_subdirectory(external/glfw-3.3.2)
 add_subdirectory(external/glew-cmake-2.1.0)
