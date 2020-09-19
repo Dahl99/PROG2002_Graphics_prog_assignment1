@@ -40,5 +40,5 @@ target_compile_definitions(Assignment1 PRIVATE GLEW_STATIC)
 target_link_libraries(Assignment1
 	libglew_static
 	glfw
-	glm
+	glm::glm
 	OpenGL::GL)
