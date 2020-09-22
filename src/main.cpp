@@ -42,6 +42,8 @@ int main(void)
         return EXIT_FAILURE;
     }
 
+    
+
     // Create a window
     glfwWindowHint(GLFW_RESIZABLE, false);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
