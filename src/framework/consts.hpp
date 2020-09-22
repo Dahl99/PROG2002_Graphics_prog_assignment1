@@ -1,7 +1,7 @@
 #pragma once
-#include <cstring>
+#include <string>
 namespace framework {
 
-	string level_0_path = "levels\level0";
+	const std::string LEVELPATH0 = "levels/level0";
 
 }

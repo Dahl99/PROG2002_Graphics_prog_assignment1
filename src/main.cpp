@@ -3,6 +3,8 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "framework/consts.hpp"
+#include "framework/tilemap.hpp"
 
 
 
@@ -31,6 +33,10 @@ MessageCallback(GLenum source,
 // Entry point
 int main(void)
 {
+
+    framework::Map map1("level/level0");
+    
+    map1.PrintMap();
 
     glfwSetErrorCallback(GLFWErrorCallback);
 

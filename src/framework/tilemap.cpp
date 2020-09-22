@@ -3,28 +3,35 @@
 #include "tilemap.hpp"
 
 namespace framework {
-	Map::Map(std::string levelPath)
+	Map::Map(const std::string& levelPath)
 	{
-		std::ifstream map(levelPath);		
-		
-		map >> sizeX >> sizeY;
+		std::ifstream stream(levelPath);		
+		if (stream) {
 
-		array = new int[(sizeX*sizeY)];
+			stream >> sizeX >> sizeY;
 
-		for (int i = 0; i < sizeX * sizeY; i++)
-		{
-			map >> array[i];
+
+			sizeArray = sizeX * sizeY;
+			//array = new int[sizeArray];
+
+			for (int i = 0; i < sizeArray; i++)
+			{
+				//stream >> array[i];
+			}
+
 		}
+		else std::cout << "Failed to read map!";
 
-		map.close();
+		stream.close();
 	}
 	Map::~Map()
 	{
-		delete[] array;
+		//if (array)
+			//delete[] array;
 	}
 	void Map::PrintMap()
 	{
-		for (int i = 0; i < sizeX * sizeY; i++)
+		for (int i = 0; i < sizeArray; i++)
 		{
 			for (i; i % sizeX != 0 && i != 0; i++) 
 			{

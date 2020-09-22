@@ -5,11 +5,11 @@ namespace framework{
 	class Map {
 	
 	private:
-		int sizeX, sizeY;
+		int sizeX, sizeY, sizeArray;
 		int* array;
 
 	public:
-		Map(std::string levelPath);
+		Map(const std::string& levelPath);
 		~Map();
 		void PrintMap();
 
