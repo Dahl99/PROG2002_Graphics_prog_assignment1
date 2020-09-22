@@ -3,6 +3,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include "framework/vbo.hpp"
 
 
 
@@ -97,12 +98,9 @@ int main(void)
     glBindVertexArray(vertexArrayId);
 
     // Create a vertex buffer
-    GLuint vertexBufferId;
-    glGenBuffers(1, &vertexBufferId);
-    glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+    framework::VertexBuffer vbo(triangle, sizeof(triangle));
 
     // Populate the vertex buffer
-    glBufferData(GL_ARRAY_BUFFER, sizeof(triangle), triangle, GL_STATIC_DRAW);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr);
     glEnableVertexAttribArray(0);
 
@@ -158,7 +156,7 @@ color = vec4(1);
         glfwPollEvents();
 
         glClear(GL_COLOR_BUFFER_BIT);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBufferId);
+        vbo.Bind();
 
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
