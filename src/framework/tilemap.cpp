@@ -20,7 +20,7 @@ namespace framework {
 			}
 
 		}
-		else std::cout << "Failed to read map!";
+		else std::cout << "Failed to read map!\n";
 
 		stream.close();
 	}
@@ -39,5 +39,7 @@ namespace framework {
 			}
 			std::cout << array[i] << " ";
 		}
+
+		std::cout << std::endl;
 	}
 }
