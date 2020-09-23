@@ -5,12 +5,6 @@
 
 namespace framework
 {
-	/*struct ShaderProgramSource
-	{
-		std::string VertexSource;
-		std::string FragmentSource;
-	};*/
-
 	class Shader
 	{
 	private:
