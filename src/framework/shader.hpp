@@ -5,12 +5,6 @@
 
 namespace framework
 {
-	struct ShaderProgramSource
-	{
-		std::string VertexSource;
-		std::string FragmentSource;
-	};
-
 	class Shader
 	{
 	private:
@@ -32,7 +26,7 @@ namespace framework
 	private:
 
 		//				Functions for reading, creating and compiling a shader program
-		static ShaderProgramSource ParseShader(const std::string& vertPath, const std::string& fragPath);
+		static std::string ParseShader(const std::string& filepath);
 		static GLuint CompileShader(unsigned int type, const std::string& source);
 		static GLuint CreateShader(const std::string& vertShader, const std::string& fragShader);
 	};

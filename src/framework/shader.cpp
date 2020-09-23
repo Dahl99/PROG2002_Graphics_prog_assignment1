@@ -10,10 +10,11 @@ namespace framework
 		: vertPath(vertPath), fragPath(fragPath), m_RendererID(0)	//	Initializing values
 	{
 		//	Reading shaders from file
-		ShaderProgramSource source = ParseShader(vertPath, fragPath);
+		const std::string vsrc = ParseShader(vertPath);
+		const std::string fsrc = ParseShader(fragPath);
 
 		//	Creating, compiling and attaching shaders
-		m_RendererID = CreateShader(source.VertexSource, source.FragmentSource);
+		m_RendererID = CreateShader(vsrc, fsrc);
 	}
 
 	Shader::~Shader()	//	Deletes shader when out of scope
@@ -47,33 +48,21 @@ namespace framework
 		return location;
 	}
 
-	ShaderProgramSource Shader::ParseShader(const std::string& vertPath, const std::string& fragPath)	//	Reads shaders from file
+	std::string Shader::ParseShader(const std::string& filepath)	//	Reads shaders from file
 	{
+		std::ifstream file(filepath);
 
+		std::string out;
 		std::string line;
-		std::stringstream ss[2];
 
-		std::ifstream vertIn(vertPath);	//	Ifstream object to read from file
-		if (vertIn)
+		while (std::getline(file, line))
 		{
-			while (getline(vertIn, line))	//	Reads line after line
-			{
-				ss[0] << line << '\n';
-			}
+			out += line + '\n';
 		}
-		vertIn.close();
-		
-		std::ifstream fragIn(fragPath);	//	Ifstream object to read from file
-		if (fragIn)
-		{
-			while (getline(fragIn, line))	//	Reads line after line
-			{
-				ss[1] << line << '\n';
-			}
-		}
-		fragIn.close();
 
-		return { ss[0].str(), ss[1].str() };	//	Returning shaders
+		file.close();
+
+		return out;	//	Returning shader
 	}
 
 	GLuint Shader::CompileShader(unsigned int type, const std::string& source)
