@@ -3,7 +3,7 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "framework/consts.hpp"
+#include "framework/globals.hpp"
 #include "framework/tilemap.hpp"
 #include "framework/vbo.hpp"
 
