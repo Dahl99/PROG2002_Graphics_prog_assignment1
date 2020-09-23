@@ -3,7 +3,6 @@
 namespace framework{
 
 	class Map {
-	
 	private:
 		int sizeX, sizeY, sizeArray;
 		int* array;
