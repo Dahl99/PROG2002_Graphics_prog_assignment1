@@ -29,7 +29,9 @@ add_executable(Assignment1
 	src/framework/vbo.hpp
 	src/framework/vbo.cpp 
 	
-	src/framework/consts.hpp)
+	src/framework/consts.hpp
+	
+	res/levels/level0)
 
 
 target_compile_definitions(Assignment1 PRIVATE GLEW_STATIC)
@@ -38,10 +40,3 @@ target_link_libraries(Assignment1
 	libglew_static
 	glfw
 	OpenGL::GL)
-
-
-add_custom_target(
-    copy_levels ALL
-    ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/res ${CMAKE_CURRENT_BINARY_DIR}/res
-    COMMAND ${CMAKE_COMMAND} -E echo "Copied resource directory to binary directory ${CMAKE_CURRENT_BINARY_DIR}"
-)

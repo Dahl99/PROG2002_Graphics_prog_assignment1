@@ -12,11 +12,11 @@ namespace framework {
 
 
 			sizeArray = sizeX * sizeY;
-			//array = new int[sizeArray];
+			array = new int[sizeArray];
 
 			for (int i = 0; i < sizeArray; i++)
 			{
-				//stream >> array[i];
+				stream >> array[i];
 			}
 
 		}
@@ -26,18 +26,18 @@ namespace framework {
 	}
 	Map::~Map()
 	{
-		//if (array)
-			//delete[] array;
+		if (array)
+			delete[] array;
 	}
 	void Map::PrintMap()
 	{
 		for (int i = 0; i < sizeArray; i++)
 		{
-			for (i; i % sizeX != 0 && i != 0; i++) 
+			if (i % sizeX == 0) 
 			{
-				std::cout << array[i] << " ";
-			}
 			std::cout << std::endl;
+			}
+			std::cout << array[i] << " ";
 		}
 	}
 }

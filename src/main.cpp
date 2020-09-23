@@ -35,7 +35,7 @@ MessageCallback(GLenum source,
 int main(void)
 {
 
-    framework::Map map1("level/level0");
+    framework::Map map1(framework::LEVELPATH0);
     
     map1.PrintMap();
 
