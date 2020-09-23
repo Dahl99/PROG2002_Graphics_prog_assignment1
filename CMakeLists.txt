@@ -38,3 +38,10 @@ target_link_libraries(Assignment1
 	libglew_static
 	glfw
 	OpenGL::GL)
+
+# Copy resources to binary directory
+add_custom_target(
+    copy_levels ALL
+    ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_LIST_DIR}/levels ${CMAKE_CURRENT_BINARY_DIR}/levels
+    COMMAND ${CMAKE_COMMAND} -E echo "Copied resource directory to binary directory ${CMAKE_CURRENT_BINARY_DIR}"
+)
