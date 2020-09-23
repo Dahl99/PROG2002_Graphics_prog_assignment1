@@ -1,1 +1,40 @@
 #pragma once
+
+#include <string>
+#include <glm/glm.hpp>
+
+namespace framework
+{
+	struct ShaderProgramSource
+	{
+		std::string VertexSource;
+		std::string FragmentSource;
+	};
+
+	class Shader
+	{
+	private:
+		std::string vertPath, fragPath;
+		GLuint m_RendererID;
+
+	public:
+		Shader(const std::string& vertPath, const std::string& fragPath);	//	Creates shader
+		~Shader();								//	Deletes shader
+
+		void Bind() const;						//	Binds/activates shader
+		void Unbind() const;					//	Unbinds/disables shader
+
+		//				Functions for setting uniforms
+		void SetUniform1i(const std::string& name, int value);
+		void SetUniformMat4f(const std::string& name, const glm::mat4& matrix);
+		GLuint getUniformLocation(const std::string& name);
+
+	private:
+
+		//				Functions for reading, creating and compiling a shader program
+		static ShaderProgramSource ParseShader(const std::string& vertPath, const std::string& fragPath);
+		static GLuint CompileShader(unsigned int type, const std::string& source);
+		static GLuint CreateShader(const std::string& vertShader, const std::string& fragShader);
+	};
+
+}

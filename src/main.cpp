@@ -3,9 +3,11 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+
 #include "framework/globals.hpp"
 #include "framework/tilemap.hpp"
 #include "framework/vbo.hpp"
+#include "framework/shader.hpp"
 
 
 
@@ -112,51 +114,8 @@ int main(void)
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr);
     glEnableVertexAttribArray(0);
 
-
-    // Vertex shader code
-    const std::string vertexShaderSrc = R"(
-#version 430 core
-
-layout(location = 0) in vec4 position;
-
-void main()
-{
-gl_Position = position;
-}
-)";
-    // Fragment shader code
-    const std::string fragmentShaderSrc = R"(
-#version 430 core
-
-out vec4 color;
-void main()
-{
-color = vec4(1);
-}
-)";
-
-    // Compile the vertex shader
-    auto vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    const GLchar* vss = vertexShaderSrc.c_str();
-    glShaderSource(vertexShader, 1, &vss, nullptr);
-    glCompileShader(vertexShader);
-
-    // Compile the fragment shader
-    auto fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-    const GLchar* fss = fragmentShaderSrc.c_str();
-    glShaderSource(fragmentShader, 1, &fss, nullptr);
-    glCompileShader(fragmentShader);
-
-
-    // Create a shader program
-    auto shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
-
-    glUseProgram(shaderProgram);
-
-
+    framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
+    shader.Bind();
 
     // Main loop
     while (!glfwWindowShouldClose(window))
@@ -165,6 +124,7 @@ color = vec4(1);
 
         glClear(GL_COLOR_BUFFER_BIT);
         vbo.Bind();
+        shader.Bind();
 
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
