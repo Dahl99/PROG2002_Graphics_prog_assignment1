@@ -32,10 +32,13 @@ add_executable(Assignment1
 	
 	src/framework/vbo.hpp
 	src/framework/vbo.cpp 
+
+	src/framework/entities.hpp
+	src/framework/entities.cpp
 	
-	src/framework/consts.hpp
-	
-	res/levels/level0
+	src/framework/globals.hpp
+
+	res/levels/level0 
 	res/shaders/shader.vert
 	res/shaders/shader.frag)
 
