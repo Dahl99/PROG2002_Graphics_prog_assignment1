@@ -6,7 +6,9 @@
 
 #include "framework/globals.hpp"
 #include "framework/tilemap.hpp"
+#include "framework/vao.hpp"
 #include "framework/vbo.hpp"
+#include "framework/vbl.hpp"
 #include "framework/ibo.hpp"
 #include "framework/shader.hpp"
 
@@ -109,17 +111,14 @@ int main(void)
         2, 3, 0
     };
 
-    // Create a vertex array
-    GLuint vertexArrayId;
-    glGenVertexArrays(1, &vertexArrayId);
-    glBindVertexArray(vertexArrayId);
+    framework::VertexArray vao;                                 // Create a vertex array
 
-    // Create a vertex buffer
-    framework::VertexBuffer vbo(vertices, sizeof(vertices));
+    framework::VertexBuffer vbo(vertices, sizeof(vertices));    // Create a vertex buffer
 
-    // Populate the vertex buffer
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr);
-    glEnableVertexAttribArray(0);
+    framework::VertexBufferLayout vbl;                          // Create a vertex buffer layout
+    vbl.Push<GLfloat>(2);                                       // Setting the layout for the vertex buffer
+
+    vao.AddBuffer(vbo, vbl);                                    // Populating the vertex buffer
 
     framework::IndexBuffer ibo(indices, 6);
 
@@ -132,6 +131,7 @@ int main(void)
         glfwPollEvents();
 
         glClear(GL_COLOR_BUFFER_BIT);
+        vao.Bind();
         vbo.Bind();
         ibo.Bind();
         shader.Bind();
