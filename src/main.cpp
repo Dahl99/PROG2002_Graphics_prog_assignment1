@@ -7,6 +7,7 @@
 #include "framework/globals.hpp"
 #include "framework/tilemap.hpp"
 #include "framework/vbo.hpp"
+#include "framework/ibo.hpp"
 #include "framework/shader.hpp"
 
 
@@ -96,10 +97,16 @@ int main(void)
     glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
 
     // Create a triangle geometry
-    GLfloat triangle[3 * 2] = {
+    GLfloat vertices[8] = {
     -0.5f, -0.5f,
     0.5f, -0.5f,
-    0.0f, 0.5f
+    0.5f, 0.5f,
+    -0.5f, 0.5f
+    };
+
+    GLuint indices[6] = {
+        0, 1, 2,
+        2, 3, 0
     };
 
     // Create a vertex array
@@ -108,11 +115,13 @@ int main(void)
     glBindVertexArray(vertexArrayId);
 
     // Create a vertex buffer
-    framework::VertexBuffer vbo(triangle, sizeof(triangle));
+    framework::VertexBuffer vbo(vertices, sizeof(vertices));
 
     // Populate the vertex buffer
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(float) * 2, nullptr);
     glEnableVertexAttribArray(0);
+
+    framework::IndexBuffer ibo(indices, 6);
 
     framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
     shader.Bind();
@@ -124,9 +133,10 @@ int main(void)
 
         glClear(GL_COLOR_BUFFER_BIT);
         vbo.Bind();
+        ibo.Bind();
         shader.Bind();
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
 
         glfwSwapBuffers(window);
 

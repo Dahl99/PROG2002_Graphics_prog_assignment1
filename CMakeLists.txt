@@ -31,7 +31,10 @@ add_executable(Assignment1
 	src/framework/vao.cpp
 	
 	src/framework/vbo.hpp
-	src/framework/vbo.cpp 
+	src/framework/vbo.cpp
+	
+	src/framework/ibo.hpp
+	src/framework/ibo.cpp 
 
 	src/framework/entities.hpp
 	src/framework/entities.cpp
