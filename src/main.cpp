@@ -36,7 +36,6 @@ MessageCallback(GLenum source,
 // Entry point
 int main(void)
 {
-
     framework::Map map1(framework::LEVELPATH0);
     
     map1.PrintMap();
@@ -49,9 +48,7 @@ int main(void)
         std::cin.get();
 
         return EXIT_FAILURE;
-    }
-
-    
+    }//*-
 
     // Create a window
     glfwWindowHint(GLFW_RESIZABLE, false);

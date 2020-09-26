@@ -6,4 +6,6 @@ namespace framework {
 
 	const std::string VERTSHADERPATH = "../res/shaders/shader.vert";
 	const std::string FRAGSHADERPATH = "../res/shaders/shader.frag";
+
+	
 }
