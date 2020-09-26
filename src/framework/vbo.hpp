@@ -8,7 +8,7 @@ namespace framework
 	class VertexBuffer
 	{
 	private:
-		GLuint rendererID;	//	id for vbo
+		GLuint m_RendererID;	//	id for vbo
 
 	public:
 		VertexBuffer(const void* data, unsigned int size);	//	Generating, binding and buffering vbo

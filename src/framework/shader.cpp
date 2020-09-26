@@ -17,7 +17,7 @@ namespace framework
 		m_RendererID = CreateShader(vsrc, fsrc);
 	}
 
-	Shader::~Shader()	//	Deletes shader when out of scope
+	Shader::~Shader()			//	Deletes shader when out of scope
 	{
 		glDeleteProgram(m_RendererID);
 	}
