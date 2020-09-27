@@ -12,7 +12,7 @@
 #include "framework/ibo.hpp"
 #include "framework/shader.hpp"
 
-
+GLFWwindow* initWindow();
 
 // Error function for GLFW
 void GLFWErrorCallback(int code, const char* description)
@@ -45,40 +45,12 @@ int main(void)
 
     glfwSetErrorCallback(GLFWErrorCallback);
 
-    // Initialization of glfw.
-    if (!glfwInit())
-    {
-        std::cin.get();
-
-        return EXIT_FAILURE;
-    }//*-
-
-    // Create a window
-    glfwWindowHint(GLFW_RESIZABLE, false);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    auto window = glfwCreateWindow(800, 600, "Hello Triangle", nullptr, nullptr);
+    auto window = initWindow();
     if (window == nullptr)
     {
-
         glfwTerminate();
 
         std::cin.get();
-
-        return EXIT_FAILURE;
-    }
-
-    //Set the OpenGL context
-    glfwMakeContextCurrent(window);
-
-    GLenum error = glewInit();
-    if (error != GLEW_OK)
-    {
-        std::cerr << "GLEW intialization failure:" << glewGetErrorString(error) << "\n";
-        std::cin.get();
-
-        glfwTerminate();
 
         return EXIT_FAILURE;
     }
@@ -144,4 +116,48 @@ int main(void)
     glfwTerminate();
 
     return EXIT_SUCCESS;
+}
+
+GLFWwindow* initWindow()
+{
+    if (!glfwInit())
+    {
+        std::cin.get();
+        return nullptr;
+    }
+
+    glfwWindowHint(GLFW_RESIZABLE, false);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+
+    // Open a window and create its OpenGL context
+    GLFWwindow* window = glfwCreateWindow(framework::WINDOWSIZEX, framework::WINDOWSIZEY, "2D PacMan", nullptr, nullptr);
+    if (window == nullptr)
+    {
+        glfwTerminate();
+
+        std::cin.get();
+
+        return nullptr;
+        //return EXIT_FAILURE;
+    }
+
+    glfwMakeContextCurrent(window);
+
+    GLenum error = glewInit();
+    if (error != GLEW_OK)
+    {
+        std::cerr << "GLEW intialization failure:" << glewGetErrorString(error) << "\n";
+        std::cin.get();
+
+        glfwTerminate();
+
+        return nullptr;
+        //return EXIT_FAILURE;
+    }
+
+    glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
+    glfwSwapInterval(1);
+    return window;
 }
