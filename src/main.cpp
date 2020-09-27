@@ -11,14 +11,12 @@
 #include "framework/vbl.hpp"
 #include "framework/ibo.hpp"
 #include "framework/shader.hpp"
+#include "framework/renderer.hpp"
 
 GLFWwindow* initWindow();
 
 // Error function for GLFW
-void GLFWErrorCallback(int code, const char* description)
-{
-    std::cerr << "Error " << "0x" << std::hex << code << ':' << description << "\n";
-}
+void GLFWErrorCallback(int code, const char* description);
 
 // Error function for OpenGL
 void GLAPIENTRY
@@ -28,13 +26,7 @@ MessageCallback(GLenum source,
     GLenum severity,
     GLsizei length,
     const GLchar* message,
-    const void* userParam)
-{
-    std::cerr << "GL CALLBACK:" << (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "") <<
-        "type = 0x" << type <<
-        ", severity = 0x" << severity <<
-        ", message =" << message << "\n";
-}
+    const void* userParam);
 
 // Entry point
 int main(void)
@@ -92,20 +84,16 @@ int main(void)
     framework::IndexBuffer ibo(indices, 6);
 
     framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
-    shader.Bind();
+
+    framework::Renderer renderer;
 
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
         glfwPollEvents();
 
-        glClear(GL_COLOR_BUFFER_BIT);
-        vao.Bind();
-        vbo.Bind();
-        ibo.Bind();
-        shader.Bind();
-
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, nullptr);
+        renderer.Clear();
+        renderer.Draw(vao, ibo, shader);
 
         glfwSwapBuffers(window);
 
@@ -164,4 +152,24 @@ GLFWwindow* initWindow()
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSwapInterval(1);
     return window;
+}
+
+void GLFWErrorCallback(int code, const char* description)
+{
+    std::cerr << "Error " << "0x" << std::hex << code << ':' << description << "\n";
+}
+
+void GLAPIENTRY
+MessageCallback(GLenum source,
+    GLenum type,
+    GLuint id,
+    GLenum severity,
+    GLsizei length,
+    const GLchar* message,
+    const void* userParam)
+{
+    std::cerr << "GL CALLBACK:" << (type == GL_DEBUG_TYPE_ERROR ? "** GL ERROR **" : "") <<
+        "type = 0x" << type <<
+        ", severity = 0x" << severity <<
+        ", message =" << message << "\n";
 }
