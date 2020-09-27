@@ -3,6 +3,9 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 #include "framework/globals.hpp"
 #include "framework/tilemap.hpp"
@@ -13,6 +16,7 @@
 #include "framework/shader.hpp"
 #include "framework/renderer.hpp"
 
+// Function declarations
 GLFWwindow* initWindow();
 
 // Error function for GLFW
@@ -41,9 +45,7 @@ int main(void)
     if (window == nullptr)
     {
         glfwTerminate();
-
         std::cin.get();
-
         return EXIT_FAILURE;
     }
 
@@ -87,6 +89,10 @@ int main(void)
 
     framework::Renderer renderer;
 
+    glm::mat4 proj = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
+   
+    glUniform4fv(shader.getUniformLocation("u_Projection"), GL_FALSE, glm::value_ptr(proj));
+
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
@@ -129,7 +135,7 @@ GLFWwindow* initWindow()
     {
         glfwTerminate();
 
-        std::cin.get();
+        //std::cin.get();
 
         return nullptr;
         //return EXIT_FAILURE;
@@ -140,8 +146,8 @@ GLFWwindow* initWindow()
     GLenum error = glewInit();
     if (error != GLEW_OK)
     {
-        std::cerr << "GLEW intialization failure:" << glewGetErrorString(error) << "\n";
-        std::cin.get();
+        //std::cerr << "GLEW intialization failure:" << glewGetErrorString(error) << "\n";
+        //std::cin.get();
 
         glfwTerminate();
 
