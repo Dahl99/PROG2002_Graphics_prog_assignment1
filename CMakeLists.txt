@@ -38,6 +38,9 @@ add_executable(Assignment1
 	
 	src/framework/vbl.hpp
 
+	src/framework/renderer.hpp
+	src/framework/renderer.cpp
+
 	src/framework/entities.hpp
 	src/framework/entities.cpp
 	
