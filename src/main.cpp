@@ -7,6 +7,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+
 #include "framework/globals.hpp"
 #include "framework/tilemap.hpp"
 #include "framework/vao.hpp"
@@ -63,10 +64,10 @@ int main(void)
 
     // Create a triangle geometry
     GLfloat vertices[8] = {
-    -0.5f, -0.5f,
-    0.5f, -0.5f,
-    0.5f, 0.5f,
-    -0.5f, 0.5f
+    100.0f, 100.0f,
+    300.0f, 100.0f,
+    300.0f, 300.0f,
+    100.0f, 300.0f
     };
 
     GLuint indices[6] = {
@@ -86,6 +87,11 @@ int main(void)
     framework::IndexBuffer ibo(indices, 6);
 
     framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
+    shader.Bind();
+
+    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
+
+    shader.SetUniformMat4f("u_MVP", projection);
 
     framework::Renderer renderer;
 
