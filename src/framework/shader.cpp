@@ -42,9 +42,14 @@ namespace framework
 		glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]);
 	}
 
-	GLuint Shader::getUniformLocation(const std::string& name)	//	Gets the uniform location
+	GLint Shader::getUniformLocation(const std::string& name)	//	Gets the uniform location
 	{
-		int location = glGetUniformLocation(m_RendererID, name.c_str());
+		if (m_UniformCache.find(name) != m_UniformCache.end())
+			return m_UniformCache[name];
+
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
+		m_UniformCache[name] = location;
+
 		return location;
 	}
 

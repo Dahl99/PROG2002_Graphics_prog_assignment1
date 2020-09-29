@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <unordered_map>
 #include <glm/glm.hpp>
 
 namespace framework
@@ -10,6 +11,7 @@ namespace framework
 	private:
 		std::string vertPath, fragPath;
 		GLuint m_RendererID;
+		std::unordered_map<std::string, GLint> m_UniformCache;
 
 	public:
 		Shader(const std::string& vertPath, const std::string& fragPath);	//	Creates shader
@@ -21,7 +23,7 @@ namespace framework
 		//				Functions for setting uniforms
 		void SetUniform1i(const std::string& name, int value);
 		void SetUniformMat4f(const std::string& name, const glm::mat4& matrix);
-		GLuint getUniformLocation(const std::string& name);
+		GLint getUniformLocation(const std::string& name);
 
 	private:
 
