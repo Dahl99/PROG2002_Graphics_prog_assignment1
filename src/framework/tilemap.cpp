@@ -37,14 +37,42 @@ namespace framework {
 	void Map::CreateMap()
 	{
 		map = new framework::Tile[sizeArray];
+
+		int yPos = 0;
 		for (int i = 0; i < sizeArray; i++)
 		{
+			if (i % sizeX == 0 && i != 0)
+				yPos++;
+
+			map[i].botLeft.pos.x = i % sizeX;
+			map[i].botLeft.pos.y = yPos;
+			map[i].botLeft.col.x = 0.0f;
+			map[i].botLeft.col.y = 0.0f;
+			map[i].botLeft.col.z = 1.0f;
+			
+			map[i].botRight.pos.x = (i % sizeX) + 1;
+			map[i].botRight.pos.y = yPos;
+			map[i].botRight.col.x = 0.0f;
+			map[i].botRight.col.y = 0.0f;
+			map[i].botRight.col.z = 1.0f;
+			
+			map[i].topLeft.pos.x = i % sizeX;
+			map[i].topLeft.pos.y = yPos + 1;
+			map[i].topLeft.col.x = 0.0f;
+			map[i].topLeft.col.y = 0.0f;
+			map[i].topLeft.col.z = 1.0f;
+			
+			map[i].topRight.pos.x = (i % sizeX) + 1;
+			map[i].topRight.pos.y = yPos + 1;
+			map[i].topRight.col.x = 0.0f;
+			map[i].topRight.col.y = 0.0f;
+			map[i].topRight.col.z = 1.0f;
 
 		}
 	}
 
 	// Function to print map, used to see if its read correctly
-	void Map::PrintMap()
+	void Map::PrintMap() const
 	{
 		for (int i = 0; i < sizeArray; i++)
 		{
@@ -56,14 +84,5 @@ namespace framework {
 		}
 
 		std::cout << std::endl;
-	}
-	int* Map::GetArray()
-	{
-		return array;
-	}
-
-	framework::Tile* Map::GetMap()
-	{
-		return map;
 	}
 }
