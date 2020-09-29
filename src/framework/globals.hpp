@@ -17,8 +17,9 @@ namespace framework {
 //-------------------------------------------------------------------------------------
 
 	struct Vertex {
-		glm::vec2 pos, tex;
+		glm::vec2 pos;
 		glm::vec3 col;
+		glm::vec2 tex;
 
 	};
 
