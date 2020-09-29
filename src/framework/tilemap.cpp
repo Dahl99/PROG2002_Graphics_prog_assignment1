@@ -33,7 +33,7 @@ namespace framework {
 	}
 
 	// Function to print map, used to see if its read correctly
-	void Map::PrintMap()
+	void Map::PrintMap() const
 	{
 		for (int i = 0; i < sizeArray; i++)
 		{
@@ -45,14 +45,5 @@ namespace framework {
 		}
 
 		std::cout << std::endl;
-	}
-	int* Map::GetArray()
-	{
-		return array;
-	}
-
-	framework::Tile* Map::GetMap()
-	{
-		return map;
 	}
 }

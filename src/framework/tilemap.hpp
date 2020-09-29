@@ -13,9 +13,11 @@ namespace framework{
 	public:
 		Map(const std::string& levelPath);
 		~Map();
-		void PrintMap();
-		int* GetArray();
-		framework::Tile* GetMap();
+
+		void PrintMap() const;
+
+		inline int* GetArray() const { return array; }
+		inline framework::Tile* GetMap() const { return map; }
 	};
 
 }
