@@ -89,10 +89,6 @@ int main(void)
 
     framework::Renderer renderer;
 
-    glm::mat4 proj = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
-   
-    glUniform4fv(shader.getUniformLocation("u_Projection"), GL_FALSE, glm::value_ptr(proj));
-
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
