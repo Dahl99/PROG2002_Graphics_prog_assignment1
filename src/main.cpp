@@ -3,7 +3,10 @@
 #include <iostream>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
-#include "glm/gtc/matrix_transform.hpp"
+#include <glm/glm.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
+
 
 #include "framework/globals.hpp"
 #include "framework/tilemap.hpp"
@@ -14,6 +17,7 @@
 #include "framework/shader.hpp"
 #include "framework/renderer.hpp"
 
+// Function declarations
 GLFWwindow* initWindow();
 
 // Error function for GLFW
@@ -42,9 +46,7 @@ int main(void)
     if (window == nullptr)
     {
         glfwTerminate();
-
         std::cin.get();
-
         return EXIT_FAILURE;
     }
 
@@ -62,10 +64,10 @@ int main(void)
 
     // Create a triangle geometry
     GLfloat vertices[8] = {
-    100.0f, 100.0f,
-    300.0f, 100.0f,
-    300.0f, 300.0f,
-    100.0f, 300.0f
+    1.0f, 1.0f,
+    3.0f, 1.0f,
+    3.0f, 3.0f,
+    1.0f, 3.0f
     };
 
     GLuint indices[6] = {
@@ -87,7 +89,7 @@ int main(void)
     framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
     shader.Bind();
 
-    glm::mat4 projection = glm::ortho(0.0f, 800.0f, 0.0f, 600.0f, -1.0f, 1.0f);
+    glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
 
     shader.SetUniformMat4f("u_MVP", projection);
 
@@ -112,6 +114,10 @@ int main(void)
     return EXIT_SUCCESS;
 }
 
+//------------------------------------------------------------------------------------------
+//                                  Functions
+//------------------------------------------------------------------------------------------
+
 GLFWwindow* initWindow()
 {
     if (!glfwInit())
@@ -131,7 +137,7 @@ GLFWwindow* initWindow()
     {
         glfwTerminate();
 
-        std::cin.get();
+        //std::cin.get();
 
         return nullptr;
         //return EXIT_FAILURE;
@@ -142,8 +148,8 @@ GLFWwindow* initWindow()
     GLenum error = glewInit();
     if (error != GLEW_OK)
     {
-        std::cerr << "GLEW intialization failure:" << glewGetErrorString(error) << "\n";
-        std::cin.get();
+        //std::cerr << "GLEW intialization failure:" << glewGetErrorString(error) << "\n";
+        //std::cin.get();
 
         glfwTerminate();
 
