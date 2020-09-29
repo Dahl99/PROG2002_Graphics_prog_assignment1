@@ -39,35 +39,35 @@ namespace framework {
 		map = new framework::Tile[sizeArray];
 
 		int yPos = 0;
-		for (int i = 0; i < sizeArray; i++)
+		for (int i = 1; i <= sizeArray; i++)
 		{
+
+			map[i - 1].botLeft.pos.x = (i-1) % sizeX;
+			map[i - 1].botLeft.pos.y = yPos;
+			map[i - 1].botLeft.col.x = 0.0f;
+			map[i - 1].botLeft.col.y = 0.0f;
+			map[i - 1].botLeft.col.z = 1.0f;
+	
+			map[i - 1].botRight.pos.x = ((i-1) % sizeX) + 1;
+			map[i - 1].botRight.pos.y = yPos;
+			map[i - 1].botRight.col.x = 0.0f;
+			map[i - 1].botRight.col.y = 0.0f;
+			map[i - 1].botRight.col.z = 1.0f;
+		
+			map[i - 1].topLeft.pos.x = (i-1) % sizeX;
+			map[i - 1].topLeft.pos.y = yPos + 1;
+			map[i - 1].topLeft.col.x = 0.0f;
+			map[i - 1].topLeft.col.y = 0.0f;
+			map[i - 1].topLeft.col.z = 1.0f;
+
+			map[i - 1].topRight.pos.x = ((i-1) % sizeX) + 1;
+			map[i - 1].topRight.pos.y = yPos + 1;
+			map[i - 1].topRight.col.x = 0.0f;
+			map[i - 1].topRight.col.y = 0.0f;
+			map[i - 1].topRight.col.z = 1.0f;
+
 			if (i % sizeX == 0 && i != 0)
 				yPos++;
-
-			map[i].botLeft.pos.x = i % sizeX;
-			map[i].botLeft.pos.y = yPos;
-			map[i].botLeft.col.x = 0.0f;
-			map[i].botLeft.col.y = 0.0f;
-			map[i].botLeft.col.z = 1.0f;
-			
-			map[i].botRight.pos.x = (i % sizeX) + 1;
-			map[i].botRight.pos.y = yPos;
-			map[i].botRight.col.x = 0.0f;
-			map[i].botRight.col.y = 0.0f;
-			map[i].botRight.col.z = 1.0f;
-			
-			map[i].topLeft.pos.x = i % sizeX;
-			map[i].topLeft.pos.y = yPos + 1;
-			map[i].topLeft.col.x = 0.0f;
-			map[i].topLeft.col.y = 0.0f;
-			map[i].topLeft.col.z = 1.0f;
-			
-			map[i].topRight.pos.x = (i % sizeX) + 1;
-			map[i].topRight.pos.y = yPos + 1;
-			map[i].topRight.col.x = 0.0f;
-			map[i].topRight.col.y = 0.0f;
-			map[i].topRight.col.z = 1.0f;
-
 		}
 	}
 
@@ -84,5 +84,26 @@ namespace framework {
 		}
 
 		std::cout << std::endl;
+	}
+	std::vector<framework::Vertex> Map::retMapVertexes()
+	{
+		std::vector<framework::Vertex> vertexes;
+
+		for (int i = 1; i <= sizeArray; i++)
+		{
+			vertexes.push_back(map[(i - 1)].botLeft);
+			if (i % sizeX == 0 && i != 0)
+				vertexes.push_back(map[i -1].botRight);
+			
+		}
+		for (int i = sizeArray - sizeX + 1; i <= sizeArray; i++)
+		{
+			vertexes.push_back(map[(i - 1)].topLeft);
+
+			if (i % sizeX == 0 && i != sizeArray - sizeX)
+				vertexes.push_back(map[i - 1].topRight);
+		}
+
+		return vertexes;
 	}
 }

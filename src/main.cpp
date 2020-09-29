@@ -40,6 +40,9 @@ int main(void)
     
     map1.PrintMap();
 
+    std::vector<framework::Vertex> vert = map1.retMapVertexes();
+    
+
     glfwSetErrorCallback(GLFWErrorCallback);
 
     auto window = initWindow();
@@ -77,9 +80,12 @@ int main(void)
 
     framework::VertexArray vao;                                 // Create a vertex array
 
-    framework::VertexBuffer vbo(vertices, sizeof(vertices));    // Create a vertex buffer
+    //framework::VertexBuffer vbo(vertices, sizeof(vertices));    // Create a vertex buffer
+    framework::VertexBuffer vbo(vert.data(), sizeof(vert.data()));    // Create a vertex buffer
 
     framework::VertexBufferLayout vbl;                          // Create a vertex buffer layout
+    vbl.Push<GLfloat>(2);                                       // Setting the layout for the vertex buffer
+    vbl.Push<GLfloat>(3);                                       // Setting the layout for the vertex buffer
     vbl.Push<GLfloat>(2);                                       // Setting the layout for the vertex buffer
 
     vao.AddBuffer(vbo, vbl);                                    // Populating the vertex buffer

@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <vector>
 #include "globals.hpp"
 
 namespace framework{
@@ -15,7 +16,7 @@ namespace framework{
 		~Map();
 		void CreateMap();
 		void PrintMap() const;
-
+		std::vector<framework::Vertex> retMapVertexes();
 		inline int* GetArray() const { return array; }
 		inline framework::Tile* GetMap() const { return map; }
 
