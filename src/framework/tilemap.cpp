@@ -10,7 +10,6 @@ namespace framework {
 		if (stream) 
 		{
 			stream >> sizeX >> sizeY;
-
 			sizeArray = sizeX * sizeY;
 			array = new int[sizeArray];
 
@@ -18,10 +17,13 @@ namespace framework {
 			{
 				stream >> array[i];
 			}
+		
+			CreateMap();
 		}
 		else std::cout << "Failed to read map!\n";
 
 		stream.close();
+
 	}
 
 	Map::~Map()
@@ -30,6 +32,15 @@ namespace framework {
 			delete[] array;
 		if (map)
 			delete[] map;
+	}
+
+	void Map::CreateMap()
+	{
+		map = new framework::Tile[sizeArray];
+		for (int i = 0; i < sizeArray; i++)
+		{
+
+		}
 	}
 
 	// Function to print map, used to see if its read correctly

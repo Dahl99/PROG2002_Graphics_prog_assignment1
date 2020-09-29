@@ -13,6 +13,7 @@ namespace framework{
 	public:
 		Map(const std::string& levelPath);
 		~Map();
+		void CreateMap();
 		void PrintMap();
 		int* GetArray();
 		framework::Tile* GetMap();
