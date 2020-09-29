@@ -14,6 +14,7 @@ find_package(glm REQUIRED)
 
 add_subdirectory(external/glfw-3.3.2)
 add_subdirectory(external/glew-cmake-2.1.0)
+add_subdirectory(external/stb)
 
 add_executable(Assignment1
 	src/main.cpp
@@ -57,6 +58,7 @@ target_link_libraries(Assignment1
 	libglew_static
 	glfw
 	glm::glm
+	stbimage::stbimage
 	OpenGL::GL)
 
 # Copy resources to binary directory
