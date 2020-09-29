@@ -28,6 +28,8 @@ namespace framework {
 	{
 		if (array)
 			delete[] array;
+		if (map)
+			delete[] map;
 	}
 
 	// Function to print map, used to see if its read correctly
@@ -43,5 +45,14 @@ namespace framework {
 		}
 
 		std::cout << std::endl;
+	}
+	int* Map::GetArray()
+	{
+		return array;
+	}
+
+	framework::Tile* Map::GetMap()
+	{
+		return map;
 	}
 }
