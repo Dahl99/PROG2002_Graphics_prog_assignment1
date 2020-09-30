@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <GL/glew.h>
 #include "tilemap.hpp"
 
 namespace framework {
@@ -44,27 +45,51 @@ namespace framework {
 
 			map[i - 1].botLeft.pos.x = (i-1) % sizeX;
 			map[i - 1].botLeft.pos.y = yPos;
-			map[i - 1].botLeft.col.x = 0.0f;
-			map[i - 1].botLeft.col.y = 0.0f;
-			map[i - 1].botLeft.col.z = 1.0f;
-	
+
 			map[i - 1].botRight.pos.x = ((i-1) % sizeX) + 1;
 			map[i - 1].botRight.pos.y = yPos;
-			map[i - 1].botRight.col.x = 0.0f;
-			map[i - 1].botRight.col.y = 0.0f;
-			map[i - 1].botRight.col.z = 1.0f;
-		
+	
 			map[i - 1].topLeft.pos.x = (i-1) % sizeX;
 			map[i - 1].topLeft.pos.y = yPos + 1;
-			map[i - 1].topLeft.col.x = 0.0f;
-			map[i - 1].topLeft.col.y = 0.0f;
-			map[i - 1].topLeft.col.z = 1.0f;
-
+			
 			map[i - 1].topRight.pos.x = ((i-1) % sizeX) + 1;
 			map[i - 1].topRight.pos.y = yPos + 1;
-			map[i - 1].topRight.col.x = 0.0f;
-			map[i - 1].topRight.col.y = 0.0f;
-			map[i - 1].topRight.col.z = 1.0f;
+			if (array[i])
+			{
+				map[i - 1].botLeft.col.y = 0.0f;
+				map[i - 1].botLeft.col.x = 0.0f;
+				map[i - 1].botLeft.col.z = 0.8f;
+
+				map[i - 1].botRight.col.x = 0.0f;
+				map[i - 1].botRight.col.y = 0.0f;
+				map[i - 1].botRight.col.z = 0.8f;
+		
+				map[i - 1].topLeft.col.x = 0.0f;
+				map[i - 1].topLeft.col.y = 0.0f;
+				map[i - 1].topLeft.col.z = 0.8f;
+
+				map[i - 1].topRight.col.x = 0.0f;
+				map[i - 1].topRight.col.y = 0.0f;
+				map[i - 1].topRight.col.z = 0.8f;
+			}
+			else
+			{
+				map[i - 1].botLeft.col.y = 1.0f;
+				map[i - 1].botLeft.col.z = 1.0f;
+				map[i - 1].botLeft.col.x = 1.0f;
+
+				map[i - 1].botRight.col.x = 1.0f;
+				map[i - 1].botRight.col.y = 1.0f;
+				map[i - 1].botRight.col.z = 1.0f;
+
+				map[i - 1].topLeft.col.x = 1.0f;
+				map[i - 1].topLeft.col.y = 1.0f;
+				map[i - 1].topLeft.col.z = 1.0f;
+
+				map[i - 1].topRight.col.x = 1.0f;
+				map[i - 1].topRight.col.y = 1.0f;
+				map[i - 1].topRight.col.z = 1.0f;
+			}
 
 			if (i % sizeX == 0 && i != 0)
 				yPos++;
@@ -85,7 +110,7 @@ namespace framework {
 
 		std::cout << std::endl;
 	}
-	std::vector<framework::Vertex> Map::retMapVertexes()
+	std::vector<framework::Vertex> Map::retMapVertices()
 	{
 		std::vector<framework::Vertex> vertexes;
 
@@ -105,5 +130,21 @@ namespace framework {
 		}
 
 		return vertexes;
+	}
+	std::vector<GLuint> Map::retMapIndices()
+	{
+		std::vector<GLuint> indices;
+		
+		for (GLuint i = 0; i < sizeArray; i++)
+		{
+			indices.push_back(i);
+			indices.push_back(i + 1);
+			indices.push_back(i + sizeX + 1);
+			indices.push_back(i + sizeX + 1);
+			indices.push_back(i + sizeX + 2);
+			indices.push_back(i);
+		}
+
+		return indices;
 	}
 }

@@ -40,8 +40,38 @@ int main(void)
     
     map1.PrintMap();
 
-    std::vector<framework::Vertex> vert = map1.retMapVertexes();
+    //std::vector<framework::Vertex> vert = map1.retMapVertices();
+    //std::vector<GLuint> indice = map1.retMapIndices();
     
+    framework::Tile shit;
+    shit.botLeft.pos.x = 0;
+    shit.botLeft.pos.y = 0;
+    shit.botRight.pos.x = 100;
+    shit.botRight.pos.y = 0;
+    shit.topLeft.pos.x = 0;
+    shit.topLeft.pos.y = 100;
+    shit.topRight.pos.x = 100;
+    shit.topRight.pos.y = 100;
+
+    shit.botLeft.col.x = 0;
+    shit.botLeft.col.y = 0;
+    shit.botLeft.col.z = 1;
+    shit.botRight.col.x = 0;
+    shit.botRight.col.y = 0;
+    shit.botRight.col.z = 1;
+    shit.topLeft.col.x = 0;
+    shit.topLeft.col.y = 0;
+    shit.topLeft.col.z = 1;
+    shit.topRight.col.x = 0;
+    shit.topRight.col.y = 0;
+    shit.topRight.col.z = 1;
+
+    std::vector<framework::Vertex> vert;
+    vert.push_back(shit.botLeft);
+    vert.push_back(shit.botRight);
+    vert.push_back(shit.topLeft);
+    vert.push_back(shit.topRight);
+    std::vector<GLuint> indice = { 0, 1, 2, 2, 3, 0 };
 
     glfwSetErrorCallback(GLFWErrorCallback);
 
@@ -90,7 +120,7 @@ int main(void)
 
     vao.AddBuffer(vbo, vbl);                                    // Populating the vertex buffer
 
-    framework::IndexBuffer ibo(indices, 6);
+    framework::IndexBuffer ibo(indice.data(), indice.size());
 
     framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
     shader.Bind();

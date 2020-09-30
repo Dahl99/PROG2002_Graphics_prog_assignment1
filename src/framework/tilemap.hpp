@@ -16,7 +16,8 @@ namespace framework{
 		~Map();
 		void CreateMap();
 		void PrintMap() const;
-		std::vector<framework::Vertex> retMapVertexes();
+		std::vector<framework::Vertex> retMapVertices();
+		std::vector<GLuint> retMapIndices();
 		inline int* GetArray() const { return array; }
 		inline framework::Tile* GetMap() const { return map; }
 
