@@ -40,38 +40,38 @@ int main(void)
     
     map1.PrintMap();
 
-    //std::vector<framework::Vertex> vert = map1.retMapVertices();
-    //std::vector<GLuint> indice = map1.retMapIndices();
+    std::vector<framework::Vertex> vert = map1.retMapVertices();
+    std::vector<GLuint> indice = map1.retMapIndices();
     
-    framework::Tile shit;
-    shit.botLeft.pos.x = 0;
-    shit.botLeft.pos.y = 0;
-    shit.botRight.pos.x = 100;
-    shit.botRight.pos.y = 0;
-    shit.topLeft.pos.x = 0;
-    shit.topLeft.pos.y = 100;
-    shit.topRight.pos.x = 100;
-    shit.topRight.pos.y = 100;
+    //framework::Tile shit;
+    //shit.botLeft.pos.x = 0.0f;
+    //shit.botLeft.pos.y = 0.0f;
+    //shit.botRight.pos.x = 1.0f;
+    //shit.botRight.pos.y = 0.0f;
+    //shit.topLeft.pos.x = 0.0f;
+    //shit.topLeft.pos.y = 1.0f;
+    //shit.topRight.pos.x = 1.0f;
+    //shit.topRight.pos.y = 1.0f;
 
-    shit.botLeft.col.x = 0;
-    shit.botLeft.col.y = 0;
-    shit.botLeft.col.z = 1;
-    shit.botRight.col.x = 0;
-    shit.botRight.col.y = 0;
-    shit.botRight.col.z = 1;
-    shit.topLeft.col.x = 0;
-    shit.topLeft.col.y = 0;
-    shit.topLeft.col.z = 1;
-    shit.topRight.col.x = 0;
-    shit.topRight.col.y = 0;
-    shit.topRight.col.z = 1;
+    //shit.botLeft.col.x = 0.0f;
+    //shit.botLeft.col.y = 0.0f;
+    //shit.botLeft.col.z = 1.0f;
+    //shit.botRight.col.x = 0.0f;
+    //shit.botRight.col.y = 0.0f;
+    //shit.botRight.col.z = 1.0f;
+    //shit.topLeft.col.x = 0.0f;
+    //shit.topLeft.col.y = 0.0f;
+    //shit.topLeft.col.z = 1.0f;
+    //shit.topRight.col.x = 0.0f;
+    //shit.topRight.col.y = 0.0f;
+    //shit.topRight.col.z = 1.0f;
 
-    std::vector<framework::Vertex> vert;
-    vert.push_back(shit.botLeft);
-    vert.push_back(shit.botRight);
-    vert.push_back(shit.topLeft);
-    vert.push_back(shit.topRight);
-    std::vector<GLuint> indice = { 0, 1, 2, 2, 3, 0 };
+    //std::vector<framework::Vertex> vert;
+    //vert.push_back(shit.botLeft);
+    //vert.push_back(shit.botRight);
+    //vert.push_back(shit.topLeft);
+    //vert.push_back(shit.topRight);
+    //std::vector<GLuint> indice = { 0, 1, 2, 2, 3, 1 };
 
     glfwSetErrorCallback(GLFWErrorCallback);
 
@@ -81,8 +81,8 @@ int main(void)
         glfwTerminate();
         std::cin.get();
         return EXIT_FAILURE;
-    }
-
+    }    
+    
     // Enable capture of debug output.
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, 0);
@@ -96,22 +96,22 @@ int main(void)
     glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
 
     // Create a triangle geometry
-    GLfloat vertices[8] = {
-    1.0f, 1.0f,
-    3.0f, 1.0f,
-    3.0f, 3.0f,
-    1.0f, 3.0f
-    };
+    //GLfloat vertices[28] = {
+    //1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+    //3.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+    //3.0f, 3.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
+    //1.0f, 3.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
+    //};
 
-    GLuint indices[6] = {
-        0, 1, 2,
-        2, 3, 0
-    };
+    //GLuint indices[6] = {
+    //    0, 1, 2,
+    //    2, 3, 0
+    //};
 
     framework::VertexArray vao;                                 // Create a vertex array
 
     //framework::VertexBuffer vbo(vertices, sizeof(vertices));    // Create a vertex buffer
-    framework::VertexBuffer vbo(vert.data(), sizeof(vert.data()));    // Create a vertex buffer
+    framework::VertexBuffer vbo(vert, sizeof((framework::Vertex*)vert.data()));    // Create a vertex buffer
 
     framework::VertexBufferLayout vbl;                          // Create a vertex buffer layout
     vbl.Push<GLfloat>(2);                                       // Setting the layout for the vertex buffer
@@ -120,7 +120,7 @@ int main(void)
 
     vao.AddBuffer(vbo, vbl);                                    // Populating the vertex buffer
 
-    framework::IndexBuffer ibo(indice.data(), indice.size());
+    framework::IndexBuffer ibo(indice, indice.size());
 
     framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
     shader.Bind();

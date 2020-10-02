@@ -1,7 +1,9 @@
 #pragma once
 
 #include <GL/glew.h>
+#include <vector>
 
+#include "globals.hpp"
 namespace framework
 {
 	//	Class containing abstraction of index buffer
@@ -13,6 +15,7 @@ namespace framework
 
 	public:
 		IndexBuffer(const GLuint* data, GLuint count);		//	Generating, bindingand buffering vbo
+		IndexBuffer(const std::vector<GLuint> &data, const GLuint count);		//	Generating, bindingand buffering vbo
 		~IndexBuffer();										//	Deletes vbo
 
 		void Bind() const;									//	Binds the ib

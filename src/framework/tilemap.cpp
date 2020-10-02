@@ -58,19 +58,19 @@ namespace framework {
 			{
 				map[i - 1].botLeft.col.y = 0.0f;
 				map[i - 1].botLeft.col.x = 0.0f;
-				map[i - 1].botLeft.col.z = 0.8f;
+				map[i - 1].botLeft.col.z = 0.2f;
 
 				map[i - 1].botRight.col.x = 0.0f;
 				map[i - 1].botRight.col.y = 0.0f;
-				map[i - 1].botRight.col.z = 0.8f;
+				map[i - 1].botRight.col.z = 0.2f;
 		
 				map[i - 1].topLeft.col.x = 0.0f;
 				map[i - 1].topLeft.col.y = 0.0f;
-				map[i - 1].topLeft.col.z = 0.8f;
+				map[i - 1].topLeft.col.z = 0.2f;
 
 				map[i - 1].topRight.col.x = 0.0f;
 				map[i - 1].topRight.col.y = 0.0f;
-				map[i - 1].topRight.col.z = 0.8f;
+				map[i - 1].topRight.col.z = 0.2f;
 			}
 			else
 			{
@@ -135,14 +135,17 @@ namespace framework {
 	{
 		std::vector<GLuint> indices;
 		
-		for (GLuint i = 0; i < sizeArray; i++)
+		for (GLuint i = 1; i < sizeArray; i++)
 		{
+			if (i % (sizeX + 1) != 0)
+			{
+			indices.push_back(i - 1);
 			indices.push_back(i);
-			indices.push_back(i + 1);
+			indices.push_back(i + sizeX);
+			indices.push_back(i + sizeX);
 			indices.push_back(i + sizeX + 1);
-			indices.push_back(i + sizeX + 1);
-			indices.push_back(i + sizeX + 2);
 			indices.push_back(i);
+			}
 		}
 
 		return indices;

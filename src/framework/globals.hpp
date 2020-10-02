@@ -10,7 +10,7 @@ namespace framework {
 	const std::string VERTSHADERPATH = "../res/shaders/shader.vert";
 	const std::string FRAGSHADERPATH = "../res/shaders/shader.frag";
 
-	const int WINDOWSIZEX = 800, WINDOWSIZEY = 600;
+	const int WINDOWSIZEX = 28*20, WINDOWSIZEY = 36*20;
 	
 
 
