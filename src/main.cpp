@@ -96,28 +96,18 @@ int main(void)
     glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
 
     // Create a triangle geometry
-    //GLfloat vertices[28] = {
-    //1.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-    //3.0f, 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-    //3.0f, 3.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f,
-    //1.0f, 3.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f
-    //};
-
-    //GLuint indices[6] = {
-    //    0, 1, 2,
-    //    2, 3, 0
-    //};
 
     framework::VertexArray vao;                                 // Create a vertex array
 
     //framework::VertexBuffer vbo(vertices, sizeof(vertices));    // Create a vertex buffer
+
     framework::VertexBuffer vbo(vert, sizeof((framework::Vertex*)vert.data()));    // Create a vertex buffer
+
 
     framework::VertexBufferLayout vbl;                          // Create a vertex buffer layout
     vbl.Push<GLfloat>(2);                                       // Setting the layout for the vertex buffer
     vbl.Push<GLfloat>(3);                                       // Setting the layout for the vertex buffer
     vbl.Push<GLfloat>(2);                                       // Setting the layout for the vertex buffer
-
     vao.AddBuffer(vbo, vbl);                                    // Populating the vertex buffer
 
     framework::IndexBuffer ibo(indice, indice.size());
