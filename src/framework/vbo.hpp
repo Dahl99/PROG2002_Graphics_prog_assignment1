@@ -14,9 +14,9 @@ namespace framework
 		GLuint m_RendererID;	//	id for vbo
 
 	public:
-		VertexBuffer(const void* data, unsigned int size);	//	Generating, binding and buffering vbo
-		VertexBuffer(const std::vector<framework::Vertex>& data, unsigned int size);	//	Generating, binding and buffering vbo
-		~VertexBuffer();									//	Deletes vbo
+		VertexBuffer(const void* data, unsigned int size);			//	Generating, binding and buffering vbo
+		VertexBuffer(const std::vector<framework::Vertex>& data);	//	Generating, binding and buffering vbo
+		~VertexBuffer();											//	Deletes vbo
 
 		void Bind() const;		//	Binds the vbo
 		void Unbind() const;	//	Unbinds the vbo

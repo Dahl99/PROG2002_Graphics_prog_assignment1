@@ -15,7 +15,7 @@ namespace framework
 
 	public:
 		IndexBuffer(const GLuint* data, GLuint count);		//	Generating, bindingand buffering vbo
-		IndexBuffer(const std::vector<GLuint> &data, const GLuint count);		//	Generating, bindingand buffering vbo
+		IndexBuffer(const std::vector<GLuint> &data);		//	Generating, bindingand buffering vbo
 		~IndexBuffer();										//	Deletes vbo
 
 		void Bind() const;									//	Binds the ib

@@ -32,25 +32,25 @@ namespace framework
 		glUseProgram(0);
 	}
 
-	void Shader::SetUniform1i(const std::string& name, int value)	//	Specifying a value for integer uniform
+	void Shader::SetUniform1i(const std::string& name, int value)	//	Passes an integer uniform to shader
 	{
 		glUniform1i(getUniformLocation(name), value);
 	}
 
-	void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)	//	Specifying a value for matrix uniform
+	void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)	//	Passes a 4x4 matrix uniform to shader
 	{
 		glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]);
 	}
 
 	GLint Shader::getUniformLocation(const std::string& name)	//	Gets the uniform location
 	{
-		if (m_UniformCache.find(name) != m_UniformCache.end())
+		if (m_UniformCache.find(name) != m_UniformCache.end())	//	Returns location from cache if found
 			return m_UniformCache[name];
 
-		GLint location = glGetUniformLocation(m_RendererID, name.c_str());
-		m_UniformCache[name] = location;
+		GLint location = glGetUniformLocation(m_RendererID, name.c_str());	//	Adds location to cache if not found
+		m_UniformCache[name] = location;									//	Gets the location from cache
 
-		return location;
+		return location;													//	Returns location
 	}
 
 	std::string Shader::ParseShader(const std::string& filepath)	//	Reads shaders from file

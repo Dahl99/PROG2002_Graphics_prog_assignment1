@@ -31,6 +31,7 @@ namespace framework {
 	{
 		if (array)
 			delete[] array;
+
 		if (map)
 			delete[] map;
 	}
@@ -42,7 +43,6 @@ namespace framework {
 		int yPos = 0;
 		for (int i = 1; i <= sizeArray; i++)
 		{
-
 			map[i - 1].botLeft.pos.x = (i-1) % sizeX;
 			map[i - 1].botLeft.pos.y = yPos;
 
@@ -54,6 +54,7 @@ namespace framework {
 			
 			map[i - 1].topRight.pos.x = ((i-1) % sizeX) + 1;
 			map[i - 1].topRight.pos.y = yPos + 1;
+
 			if (array[i])
 			{
 				map[i - 1].botLeft.col.y = 0.0f;
@@ -110,27 +111,29 @@ namespace framework {
 
 		std::cout << std::endl;
 	}
+
 	std::vector<framework::Vertex> Map::retMapVertices()
 	{
-		std::vector<framework::Vertex> vertexes;
+		std::vector<framework::Vertex> vertices;
 
 		for (int i = 1; i <= sizeArray; i++)
 		{
-			vertexes.push_back(map[(i - 1)].botLeft);
+			vertices.push_back(map[(i - 1)].botLeft);
 			if (i % sizeX == 0 && i != 0)
-				vertexes.push_back(map[i -1].botRight);
+				vertices.push_back(map[i -1].botRight);
 			
 		}
 		for (int i = sizeArray - sizeX + 1; i <= sizeArray; i++)
 		{
-			vertexes.push_back(map[(i - 1)].topLeft);
+			vertices.push_back(map[(i - 1)].topLeft);
 
 			if (i % sizeX == 0 && i != sizeArray - sizeX)
-				vertexes.push_back(map[i - 1].topRight);
+				vertices.push_back(map[i - 1].topRight);
 		}
 
-		return vertexes;
+		return vertices;
 	}
+
 	std::vector<GLuint> Map::retMapIndices()
 	{
 		std::vector<GLuint> indices;

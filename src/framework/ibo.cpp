@@ -11,7 +11,7 @@ namespace framework
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(GLuint), data, GL_STATIC_DRAW);
 	}
 
-	IndexBuffer::IndexBuffer(const std::vector<GLuint> &data, const GLuint count) : m_Count(data.size())
+	IndexBuffer::IndexBuffer(const std::vector<GLuint> &data) : m_Count(data.size())
 	{
 		glGenBuffers(1, &m_RendererID);							//	Generate buffer object name
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_RendererID);	//	Binding buffer object
