@@ -13,7 +13,7 @@ namespace framework {
 	const std::string CHARVERTGSHADERPATH = "../res/shaders/character.vert";
 	const std::string CHARFRAGSHADERPATH = "../res/shaders/character.frag";
 
-	const int WINDOWSIZEX = 28 * 20, WINDOWSIZEY = 36 * 20;
+	const int WINDOWSIZEX = 28*20, WINDOWSIZEY = 36*20;
 	
 
 
@@ -25,7 +25,6 @@ namespace framework {
 		glm::vec2 pos;
 		glm::vec3 col;
 		glm::vec2 tex;
-
 	};
 
 	struct Tile {

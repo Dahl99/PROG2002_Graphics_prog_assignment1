@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <GL/glew.h>
 #include "tilemap.hpp"
 
 namespace framework {
@@ -15,9 +16,10 @@ namespace framework {
 
 			for (int i = 0; i < sizeArray; i++)
 			{
-				stream >> array[i];
+				stream >> array[sizeArray - (i + 1)];
 			}
 		
+			
 			CreateMap();
 		}
 		else std::cout << "Failed to read map!\n";
@@ -30,6 +32,7 @@ namespace framework {
 	{
 		if (array)
 			delete[] array;
+
 		if (map)
 			delete[] map;
 	}
@@ -41,30 +44,54 @@ namespace framework {
 		int yPos = 0;
 		for (int i = 1; i <= sizeArray; i++)
 		{
-
 			map[i - 1].botLeft.pos.x = (i-1) % sizeX;
 			map[i - 1].botLeft.pos.y = yPos;
-			map[i - 1].botLeft.col.x = 0.0f;
-			map[i - 1].botLeft.col.y = 0.0f;
-			map[i - 1].botLeft.col.z = 1.0f;
-	
+
 			map[i - 1].botRight.pos.x = ((i-1) % sizeX) + 1;
 			map[i - 1].botRight.pos.y = yPos;
-			map[i - 1].botRight.col.x = 0.0f;
-			map[i - 1].botRight.col.y = 0.0f;
-			map[i - 1].botRight.col.z = 1.0f;
-		
+	
 			map[i - 1].topLeft.pos.x = (i-1) % sizeX;
 			map[i - 1].topLeft.pos.y = yPos + 1;
-			map[i - 1].topLeft.col.x = 0.0f;
-			map[i - 1].topLeft.col.y = 0.0f;
-			map[i - 1].topLeft.col.z = 1.0f;
-
+			
 			map[i - 1].topRight.pos.x = ((i-1) % sizeX) + 1;
 			map[i - 1].topRight.pos.y = yPos + 1;
-			map[i - 1].topRight.col.x = 0.0f;
-			map[i - 1].topRight.col.y = 0.0f;
-			map[i - 1].topRight.col.z = 1.0f;
+
+			if (array[i - 1])
+			{
+				map[i - 1].botLeft.col.y = 0.0f;
+				map[i - 1].botLeft.col.x = 0.0f;
+				map[i - 1].botLeft.col.z = 0.2f;
+
+				map[i - 1].botRight.col.x = 0.0f;
+				map[i - 1].botRight.col.y = 0.0f;
+				map[i - 1].botRight.col.z = 0.2f;
+		
+				map[i - 1].topLeft.col.x = 0.0f;
+				map[i - 1].topLeft.col.y = 0.0f;
+				map[i - 1].topLeft.col.z = 0.2f;
+
+				map[i - 1].topRight.col.x = 0.0f;
+				map[i - 1].topRight.col.y = 0.0f;
+				map[i - 1].topRight.col.z = 0.2f;
+			}
+			else
+			{
+				map[i - 1].botLeft.col.y = 1.0f;
+				map[i - 1].botLeft.col.z = 1.0f;
+				map[i - 1].botLeft.col.x = 1.0f;
+
+				map[i - 1].botRight.col.x = 1.0f;
+				map[i - 1].botRight.col.y = 1.0f;
+				map[i - 1].botRight.col.z = 1.0f;
+
+				map[i - 1].topLeft.col.x = 1.0f;
+				map[i - 1].topLeft.col.y = 1.0f;
+				map[i - 1].topLeft.col.z = 1.0f;
+
+				map[i - 1].topRight.col.x = 1.0f;
+				map[i - 1].topRight.col.y = 1.0f;
+				map[i - 1].topRight.col.z = 1.0f;
+			}
 
 			if (i % sizeX == 0 && i != 0)
 				yPos++;
@@ -85,25 +112,35 @@ namespace framework {
 
 		std::cout << std::endl;
 	}
-	std::vector<framework::Vertex> Map::retMapVertexes()
+
+	std::vector<framework::Vertex> Map::retMapVertices()
 	{
-		std::vector<framework::Vertex> vertexes;
+		std::vector<framework::Vertex> vertices;
 
-		for (int i = 1; i <= sizeArray; i++)
+		for (int i = 0; i < sizeArray; i++)
 		{
-			vertexes.push_back(map[(i - 1)].botLeft);
-			if (i % sizeX == 0 && i != 0)
-				vertexes.push_back(map[i -1].botRight);
-			
-		}
-		for (int i = sizeArray - sizeX + 1; i <= sizeArray; i++)
-		{
-			vertexes.push_back(map[(i - 1)].topLeft);
-
-			if (i % sizeX == 0 && i != sizeArray - sizeX)
-				vertexes.push_back(map[i - 1].topRight);
+			vertices.push_back(map[i].botLeft);
+			vertices.push_back(map[i].botRight);
+			vertices.push_back(map[i].topLeft);
+			vertices.push_back(map[i].topRight);
 		}
 
-		return vertexes;
+		return vertices;
+	}
+
+	std::vector<GLuint> Map::retMapIndices()
+	{
+		std::vector<GLuint> indices;
+
+		for (GLuint i = 0; i < sizeArray; i++)
+		{
+			indices.push_back(i * 4);
+			indices.push_back((i * 4) + 1);
+			indices.push_back((i * 4) + 2);
+			indices.push_back((i * 4) + 2);
+			indices.push_back((i * 4) + 3);
+			indices.push_back((i * 4) + 1);
+		}
+		return indices;
 	}
 }

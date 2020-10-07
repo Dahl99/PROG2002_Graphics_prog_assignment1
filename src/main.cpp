@@ -41,6 +41,22 @@ int main(void)
     
     map1.PrintMap();
 
+    std::vector<framework::Vertex> vertices = map1.retMapVertices();
+    std::vector<GLuint> indices = map1.retMapIndices();
+
+    //  These vertices contain: Position, Color and Texture Coords
+    framework::Vertex CharacterVertices[4] = {
+        glm::vec2(14.0f, 14.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
+        glm::vec2(18.0f, 14.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 0.0f),
+        glm::vec2(18.0f, 18.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 1.0f / 4.0f),
+        glm::vec2(14.0f, 18.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 1.0f / 4.0f)
+    };
+
+    GLuint CharacterIndices[6] = {
+        0, 1, 2,
+        2, 3, 0
+    };
+    
     glfwSetErrorCallback(GLFWErrorCallback);
 
     auto window = initWindow();
@@ -49,8 +65,8 @@ int main(void)
         glfwTerminate();
         std::cin.get();
         return EXIT_FAILURE;
-    }
-
+    }    
+    
     // Enable capture of debug output.
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, 0);
@@ -67,55 +83,26 @@ int main(void)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    //  These vertices contain: Position, Color and Texture Coords
-    framework::Vertex CharacterVertices[4] = {
-        glm::vec2(1.0f, 1.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
-        glm::vec2(3.0f, 1.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 0.0f),
-        glm::vec2(3.0f, 3.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 1.0f / 4.0f),
-        glm::vec2(1.0f, 3.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 1.0f / 4.0f)
-    };
-
-    framework::Vertex vertices[8] = {
-        glm::vec2(15.0f, 15.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
-        glm::vec2(17.0f, 15.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
-        glm::vec2(17.0f, 17.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
-        glm::vec2(15.0f, 17.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
-        glm::vec2(10.0f, 10.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
-        glm::vec2(12.0f, 10.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
-        glm::vec2(12.0f, 12.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
-        glm::vec2(10.0f, 12.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f)
-    };
-
-    GLuint CharacterIndices[6] = {
-        0, 1, 2,
-        2, 3, 0
-    };
-    
-    GLuint indices[12] = {
-        0, 1, 2,
-        2, 3, 0,
-        4, 5, 6,
-        6, 7, 4
-    };
-
+    framework::VertexArray tileVao;                             // Create a vertex array
     framework::VertexArray characterVao;                        // Create a vertex array
-    framework::VertexArray vao;                                 // Create a vertex array
 
+    framework::VertexBuffer tileVbo(vertices);    // Create a vertex buffer
     framework::VertexBuffer characterVbo(CharacterVertices, sizeof(CharacterVertices));    // Create a vertex buffer
-    framework::VertexBuffer vbo(vertices, sizeof(vertices));    // Create a vertex buffer
 
     framework::VertexBufferLayout vbl;          // Create a vertex buffer layout
     vbl.Push<GLfloat>(2);                       // Adding position floats to layout
     vbl.Push<GLfloat>(3);                       // Adding color floats to layout
     vbl.Push<GLfloat>(2);                       // Adding tex coords floats to layout
 
-    characterVao.AddBuffer(characterVbo, vbl);                    // Populating the vertex buffer
-    vao.AddBuffer(vbo, vbl);                    // Populating the vertex buffer
+    tileVao.AddBuffer(tileVbo, vbl);                    // Populating the vertex buffer
+    characterVao.AddBuffer(characterVbo, vbl);      // Populating the vertex buffer
 
+    framework::IndexBuffer tileIbo(indices);
     framework::IndexBuffer characterIbo(CharacterIndices, 6);
-    framework::IndexBuffer ibo(indices, 12);
 
+    glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.0f));
     glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
+    glm::mat4 MVP = projection;
 
     framework::Shader tileShader(framework::TILEVERTSHADERPATH, framework::TILEFRAGSHADERPATH);
     tileShader.Bind();
@@ -129,8 +116,6 @@ int main(void)
     framework::Texture texture(framework::PACMANPICTUREPATH);
     texture.Bind(0);    //  Binding to texture slot 0
 
-
-
     framework::Renderer renderer;
 
     // Main loop
@@ -139,7 +124,7 @@ int main(void)
         glfwPollEvents();
 
         renderer.Clear();
-        renderer.Draw(vao, ibo, tileShader);
+        renderer.Draw(tileVao, tileIbo, tileShader);
         renderer.Draw(characterVao, characterIbo, charShader);
 
         glfwSwapBuffers(window);
