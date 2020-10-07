@@ -43,36 +43,6 @@ int main(void)
     std::vector<framework::Vertex> vert = map1.retMapVertices();
     std::vector<GLuint> indice = map1.retMapIndices();
     
-    //framework::Tile shit;
-    //shit.botLeft.pos.x = 0.0f;
-    //shit.botLeft.pos.y = 0.0f;
-    //shit.botRight.pos.x = 1.0f;
-    //shit.botRight.pos.y = 0.0f;
-    //shit.topLeft.pos.x = 0.0f;
-    //shit.topLeft.pos.y = 1.0f;
-    //shit.topRight.pos.x = 1.0f;
-    //shit.topRight.pos.y = 1.0f;
-
-    //shit.botLeft.col.x = 0.0f;
-    //shit.botLeft.col.y = 0.0f;
-    //shit.botLeft.col.z = 1.0f;
-    //shit.botRight.col.x = 0.0f;
-    //shit.botRight.col.y = 0.0f;
-    //shit.botRight.col.z = 1.0f;
-    //shit.topLeft.col.x = 0.0f;
-    //shit.topLeft.col.y = 0.0f;
-    //shit.topLeft.col.z = 1.0f;
-    //shit.topRight.col.x = 0.0f;
-    //shit.topRight.col.y = 0.0f;
-    //shit.topRight.col.z = 1.0f;
-
-    //std::vector<framework::Vertex> vert;
-    //vert.push_back(shit.botLeft);
-    //vert.push_back(shit.botRight);
-    //vert.push_back(shit.topLeft);
-    //vert.push_back(shit.topRight);
-    //std::vector<GLuint> indice = { 0, 1, 2, 2, 3, 1 };
-
     glfwSetErrorCallback(GLFWErrorCallback);
 
     auto window = initWindow();
@@ -95,22 +65,17 @@ int main(void)
     // Clear the background
     glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
 
-    // Create a triangle geometry
+    framework::VertexArray vao;             // Creating a vertex array
+    framework::VertexBuffer vbo(vert);      // Creating a vertex buffer
 
-    framework::VertexArray vao;                                 // Create a vertex array
+    framework::VertexBufferLayout vbl;      // Create a vertex buffer layout
+    vbl.Push<GLfloat>(2);                   // Adding position floats to the layout
+    vbl.Push<GLfloat>(3);                   // Adding color floats to the layout
+    vbl.Push<GLfloat>(2);                   // Adding texture coord floats to the layout
 
-    //framework::VertexBuffer vbo(vertices, sizeof(vertices));    // Create a vertex buffer
+    vao.AddBuffer(vbo, vbl);                // Populating the vertex buffer with vbo using the created layout
 
-    framework::VertexBuffer vbo(vert, sizeof((framework::Vertex*)vert.data()));    // Create a vertex buffer
-
-
-    framework::VertexBufferLayout vbl;                          // Create a vertex buffer layout
-    vbl.Push<GLfloat>(2);                                       // Setting the layout for the vertex buffer
-    vbl.Push<GLfloat>(3);                                       // Setting the layout for the vertex buffer
-    vbl.Push<GLfloat>(2);                                       // Setting the layout for the vertex buffer
-    vao.AddBuffer(vbo, vbl);                                    // Populating the vertex buffer
-
-    framework::IndexBuffer ibo(indice, indice.size());
+    framework::IndexBuffer ibo(indice);
 
     framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
     shader.Bind();

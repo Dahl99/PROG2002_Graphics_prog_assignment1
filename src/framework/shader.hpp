@@ -11,7 +11,7 @@ namespace framework
 	private:
 		std::string vertPath, fragPath;
 		GLuint m_RendererID;
-		std::unordered_map<std::string, GLint> m_UniformCache;
+		std::unordered_map<std::string, GLint> m_UniformCache;	// Caches the uniform locations
 
 	public:
 		Shader(const std::string& vertPath, const std::string& fragPath);	//	Creates shader
