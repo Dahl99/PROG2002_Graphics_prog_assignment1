@@ -1,5 +1,7 @@
 #pragma once
 
+#include <GL/glew.h>
+
 #include "vbo.hpp"
 #include "vbl.hpp"
 
@@ -8,7 +10,7 @@ namespace framework
 	class VertexArray
 	{
 	private:
-		unsigned int m_RendererID;	//	id for vao
+		GLuint m_RendererID;	//	id for vao
 
 	public:
 		VertexArray();		//	Generates vao name

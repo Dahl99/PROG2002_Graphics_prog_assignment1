@@ -5,12 +5,15 @@ namespace framework {
 
 	const std::string LEVELPATH0 = "../res/levels/level0";
 
-	const std::string PACMANPICTUREPATH = "..res/assets/pacman.png";
+	const std::string PACMANPICTUREPATH = "../res/assets/pacman.png";
 
-	const std::string VERTSHADERPATH = "../res/shaders/shader.vert";
-	const std::string FRAGSHADERPATH = "../res/shaders/shader.frag";
+	const std::string TILEVERTSHADERPATH = "../res/shaders/tile.vert";
+	const std::string TILEFRAGSHADERPATH = "../res/shaders/tile.frag";
 
-	const int WINDOWSIZEX = 800, WINDOWSIZEY = 600;
+	const std::string CHARVERTGSHADERPATH = "../res/shaders/character.vert";
+	const std::string CHARFRAGSHADERPATH = "../res/shaders/character.frag";
+
+	const int WINDOWSIZEX = 28 * 20, WINDOWSIZEY = 36 * 20;
 	
 
 

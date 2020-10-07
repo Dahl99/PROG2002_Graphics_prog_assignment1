@@ -15,6 +15,7 @@
 #include "framework/vbl.hpp"
 #include "framework/ibo.hpp"
 #include "framework/shader.hpp"
+#include "framework/texture.hpp"
 #include "framework/renderer.hpp"
 
 // Function declarations
@@ -40,9 +41,6 @@ int main(void)
     
     map1.PrintMap();
 
-    std::vector<framework::Vertex> vert = map1.retMapVertexes();
-    
-
     glfwSetErrorCallback(GLFWErrorCallback);
 
     auto window = initWindow();
@@ -65,39 +63,73 @@ int main(void)
     // Clear the background
     glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
 
-    // Create a triangle geometry
-    GLfloat vertices[8] = {
-    1.0f, 1.0f,
-    3.0f, 1.0f,
-    3.0f, 3.0f,
-    1.0f, 3.0f
+    // Enabling blending
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glEnable(GL_BLEND);
+
+    //  These vertices contain: Position, Color and Texture Coords
+    framework::Vertex CharacterVertices[4] = {
+        glm::vec2(1.0f, 1.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
+        glm::vec2(3.0f, 1.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 0.0f),
+        glm::vec2(3.0f, 3.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 1.0f / 4.0f),
+        glm::vec2(1.0f, 3.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 1.0f / 4.0f)
     };
 
-    GLuint indices[6] = {
+    framework::Vertex vertices[8] = {
+        glm::vec2(15.0f, 15.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
+        glm::vec2(17.0f, 15.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
+        glm::vec2(17.0f, 17.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
+        glm::vec2(15.0f, 17.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
+        glm::vec2(10.0f, 10.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
+        glm::vec2(12.0f, 10.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
+        glm::vec2(12.0f, 12.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
+        glm::vec2(10.0f, 12.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f)
+    };
+
+    GLuint CharacterIndices[6] = {
         0, 1, 2,
         2, 3, 0
     };
+    
+    GLuint indices[12] = {
+        0, 1, 2,
+        2, 3, 0,
+        4, 5, 6,
+        6, 7, 4
+    };
 
+    framework::VertexArray characterVao;                        // Create a vertex array
     framework::VertexArray vao;                                 // Create a vertex array
 
-    //framework::VertexBuffer vbo(vertices, sizeof(vertices));    // Create a vertex buffer
-    framework::VertexBuffer vbo(vert.data(), sizeof(vert.data()));    // Create a vertex buffer
+    framework::VertexBuffer characterVbo(CharacterVertices, sizeof(CharacterVertices));    // Create a vertex buffer
+    framework::VertexBuffer vbo(vertices, sizeof(vertices));    // Create a vertex buffer
 
-    framework::VertexBufferLayout vbl;                          // Create a vertex buffer layout
-    vbl.Push<GLfloat>(2);                                       // Setting the layout for the vertex buffer
-    vbl.Push<GLfloat>(3);                                       // Setting the layout for the vertex buffer
-    vbl.Push<GLfloat>(2);                                       // Setting the layout for the vertex buffer
+    framework::VertexBufferLayout vbl;          // Create a vertex buffer layout
+    vbl.Push<GLfloat>(2);                       // Adding position floats to layout
+    vbl.Push<GLfloat>(3);                       // Adding color floats to layout
+    vbl.Push<GLfloat>(2);                       // Adding tex coords floats to layout
 
-    vao.AddBuffer(vbo, vbl);                                    // Populating the vertex buffer
+    characterVao.AddBuffer(characterVbo, vbl);                    // Populating the vertex buffer
+    vao.AddBuffer(vbo, vbl);                    // Populating the vertex buffer
 
-    framework::IndexBuffer ibo(indices, 6);
-
-    framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
-    shader.Bind();
+    framework::IndexBuffer characterIbo(CharacterIndices, 6);
+    framework::IndexBuffer ibo(indices, 12);
 
     glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
 
-    shader.SetUniformMat4f("u_MVP", projection);
+    framework::Shader tileShader(framework::TILEVERTSHADERPATH, framework::TILEFRAGSHADERPATH);
+    tileShader.Bind();
+    tileShader.SetUniformMat4f("u_MVP", projection);
+
+    framework::Shader charShader(framework::CHARVERTGSHADERPATH, framework::CHARFRAGSHADERPATH);
+    charShader.Bind();
+    charShader.SetUniformMat4f("u_MVP", projection);
+    charShader.SetUniform1i("uTexture", 0);
+
+    framework::Texture texture(framework::PACMANPICTUREPATH);
+    texture.Bind(0);    //  Binding to texture slot 0
+
+
 
     framework::Renderer renderer;
 
@@ -107,7 +139,8 @@ int main(void)
         glfwPollEvents();
 
         renderer.Clear();
-        renderer.Draw(vao, ibo, shader);
+        renderer.Draw(vao, ibo, tileShader);
+        renderer.Draw(characterVao, characterIbo, charShader);
 
         glfwSwapBuffers(window);
 
