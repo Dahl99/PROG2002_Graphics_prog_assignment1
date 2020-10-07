@@ -16,9 +16,10 @@ namespace framework {
 
 			for (int i = 0; i < sizeArray; i++)
 			{
-				stream >> array[i];
+				stream >> array[sizeArray - (i + 1)];
 			}
 		
+			
 			CreateMap();
 		}
 		else std::cout << "Failed to read map!\n";
@@ -55,7 +56,7 @@ namespace framework {
 			map[i - 1].topRight.pos.x = ((i-1) % sizeX) + 1;
 			map[i - 1].topRight.pos.y = yPos + 1;
 
-			if (array[i])
+			if (array[i - 1])
 			{
 				map[i - 1].botLeft.col.y = 0.0f;
 				map[i - 1].botLeft.col.x = 0.0f;
@@ -116,19 +117,12 @@ namespace framework {
 	{
 		std::vector<framework::Vertex> vertices;
 
-		for (int i = 1; i <= sizeArray; i++)
+		for (int i = 0; i < sizeArray; i++)
 		{
-			vertices.push_back(map[(i - 1)].botLeft);
-			if (i % sizeX == 0 && i != 0)
-				vertices.push_back(map[i -1].botRight);
-			
-		}
-		for (int i = sizeArray - sizeX + 1; i <= sizeArray; i++)
-		{
-			vertices.push_back(map[(i - 1)].topLeft);
-
-			if (i % sizeX == 0 && i != sizeArray - sizeX)
-				vertices.push_back(map[i - 1].topRight);
+			vertices.push_back(map[i].botLeft);
+			vertices.push_back(map[i].botRight);
+			vertices.push_back(map[i].topLeft);
+			vertices.push_back(map[i].topRight);
 		}
 
 		return vertices;
@@ -137,20 +131,16 @@ namespace framework {
 	std::vector<GLuint> Map::retMapIndices()
 	{
 		std::vector<GLuint> indices;
-		
-		for (GLuint i = 1; i < sizeArray; i++)
-		{
-			if (i % (sizeX + 1) != 0)
-			{
-			indices.push_back(i - 1);
-			indices.push_back(i);
-			indices.push_back(i + sizeX);
-			indices.push_back(i + sizeX);
-			indices.push_back(i + sizeX + 1);
-			indices.push_back(i);
-			}
-		}
 
+		for (GLuint i = 0; i < sizeArray; i++)
+		{
+			indices.push_back(i * 4);
+			indices.push_back((i * 4) + 1);
+			indices.push_back((i * 4) + 2);
+			indices.push_back((i * 4) + 2);
+			indices.push_back((i * 4) + 3);
+			indices.push_back((i * 4) + 1);
+		}
 		return indices;
 	}
 }
