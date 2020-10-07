@@ -115,9 +115,14 @@ int main(void)
     framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
     shader.Bind();
 
-    glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
 
-    shader.SetUniformMat4f("u_MVP", projection);
+
+    glm::mat4 scale = glm::scale(glm::mat4(1.0f),
+        glm::vec3(0.8f, 0.8f, 0.0f));
+    glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
+    glm::mat4 MVP = projection * scale;
+
+    shader.SetUniformMat4f("u_MVP", MVP);
 
     framework::Renderer renderer;
 
