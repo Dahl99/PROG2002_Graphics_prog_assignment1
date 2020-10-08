@@ -20,10 +20,12 @@ namespace framework{
 		void PrintMap() const;
 
 		ShaderVertData retMapVertices();
-		std::vector<GLuint> *retMapIndices();
+		std::vector<GLuint> retMapIndices(int iterations);
 
 		inline int* GetArray() const { return array; }
 		inline framework::Tile* GetMap() const { return map; }
+		inline int getNumWalls() const{ return numWalls; }
+		inline int getNumCollecs() const{ return numCollecs; }
 
 	};
 

@@ -42,8 +42,8 @@ add_executable(Assignment1
 	src/framework/renderer.hpp
 	src/framework/renderer.cpp
 
-	src/framework/entities.hpp
-	src/framework/entities.cpp
+	src/framework/entity.hpp
+	src/framework/entity.cpp
 	
 	src/framework/globals.hpp
 	

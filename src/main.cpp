@@ -17,6 +17,7 @@
 #include "framework/shader.hpp"
 #include "framework/texture.hpp"
 #include "framework/renderer.hpp"
+#include "framework/entity.hpp"
 
 // Function declarations
 GLFWwindow* initWindow();
@@ -37,16 +38,17 @@ MessageCallback(GLenum source,
 // Entry point
 int main(void)
 {
+    // Reading and creating the map
     framework::Map map1(framework::LEVELPATH0);
-    
+
     map1.PrintMap();
 
+    // Getting the map data
+    framework::ShaderVertData vertices = map1.retMapVertices();
+    std::vector<GLuint> wallIndices = map1.retMapIndices(map1.getNumWalls());
+    std::vector<GLuint> collIndices = map1.retMapIndices(map1.getNumCollecs());
 
-    framework::ShaderVertData vert = map1.retMapVertices();
-    std::vector<GLuint> *indice = map1.retMapIndices();
-
-
-    //  These vertices contain: Position, Color and Texture Coords
+    //  These vertices contain: Position, Color and Texture Coords for pacman
     framework::Vertex CharacterVertices[4] = {
         glm::vec2(14.0f, 14.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
         glm::vec2(18.0f, 14.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 0.0f),
@@ -58,7 +60,16 @@ int main(void)
         0, 1, 2,
         2, 3, 0
     };
-    
+
+    std::vector<framework::Vertex> charVertices;
+    std::vector<GLuint> charIndices;
+
+    for (const framework::Vertex& vertex : CharacterVertices)
+        charVertices.push_back(vertex);
+
+    for (const GLuint& index : CharacterIndices)
+        charIndices.push_back(index);
+
     glfwSetErrorCallback(GLFWErrorCallback);
 
     auto window = initWindow();
@@ -67,8 +78,8 @@ int main(void)
         glfwTerminate();
         std::cin.get();
         return EXIT_FAILURE;
-    }    
-    
+    }
+
     // Enable capture of debug output.
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(MessageCallback, 0);
@@ -81,45 +92,51 @@ int main(void)
     // Clear the background
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
-                                                         // Enabling blending
+    // Enabling blending
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
+    // Preparing walls
 
-    framework::VertexArray tileVao;                             // Create a vertex array
-    framework::VertexArray characterVao;                        // Create a vertex array
+    framework::VertexArray tileVao;               // Create a vertex array
 
-    framework::VertexBuffer tileVbo(vert.wallVertices);    // Create a vertex buffer
-    framework::VertexBuffer characterVbo(CharacterVertices, sizeof(CharacterVertices));    // Create a vertex buffer
+    framework::VertexBuffer tileVbo(vertices.wallVertices);    // Create a vertex buffer
+
+    framework::VertexBufferLayout vbl;            // Create a vertex buffer layout
+    vbl.Push<GLfloat>(2);                         // Adding position floats to layout
+    vbl.Push<GLfloat>(3);                         // Adding color floats to layout
+    vbl.Push<GLfloat>(2);                         // Adding tex coords floats to layout
+
+    tileVao.AddBuffer(tileVbo, vbl);              // Populating the vertex buffer
+
+    framework::IndexBuffer tileIbo(wallIndices);
 
 
-    framework::IndexBuffer ibo(indice[0]);
+    // Preparing collectibles
 
-    framework::VertexBufferLayout vbl;          // Create a vertex buffer layout
+    framework::VertexArray collVao;
+
+    framework::VertexBuffer collVbo(vertices.collectibleVertices);
+    framework::VertexBufferLayout collVbl;          // Create a vertex buffer layout
+
     vbl.Push<GLfloat>(2);                       // Adding position floats to layout
     vbl.Push<GLfloat>(3);                       // Adding color floats to layout
     vbl.Push<GLfloat>(2);                       // Adding tex coords floats to layout
+    collVao.AddBuffer(collVbo, collVbl);
+
+    framework::IndexBuffer collIbo(collIndices);
 
 
-    tileVao.AddBuffer(tileVbo, vbl);                    // Populating the vertex buffer
-    characterVao.AddBuffer(characterVbo, vbl);      // Populating the vertex buffer
+    // Creating pacman character
+    framework::Entity pacman(glm::vec3(1.0f), charVertices, charIndices);
 
-
-    //framework::VertexArray vao2;
-    //framework::VertexBuffer vbo2(vert.collectibleVertices);
-    //framework::VertexBufferLayout vbl2;
-
-    //vbl2.Push<GLfloat>(2);                   // Adding position floats to the layout
-    //vbl2.Push<GLfloat>(3);                   // Adding color floats to the layout
-    //vbl2.Push<GLfloat>(2);                   // Adding texture coord floats to the layout
-
-    framework::IndexBuffer tileIbo(indice[0]);
-    //framework::IndexBuffer ibo2(indice[1]);
-    framework::IndexBuffer characterIbo(CharacterIndices, 6);
-
+    // Creating the MVP matrix
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.0f));
     glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
     glm::mat4 MVP = projection;
+
+
+    // Shaders
 
     framework::Shader tileShader(framework::TILEVERTSHADERPATH, framework::TILEFRAGSHADERPATH);
     tileShader.Bind();
@@ -140,12 +157,13 @@ int main(void)
     {
         glfwPollEvents();
 
-        renderer.Clear();
-        renderer.Draw(tileVao, tileIbo, tileShader);
-        renderer.Draw(characterVao, characterIbo, charShader);
+        renderer.Clear();   // Clearing screen
 
-        //renderer.Clear();
-        //renderer.Draw(vao2, ibo2, tileShader);
+        renderer.Draw(tileVao, tileIbo, tileShader);    // Drawing map
+
+        renderer.Draw(collVao, collIbo, tileShader);
+
+        pacman.Draw(charShader);                        // Drawing pacman
 
         glfwSwapBuffers(window);
 
@@ -225,3 +243,4 @@ MessageCallback(GLenum source,
         ", severity = 0x" << severity <<
         ", message =" << message << "\n";
 }
+

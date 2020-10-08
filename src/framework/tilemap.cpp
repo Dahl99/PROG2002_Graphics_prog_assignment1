@@ -19,14 +19,11 @@ namespace framework {
 			{
 				stream >> array[sizeArray - (i + 1)];
 			}
-		
-			
 			CreateMap();
 		}
 		else std::cout << "Failed to read map!\n";
 
 		stream.close();
-
 	}
 
 	Map::~Map()
@@ -38,6 +35,9 @@ namespace framework {
 			delete[] map;
 	}
 
+
+	// Creates a tile and gives that tile 4 vertices for each 
+	//  number in the map that is read in the constructor
 	void Map::CreateMap()
 	{
 		map = new framework::Tile[sizeArray];
@@ -114,6 +114,8 @@ namespace framework {
 		std::cout << std::endl;
 	}
 
+	// Loops through mapsize and puts the data for each tile into one of two vector containers,
+	//  one for walls and one for collectibles
 	ShaderVertData Map::retMapVertices()
 	{
 		ShaderVertData mapVertices;
@@ -141,29 +143,22 @@ namespace framework {
 		return mapVertices;
 	}
 
-	std::vector<GLuint>* Map::retMapIndices()
-	{
-		std::vector<GLuint> indices[2];
 
-		for (GLuint i = 0; i < numWalls; i++)
+	// Creates the indice arrays for the map
+	std::vector<GLuint> Map::retMapIndices(int iterations)
+	{
+		std::vector<GLuint> indices;
+
+		for (GLuint i = 0; i < iterations; i++)
 		{
-			indices[0].push_back(i * 4);
-			indices[0].push_back((i * 4) + 1);
-			indices[0].push_back((i * 4) + 2);
-			indices[0].push_back((i * 4) + 2);
-			indices[0].push_back((i * 4) + 3);
-			indices[0].push_back((i * 4) + 1);
-		}
-		for (GLuint i = 0; i < numCollecs; i++)
-		{
-			indices[1].push_back(i * 4);
-			indices[1].push_back((i * 4) + 1);
-			indices[1].push_back((i * 4) + 2);
-			indices[1].push_back((i * 4) + 2);
-			indices[1].push_back((i * 4) + 3);
-			indices[1].push_back((i * 4) + 1);
-		}
+			indices.push_back(i * 4);
+			indices.push_back((i * 4) + 1);
+			indices.push_back((i * 4) + 2);
+			indices.push_back((i * 4) + 2);
+			indices.push_back((i * 4) + 3);
+			indices.push_back((i * 4) + 1);
+		}		
 		
-		return (std::vector<GLuint>*)indices;
+		return indices;
 	}
 }
