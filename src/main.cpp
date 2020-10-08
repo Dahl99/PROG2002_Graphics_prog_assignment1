@@ -17,6 +17,7 @@
 #include "framework/shader.hpp"
 #include "framework/texture.hpp"
 #include "framework/renderer.hpp"
+#include "framework/entity.hpp"
 
 // Function declarations
 GLFWwindow* initWindow();
@@ -44,7 +45,7 @@ int main(void)
     std::vector<framework::Vertex> vertices = map1.retMapVertices();
     std::vector<GLuint> indices = map1.retMapIndices();
 
-    //  These vertices contain: Position, Color and Texture Coords
+    //  These vertices contain: Position, Color and Texture Coords for pacman
     framework::Vertex CharacterVertices[4] = {
         glm::vec2(14.0f, 14.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
         glm::vec2(18.0f, 14.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 0.0f),
@@ -56,6 +57,15 @@ int main(void)
         0, 1, 2,
         2, 3, 0
     };
+
+    std::vector<framework::Vertex> charVertices;
+    std::vector<GLuint> charIndices;
+
+    for (const framework::Vertex& vertex : CharacterVertices)
+        charVertices.push_back(vertex);
+
+    for (const GLuint& index : CharacterIndices)
+        charIndices.push_back(index);
     
     glfwSetErrorCallback(GLFWErrorCallback);
 
@@ -83,22 +93,21 @@ int main(void)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    framework::VertexArray tileVao;                             // Create a vertex array
-    framework::VertexArray characterVao;                        // Create a vertex array
+    framework::VertexArray tileVao;               // Create a vertex array
 
     framework::VertexBuffer tileVbo(vertices);    // Create a vertex buffer
-    framework::VertexBuffer characterVbo(CharacterVertices, sizeof(CharacterVertices));    // Create a vertex buffer
 
-    framework::VertexBufferLayout vbl;          // Create a vertex buffer layout
-    vbl.Push<GLfloat>(2);                       // Adding position floats to layout
-    vbl.Push<GLfloat>(3);                       // Adding color floats to layout
-    vbl.Push<GLfloat>(2);                       // Adding tex coords floats to layout
+    framework::VertexBufferLayout vbl;            // Create a vertex buffer layout
+    vbl.Push<GLfloat>(2);                         // Adding position floats to layout
+    vbl.Push<GLfloat>(3);                         // Adding color floats to layout
+    vbl.Push<GLfloat>(2);                         // Adding tex coords floats to layout
 
-    tileVao.AddBuffer(tileVbo, vbl);                    // Populating the vertex buffer
-    characterVao.AddBuffer(characterVbo, vbl);      // Populating the vertex buffer
+    tileVao.AddBuffer(tileVbo, vbl);              // Populating the vertex buffer
 
     framework::IndexBuffer tileIbo(indices);
-    framework::IndexBuffer characterIbo(CharacterIndices, 6);
+
+    // Creating pacman character
+    framework::Entity pacman(glm::vec3(1.0f), charVertices, charIndices);
 
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.0f));
     glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
@@ -123,9 +132,11 @@ int main(void)
     {
         glfwPollEvents();
 
-        renderer.Clear();
-        renderer.Draw(tileVao, tileIbo, tileShader);
-        renderer.Draw(characterVao, characterIbo, charShader);
+        renderer.Clear();   // Clearing screen
+
+        renderer.Draw(tileVao, tileIbo, tileShader);    // Drawing map
+
+        pacman.Draw(charShader);                        // Drawing pacman
 
         glfwSwapBuffers(window);
 
