@@ -8,6 +8,7 @@ namespace framework{
 	class Map {
 	private:
 		int sizeX, sizeY, sizeArray;
+		int numWalls, numCollecs;
 		int* array;
 		framework::Tile* map;
 
@@ -18,8 +19,8 @@ namespace framework{
 		void CreateMap();
 		void PrintMap() const;
 
-		std::vector<framework::Vertex> retMapVertices();
-		std::vector<GLuint> retMapIndices();
+		ShaderVertData retMapVertices();
+		std::vector<GLuint> *retMapIndices();
 
 		inline int* GetArray() const { return array; }
 		inline framework::Tile* GetMap() const { return map; }

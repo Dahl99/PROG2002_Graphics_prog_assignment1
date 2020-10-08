@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <glm/glm.hpp>
+#include <vector>
 namespace framework {
 
 	const std::string LEVELPATH0 = "../res/levels/level0";
@@ -26,5 +27,10 @@ namespace framework {
 
 	struct Tile {
 		Vertex botLeft, botRight, topLeft, topRight;
+	};
+
+	struct ShaderVertData {
+		std::vector<framework::Vertex> wallVertices;
+		std::vector<framework::Vertex> collectibleVertices;
 	};
 }

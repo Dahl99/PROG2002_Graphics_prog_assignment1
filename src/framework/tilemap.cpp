@@ -10,6 +10,7 @@ namespace framework {
 		std::ifstream stream(levelPath);		
 		if (stream) 
 		{
+			numWalls = numCollecs = 0;
 			stream >> sizeX >> sizeY;
 			sizeArray = sizeX * sizeY;
 			array = new int[sizeArray];
@@ -60,19 +61,19 @@ namespace framework {
 			{
 				map[i - 1].botLeft.col.y = 0.0f;
 				map[i - 1].botLeft.col.x = 0.0f;
-				map[i - 1].botLeft.col.z = 0.2f;
+				map[i - 1].botLeft.col.z = 0.6f;
 
 				map[i - 1].botRight.col.x = 0.0f;
 				map[i - 1].botRight.col.y = 0.0f;
-				map[i - 1].botRight.col.z = 0.2f;
+				map[i - 1].botRight.col.z = 0.6f;
 		
 				map[i - 1].topLeft.col.x = 0.0f;
 				map[i - 1].topLeft.col.y = 0.0f;
-				map[i - 1].topLeft.col.z = 0.2f;
+				map[i - 1].topLeft.col.z = 0.6f;
 
 				map[i - 1].topRight.col.x = 0.0f;
 				map[i - 1].topRight.col.y = 0.0f;
-				map[i - 1].topRight.col.z = 0.2f;
+				map[i - 1].topRight.col.z = 0.6f;
 			}
 			else
 			{
@@ -113,34 +114,56 @@ namespace framework {
 		std::cout << std::endl;
 	}
 
-	std::vector<framework::Vertex> Map::retMapVertices()
+	ShaderVertData Map::retMapVertices()
 	{
-		std::vector<framework::Vertex> vertices;
+		ShaderVertData mapVertices;
 
 		for (int i = 0; i < sizeArray; i++)
 		{
-			vertices.push_back(map[i].botLeft);
-			vertices.push_back(map[i].botRight);
-			vertices.push_back(map[i].topLeft);
-			vertices.push_back(map[i].topRight);
+			if(array[i] && array[i] != 2)
+			{
+				mapVertices.wallVertices.push_back(map[i].botLeft);
+				mapVertices.wallVertices.push_back(map[i].botRight);
+				mapVertices.wallVertices.push_back(map[i].topLeft);
+				mapVertices.wallVertices.push_back(map[i].topRight);
+				numWalls++;
+			}
+			else
+			{
+				mapVertices.collectibleVertices.push_back(map[i].botLeft);
+				mapVertices.collectibleVertices.push_back(map[i].botRight);
+				mapVertices.collectibleVertices.push_back(map[i].topLeft);
+				mapVertices.collectibleVertices.push_back(map[i].topRight);
+				numCollecs++;
+			}
 		}
 
-		return vertices;
+		return mapVertices;
 	}
 
-	std::vector<GLuint> Map::retMapIndices()
+	std::vector<GLuint>* Map::retMapIndices()
 	{
-		std::vector<GLuint> indices;
+		std::vector<GLuint> indices[2];
 
-		for (GLuint i = 0; i < sizeArray; i++)
+		for (GLuint i = 0; i < numWalls; i++)
 		{
-			indices.push_back(i * 4);
-			indices.push_back((i * 4) + 1);
-			indices.push_back((i * 4) + 2);
-			indices.push_back((i * 4) + 2);
-			indices.push_back((i * 4) + 3);
-			indices.push_back((i * 4) + 1);
+			indices[0].push_back(i * 4);
+			indices[0].push_back((i * 4) + 1);
+			indices[0].push_back((i * 4) + 2);
+			indices[0].push_back((i * 4) + 2);
+			indices[0].push_back((i * 4) + 3);
+			indices[0].push_back((i * 4) + 1);
 		}
-		return indices;
+		for (GLuint i = 0; i < numCollecs; i++)
+		{
+			indices[1].push_back(i * 4);
+			indices[1].push_back((i * 4) + 1);
+			indices[1].push_back((i * 4) + 2);
+			indices[1].push_back((i * 4) + 2);
+			indices[1].push_back((i * 4) + 3);
+			indices[1].push_back((i * 4) + 1);
+		}
+		
+		return (std::vector<GLuint>*)indices;
 	}
 }

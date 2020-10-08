@@ -40,8 +40,8 @@ int main(void)
     
     map1.PrintMap();
 
-    std::vector<framework::Vertex> vert = map1.retMapVertices();
-    std::vector<GLuint> indice = map1.retMapIndices();
+    framework::ShaderVertData vert = map1.retMapVertices();
+    std::vector<GLuint> *indice = map1.retMapIndices();
     
     glfwSetErrorCallback(GLFWErrorCallback);
 
@@ -63,10 +63,10 @@ int main(void)
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << "\n";
 
     // Clear the background
-    glClearColor(0.5f, 0.0f, 0.0f, 1.0f);
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 
     framework::VertexArray vao;             // Creating a vertex array
-    framework::VertexBuffer vbo(vert);      // Creating a vertex buffer
+    framework::VertexBuffer vbo(vert.wallVertices);      // Creating a vertex buffer
 
     framework::VertexBufferLayout vbl;      // Create a vertex buffer layout
     vbl.Push<GLfloat>(2);                   // Adding position floats to the layout
@@ -75,13 +75,21 @@ int main(void)
 
     vao.AddBuffer(vbo, vbl);                // Populating the vertex buffer with vbo using the created layout
 
-    framework::IndexBuffer ibo(indice);
+    framework::IndexBuffer ibo(indice[0]);
 
     framework::Shader shader(framework::VERTSHADERPATH, framework::FRAGSHADERPATH);
     shader.Bind();
 
+    framework::VertexArray vao2;
+    framework::VertexBuffer vbo2(vert.collectibleVertices);
+    framework::VertexBufferLayout vbl2;
 
+    vbl2.Push<GLfloat>(2);                   // Adding position floats to the layout
+    vbl2.Push<GLfloat>(3);                   // Adding color floats to the layout
+    vbl2.Push<GLfloat>(2);                   // Adding texture coord floats to the layout
 
+    framework::IndexBuffer ibo2(indice[1]);
+    shader.Bind();
     glm::mat4 scale = glm::scale(glm::mat4(1.0f),
         glm::vec3(0.8f, 0.8f, 0.0f));
     glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
@@ -98,6 +106,9 @@ int main(void)
 
         renderer.Clear();
         renderer.Draw(vao, ibo, shader);
+
+        renderer.Clear();
+        renderer.Draw(vao2, ibo2, shader);
 
         glfwSwapBuffers(window);
 
