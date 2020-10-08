@@ -46,10 +46,12 @@ add_executable(Assignment1
 	src/framework/entities.cpp
 	
 	src/framework/globals.hpp
-
+	
 	res/levels/level0 
-	res/shaders/shader.vert
-	res/shaders/shader.frag)
+	res/shaders/tile.vert
+	res/shaders/tile.frag
+	res/shaders/character.vert
+	res/shaders/character.frag)
 
 
 target_compile_definitions(Assignment1 PRIVATE GLEW_STATIC)

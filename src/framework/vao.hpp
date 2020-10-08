@@ -1,6 +1,7 @@
 #pragma once
 
 #include <GL/glew.h>
+
 #include "vbo.hpp"
 #include "vbl.hpp"
 

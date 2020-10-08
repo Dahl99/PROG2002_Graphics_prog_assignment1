@@ -18,13 +18,13 @@ namespace framework
 		Bind();
 		vbo.Bind();
 
-		const auto& elements = layout.GetElements();		//	Fetching all vbo layouts
-		GLuint offset = 0;									//	Initializing offset
+		const auto& elements = layout.GetElements();	//	Fetching all vbo layouts
+		GLuint offset = 0;								//	Initializing offset
 
-		for (GLuint i = 0; i < elements.size(); i++)		//	Looping through all vbo layouts
+		for (GLuint i = 0; i < elements.size(); i++)	//	Looping through elements in vbo layout
 		{
 			const auto& element = elements[i];
-			glEnableVertexAttribArray(i);					//	Enabling vertex attribute array
+			glEnableVertexAttribArray(i);				//	Enabling vertex attribute array
 
 			//	Defining array of vertex attribute data
 			glVertexAttribPointer(i, element.count, element.type, element.normalized, layout.GetStride(), (const void*)offset);
