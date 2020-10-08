@@ -22,6 +22,8 @@
 // Function declarations
 GLFWwindow* initWindow();
 
+void updateDeltaTime(GLfloat& dt, GLfloat& ct, GLfloat& lt);
+
 // Error function for GLFW
 void GLFWErrorCallback(int code, const char* description);
 
@@ -96,6 +98,12 @@ int main(void)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
+    glfwSetInputMode(window, GLFW_KEY_ESCAPE, GL_TRUE);
+    glfwSetInputMode(window, GLFW_KEY_LEFT, GL_TRUE);
+    glfwSetInputMode(window, GLFW_KEY_RIGHT, GL_TRUE);
+    glfwSetInputMode(window, GLFW_KEY_UP, GL_TRUE);
+    glfwSetInputMode(window, GLFW_KEY_DOWN, GL_TRUE);
+
     // Preparing walls
 
     framework::VertexArray tileVao;               // Create a vertex array
@@ -144,7 +152,7 @@ int main(void)
 
     framework::Shader charShader(framework::CHARVERTGSHADERPATH, framework::CHARFRAGSHADERPATH);
     charShader.Bind();
-    charShader.SetUniformMat4f("u_MVP", projection);
+    charShader.SetUniformMat4f("u_Projection", projection);
     charShader.SetUniform1i("uTexture", 0);
 
     framework::Texture texture(framework::PACMANPICTUREPATH);
@@ -152,9 +160,13 @@ int main(void)
 
     framework::Renderer renderer;
 
+    GLfloat dt, curTime, lastTime;
+    dt = curTime = lastTime = 0.0f;
+
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
+        updateDeltaTime(dt, curTime, lastTime);
         glfwPollEvents();
 
         renderer.Clear();   // Clearing screen
@@ -162,6 +174,25 @@ int main(void)
         renderer.Draw(tileVao, tileIbo, tileShader);    // Drawing map
 
         renderer.Draw(collVao, collIbo, tileShader);
+
+
+
+        // Move forward
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+            pacman.UpdatePos(dt, 0);
+        }
+        // Move backward
+        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+            pacman.UpdatePos(dt, 2);
+        }
+        // Strafe right
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+            pacman.UpdatePos(dt, 1);
+        }
+        // Strafe left
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+            pacman.UpdatePos(dt, 3);
+        }
 
         pacman.Draw(charShader);                        // Drawing pacman
 
@@ -222,6 +253,13 @@ GLFWwindow* initWindow()
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSwapInterval(1);
     return window;
+}
+
+void updateDeltaTime(GLfloat& dt, GLfloat& ct, GLfloat& lt)
+{
+    ct = static_cast<GLfloat>(glfwGetTime());
+    dt = ct - lt;
+    lt = ct;
 }
 
 void GLFWErrorCallback(int code, const char* description)

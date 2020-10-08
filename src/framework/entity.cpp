@@ -1,4 +1,5 @@
 #include "entity.hpp"
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace framework 
 {
@@ -10,7 +11,7 @@ namespace framework
 		this->pos.y = pos.y;
 		this->pos.z = pos.z;
 
-		mvSpeed = 0.f;
+		mvSpeed = 15.0f;
 
 		isVulnerable = GL_TRUE;
 
@@ -25,19 +26,86 @@ namespace framework
 
 		vao->AddBuffer(*vbo, vbl);					// Populating the vertex buffer
 	}
-	void Entity::UpdateSprite()
+	void Entity::UpdateSprite(float texCoords[8])
 	{
+		/*vbo->Bind();
+
+		for (int i = 0, j = 0; i < 4; i++, j+=2)
+		{
+			float temp[2] = { texCoords[j], texCoords[j+1] };
+			glBufferSubData(GL_ARRAY_BUFFER, (5*sizeof(float)) * (i+1), 2 * sizeof(float), temp);
+		}*/
+
+		/*
+		float animTimer = 0;
+		animTimer += 0.9f;
+		if (animTimer > 4.0f)
+			animTimer = 0.0f;
+
+		if (animTimer <= 1.0f)
+		{
+			float temp[8] = { 0.0f, 0.0f,
+							  1.0f / 6.0f, 0.0f,
+							  1.0f / 6.0f, 1.0f / 4.0f,
+							  0.0f, 1.0f / 4.0f };
+			pacman.UpdateSprite(temp);
+		}
+		else if (animTimer <= 2.0f)
+		{
+			float temp[8] = { 1.0f / 6.0f, 0.0f,
+							  1.0f / 3.0f, 0.0f,
+							  1.0f / 3.0f, 1.0f / 4.0f,
+							  1.0f / 6.0f, 1.0f / 4.0f };
+			pacman.UpdateSprite(temp);
+		}
+		else if (animTimer <= 3.0f)
+		{
+			float temp[8] = { 1.0f / 3.0f, 0.0f,
+							  1.0f / 2.0f, 0.0f,
+							  1.0f / 2.0f, 1.0f / 4.0f,
+							  1.0f / 3.0f, 1.0f / 4.0f };
+			pacman.UpdateSprite(temp);
+		}
+		else if (animTimer <= 4.0f)
+		{
+			float temp[8] = { 1.0f / 2.0f, 0.0f,
+							  0.6667f, 0.0f,
+							  0.6667f, 1.0f / 4.0f,
+							  1.0f / 2.0f, 1.0f / 4.0f };
+			pacman.UpdateSprite(temp);
+		}*/
 	}
-	void Entity::Draw(const Shader& shader) const
+
+	void Entity::Draw(Shader& shader) const
 	{
 		shader.Bind();
 		vao->Bind();
 		ibo->Bind();
 
+		auto model = glm::translate(glm::mat4(1.f), pos);
+		shader.SetUniformMat4f("u_Model", model);
+
 		glDrawElements(GL_TRIANGLES, ibo->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
-	void Entity::UpdatePos()
-	{
 
+	void Entity::UpdatePos(const GLfloat& dt, const GLint& dir)
+	{
+		switch (dir)
+		{
+		case 0:
+			pos.y += dt * mvSpeed;
+			break;
+		case 1:
+			pos.x += dt * mvSpeed;
+			break;
+		case 2:
+			pos.y -= dt * mvSpeed;
+			break;
+		case 3:
+			pos.x -= dt * mvSpeed;
+			break;
+		default:
+			break;
+		}
 	}
 }
