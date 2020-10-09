@@ -136,19 +136,19 @@ int main(void)
 
 
     // Creating pacman character
-    framework::Entity pacman(glm::vec3(1.0f), charVertices, charIndices);
+    framework::Entity pacman(glm::vec3(1.0f, 0.5f, 1.0f), charVertices, charIndices);
 
     // Creating the MVP matrix
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.0f));
     glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
-    glm::mat4 MVP = projection;
+    //glm::mat4 MVP = projection;
 
 
     // Shaders
 
     framework::Shader tileShader(framework::TILEVERTSHADERPATH, framework::TILEFRAGSHADERPATH);
     tileShader.Bind();
-    tileShader.SetUniformMat4f("u_MVP", projection);
+    tileShader.SetUniformMat4f("u_Projection", projection);
 
     framework::Shader charShader(framework::CHARVERTGSHADERPATH, framework::CHARFRAGSHADERPATH);
     charShader.Bind();
