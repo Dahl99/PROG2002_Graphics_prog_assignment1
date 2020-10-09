@@ -13,11 +13,13 @@ namespace framework {
 			numWalls = numCollecs = 0;
 			stream >> sizeX >> sizeY;
 			sizeArray = sizeX * sizeY;
-			array = new int[sizeArray];
-
+			//array = new int[sizeArray];
 			for (int i = 0; i < sizeArray; i++)
 			{
-				stream >> array[sizeArray - (i + 1)];
+				int x;
+				stream >> x;
+				array.insert(array.begin(), x);
+				//stream >> array[sizeArray - (i + 1)];
 			}
 			CreateMap();
 		}
@@ -28,8 +30,8 @@ namespace framework {
 
 	Map::~Map()
 	{
-		if (array)
-			delete[] array;
+		//if (array)
+			//delete[] array;
 
 		if (map)
 			delete[] map;
@@ -43,6 +45,7 @@ namespace framework {
 		map = new framework::Tile[sizeArray];
 
 		int yPos = 0;
+		int playerLoc = 0;
 		// For the the map read in the constructor, check each number and assign possition and colour 
 		for (int i = 1; i <= sizeArray; i++)
 		{
@@ -107,7 +110,9 @@ namespace framework {
 				map[i - 1].topRight.col.y = 0.0f;
 				map[i - 1].topRight.col.z = 0.6f;
 				break;
-			case 2: case 3:
+			case 2:  
+				playerVectorLocation = playerLoc;
+			case 3:
 				Tile temp;
 				temp.botLeft.pos.x = (i - 1) % sizeX;
 				temp.botLeft.pos.y = yPos;
@@ -122,6 +127,7 @@ namespace framework {
 				temp.topRight.pos.y = yPos + 1;
 
 				playerGhostPos.push_back(temp);
+				playerLoc++;
 				break;
 			default:
 				break;
