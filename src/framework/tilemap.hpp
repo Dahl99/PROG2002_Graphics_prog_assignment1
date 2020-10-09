@@ -11,6 +11,8 @@ namespace framework{
 		int numWalls, numCollecs;
 		int* array;
 		framework::Tile* map;
+		std::vector<framework::Tile> playerGhostPos;
+
 
 	public:
 		Map(const std::string& levelPath);
@@ -26,6 +28,7 @@ namespace framework{
 		inline framework::Tile* GetMap() const { return map; }
 		inline int getNumWalls() const{ return numWalls; }
 		inline int getNumCollecs() const{ return numCollecs; }
+		inline std::vector<framework::Tile> getPGPos() const { return playerGhostPos; }
 
 	};
 
