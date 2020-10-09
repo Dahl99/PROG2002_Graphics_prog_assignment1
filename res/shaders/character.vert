@@ -10,9 +10,10 @@ out vec2 v_TexCoords;
 /** Uniforms */
 uniform mat4 u_Projection;
 uniform mat4 u_Model;
+uniform vec2 posTex;
 
 void main()
 {
 	gl_Position = u_Projection * u_Model * position;
-	v_TexCoords = texCoords;
+	v_TexCoords = texCoords + posTex;
 }

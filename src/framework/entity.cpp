@@ -4,16 +4,12 @@
 namespace framework 
 {
 	Entity::Entity(glm::vec3 pos, std::vector<Vertex>& vertices, std::vector<GLuint>& indices) 
-		: col(glm::vec3(1.0f))
+		: pos(pos), col(glm::vec3(1.0f)), mvSpeed(5.0f), isVulnerable(GL_TRUE)
 	{
 		// Setting start position
-		this->pos.x = pos.x;
+		/*this->pos.x = pos.x;
 		this->pos.y = pos.y;
-		this->pos.z = pos.z;
-
-		mvSpeed = 15.0f;
-
-		isVulnerable = GL_TRUE;
+		this->pos.z = pos.z;*/
 
 		vao = std::make_unique<VertexArray>();			// Initializing vao
 		vbo = std::make_unique<VertexBuffer>(vertices); // Initializing vbo
@@ -26,17 +22,18 @@ namespace framework
 
 		vao->AddBuffer(*vbo, vbl);					// Populating the vertex buffer
 	}
-	void Entity::UpdateSprite(float texCoords[8])
+
+	/*void Entity::UpdateSprite(float texCoords[8])
 	{
-		/*vbo->Bind();
+		vbo->Bind();
 
 		for (int i = 0, j = 0; i < 4; i++, j+=2)
 		{
 			float temp[2] = { texCoords[j], texCoords[j+1] };
 			glBufferSubData(GL_ARRAY_BUFFER, (5*sizeof(float)) * (i+1), 2 * sizeof(float), temp);
-		}*/
+		}
 
-		/*
+		
 		float animTimer = 0;
 		animTimer += 0.9f;
 		if (animTimer > 4.0f)
@@ -73,8 +70,8 @@ namespace framework
 							  0.6667f, 1.0f / 4.0f,
 							  1.0f / 2.0f, 1.0f / 4.0f };
 			pacman.UpdateSprite(temp);
-		}*/
-	}
+		}
+	}*/
 
 	void Entity::Draw(Shader& shader) const
 	{

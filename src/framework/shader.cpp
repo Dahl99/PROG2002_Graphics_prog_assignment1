@@ -37,6 +37,11 @@ namespace framework
 		glUniform1i(getUniformLocation(name), value);
 	}
 
+	void Shader::SetUniform2fv(const std::string& name, const float texPos[2])
+	{
+		glUniform2fv(getUniformLocation(name), 1, &texPos[0]);
+	}
+
 	void Shader::SetUniformMat4f(const std::string& name, const glm::mat4& matrix)	//	Passes a 4x4 matrix uniform to shader
 	{
 		glUniformMatrix4fv(getUniformLocation(name), 1, GL_FALSE, &matrix[0][0]);
