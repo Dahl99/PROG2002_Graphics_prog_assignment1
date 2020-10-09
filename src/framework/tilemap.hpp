@@ -26,6 +26,7 @@ namespace framework{
 		ShaderVertData retMapVertices();
 		std::vector<GLuint> retMapIndices(int iterations);
 
+		inline int GetPlayerPos() const { return playerVectorLocation; }
 		inline std::vector<int> GetArray() const { return array; }
 		inline framework::Tile* GetMap() const { return map; }
 		inline int GetNumWalls() const{ return numWalls; }

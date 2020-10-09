@@ -130,10 +130,10 @@ int main(void)
     charIndices.push_back(1);
 
     std::vector<framework::Vertex> vPos;
-    vPos.push_back(charPositions[3].botLeft);
-    vPos.push_back(charPositions[3].botRight);
-    vPos.push_back(charPositions[3].topLeft);
-    vPos.push_back(charPositions[3].topRight);
+    vPos.push_back(charPositions[map1.GetPlayerPos()].botLeft);
+    vPos.push_back(charPositions[map1.GetPlayerPos()].botRight);
+    vPos.push_back(charPositions[map1.GetPlayerPos()].topLeft);
+    vPos.push_back(charPositions[map1.GetPlayerPos()].topRight);
 
     vPos[0].tex = glm::vec2(0.0f, 0.0f);
     vPos[1].tex = glm::vec2(1.0f / 6.0f, 0.0f);
