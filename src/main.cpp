@@ -104,6 +104,7 @@ int main(void)
     glfwSetInputMode(window, GLFW_KEY_UP, GL_TRUE);
     glfwSetInputMode(window, GLFW_KEY_DOWN, GL_TRUE);
 
+
     // Preparing walls
 
     framework::VertexArray tileVao;               // Create a vertex array
@@ -125,12 +126,8 @@ int main(void)
     framework::VertexArray collVao;
 
     framework::VertexBuffer collVbo(vertices.collectibleVertices);
-    framework::VertexBufferLayout collVbl;          // Create a vertex buffer layout
 
-    vbl.Push<GLfloat>(2);                       // Adding position floats to layout
-    vbl.Push<GLfloat>(3);                       // Adding color floats to layout
-    vbl.Push<GLfloat>(2);                       // Adding tex coords floats to layout
-    collVao.AddBuffer(collVbo, collVbl);
+    collVao.AddBuffer(collVbo, vbl);
 
     framework::IndexBuffer collIbo(collIndices);
 
