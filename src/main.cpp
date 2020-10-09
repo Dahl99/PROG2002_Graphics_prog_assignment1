@@ -51,14 +51,6 @@ int main(void)
     std::vector<GLuint> wallIndices = map1.retMapIndices(map1.GetNumWalls());
     std::vector<GLuint> collIndices = map1.retMapIndices(map1.GetNumCollecs());
 
-    //  These vertices contain: Position, Color and Texture Coords for pacman
-    /*framework::Vertex CharacterVertices[4] = {
-        glm::vec2(14.0f, 14.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
-        glm::vec2(18.0f, 14.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 0.0f),
-        glm::vec2(18.0f, 18.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 1.0f / 4.0f),
-        glm::vec2(14.0f, 18.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 1.0f / 4.0f)
-    };*/
-
     glfwSetErrorCallback(GLFWErrorCallback);
 
     auto window = initWindow();
