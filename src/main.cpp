@@ -130,10 +130,10 @@ int main(void)
     charIndices.push_back(1);
 
     std::vector<framework::Vertex> vPos;
-    vPos.push_back(charPositions[0].botLeft);
-    vPos.push_back(charPositions[0].botRight);
-    vPos.push_back(charPositions[0].topLeft);
-    vPos.push_back(charPositions[0].topRight);
+    vPos.push_back(charPositions[3].botLeft);
+    vPos.push_back(charPositions[3].botRight);
+    vPos.push_back(charPositions[3].topLeft);
+    vPos.push_back(charPositions[3].topRight);
 
     vPos[0].tex = glm::vec2(0.0f, 0.0f);
     vPos[1].tex = glm::vec2(1.0f / 6.0f, 0.0f);
@@ -144,8 +144,6 @@ int main(void)
     // Creating pacman character
     Pacman pacman(glm::vec3(1.0f), vPos, charIndices);
     vPos.clear();
-
-    charPositions.erase(charPositions.begin());
 
     /*std::vector<std::unique_ptr<Ghost>> Ghosts;
     for (element : charPositions)
