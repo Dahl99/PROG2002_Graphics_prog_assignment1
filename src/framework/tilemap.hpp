@@ -26,9 +26,9 @@ namespace framework{
 
 		inline int* GetArray() const { return array; }
 		inline framework::Tile* GetMap() const { return map; }
-		inline int getNumWalls() const{ return numWalls; }
-		inline int getNumCollecs() const{ return numCollecs; }
-		inline std::vector<framework::Tile> getPGPos() const { return playerGhostPos; }
+		inline int GetNumWalls() const{ return numWalls; }
+		inline int GetNumCollecs() const{ return numCollecs; }
+		inline std::vector<framework::Tile> GetPGPos() const { return playerGhostPos; }
 
 	};
 

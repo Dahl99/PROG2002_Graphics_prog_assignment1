@@ -47,8 +47,8 @@ int main(void)
 
     // Getting the map data
     framework::ShaderVertData vertices = map1.retMapVertices();
-    std::vector<GLuint> wallIndices = map1.retMapIndices(map1.getNumWalls());
-    std::vector<GLuint> collIndices = map1.retMapIndices(map1.getNumCollecs());
+    std::vector<GLuint> wallIndices = map1.retMapIndices(map1.GetNumWalls());
+    std::vector<GLuint> collIndices = map1.retMapIndices(map1.GetNumCollecs());
 
     //  These vertices contain: Position, Color and Texture Coords for pacman
     framework::Vertex CharacterVertices[4] = {
