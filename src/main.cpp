@@ -17,7 +17,8 @@
 #include "framework/shader.hpp"
 #include "framework/texture.hpp"
 #include "framework/renderer.hpp"
-#include "framework/entity.hpp"
+#include "pacman.hpp"
+#include "ghost.hpp"
 
 // Function declarations
 GLFWwindow* initWindow();
@@ -51,26 +52,12 @@ int main(void)
     std::vector<GLuint> collIndices = map1.retMapIndices(map1.GetNumCollecs());
 
     //  These vertices contain: Position, Color and Texture Coords for pacman
-    framework::Vertex CharacterVertices[4] = {
+    /*framework::Vertex CharacterVertices[4] = {
         glm::vec2(14.0f, 14.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 0.0f),
         glm::vec2(18.0f, 14.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 0.0f),
         glm::vec2(18.0f, 18.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(1.0f / 6.0f, 1.0f / 4.0f),
         glm::vec2(14.0f, 18.0f), glm::vec3(0.1f, 0.6f, 0.1f), glm::vec2(0.0f, 1.0f / 4.0f)
-    };
-
-    GLuint CharacterIndices[6] = {
-        0, 1, 2,
-        2, 3, 0
-    };
-
-    std::vector<framework::Vertex> charVertices;
-    std::vector<GLuint> charIndices;
-
-    for (const framework::Vertex& vertex : CharacterVertices)
-        charVertices.push_back(vertex);
-
-    for (const GLuint& index : CharacterIndices)
-        charIndices.push_back(index);
+    };*/
 
     glfwSetErrorCallback(GLFWErrorCallback);
 
@@ -132,20 +119,47 @@ int main(void)
     framework::IndexBuffer collIbo(collIndices);
 
 
+    auto charPositions = map1.GetPGPos();
+
+    std::vector<GLuint> charIndices;
+    charIndices.push_back(0);
+    charIndices.push_back(1);
+    charIndices.push_back(2);
+    charIndices.push_back(2);
+    charIndices.push_back(3);
+    charIndices.push_back(1);
+
+    std::vector<framework::Vertex> vPos;
+    vPos.push_back(charPositions[3].botLeft);
+    vPos.push_back(charPositions[3].botRight);
+    vPos.push_back(charPositions[3].topLeft);
+    vPos.push_back(charPositions[3].topRight);
+
+    vPos[0].tex = glm::vec2(0.0f, 0.0f);
+    vPos[1].tex = glm::vec2(1.0f / 6.0f, 0.0f);
+    vPos[2].tex = glm::vec2(0.0f, 1.0f / 4.0f);
+    vPos[3].tex = glm::vec2(1.0f / 6.0f, 1.0f / 4.0f);
+
+
     // Creating pacman character
-    framework::Entity pacman(glm::vec3(1.0f), charVertices, charIndices);
+    Pacman pacman(glm::vec3(1.0f), vPos, charIndices);
+    vPos.clear();
+
+    /*std::vector<std::unique_ptr<Ghost>> Ghosts;
+    for (element : charPositions)
+        auto ghost = std::make_shared<Ghost>();*/
 
     // Creating the MVP matrix
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.0f));
     glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
-    glm::mat4 MVP = projection;
+    //glm::mat4 MVP = projection;
 
 
     // Shaders
 
     framework::Shader tileShader(framework::TILEVERTSHADERPATH, framework::TILEFRAGSHADERPATH);
     tileShader.Bind();
-    tileShader.SetUniformMat4f("u_MVP", projection);
+    tileShader.SetUniformMat4f("u_Projection", projection);
 
     framework::Shader charShader(framework::CHARVERTGSHADERPATH, framework::CHARFRAGSHADERPATH);
     charShader.Bind();
@@ -177,18 +191,22 @@ int main(void)
         // Move forward
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 0);
+            pacman.UpdateSprite(charShader, 0);
         }
         // Move backward
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 2);
+            pacman.UpdateSprite(charShader, 2);
         }
         // Strafe right
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 1);
+            pacman.UpdateSprite(charShader, 1);
         }
         // Strafe left
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 3);
+            pacman.UpdateSprite(charShader, 3);
         }
 
         pacman.Draw(charShader);                        // Drawing pacman

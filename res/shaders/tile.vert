@@ -8,10 +8,10 @@ layout(location = 1) in vec4 color;
 out vec4 VertexColor;
 
 /** Uniforms */
-uniform mat4 u_MVP;
+uniform mat4 u_Projection;
 
 void main()
 {
-	gl_Position = u_MVP * position;
+	gl_Position = u_Projection * position;
 	VertexColor = color;
 }

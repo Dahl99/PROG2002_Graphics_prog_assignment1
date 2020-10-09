@@ -18,6 +18,12 @@ add_subdirectory(external/stb)
 
 add_executable(Assignment1
 	src/main.cpp
+
+	src/pacman.hpp
+	src/pacman.cpp
+
+	src/ghost.hpp
+	src/ghost.cpp
 	
 	src/framework/shader.hpp
 	src/framework/shader.cpp
