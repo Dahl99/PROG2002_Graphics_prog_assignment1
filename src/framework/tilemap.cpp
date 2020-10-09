@@ -43,40 +43,25 @@ namespace framework {
 		map = new framework::Tile[sizeArray];
 
 		int yPos = 0;
+		// For the the map read in the constructor, check each number and assign possition and colour 
 		for (int i = 1; i <= sizeArray; i++)
 		{
-			map[i - 1].botLeft.pos.x = (i-1) % sizeX;
-			map[i - 1].botLeft.pos.y = yPos;
 
-			map[i - 1].botRight.pos.x = ((i-1) % sizeX) + 1;
-			map[i - 1].botRight.pos.y = yPos;
-	
-			map[i - 1].topLeft.pos.x = (i-1) % sizeX;
-			map[i - 1].topLeft.pos.y = yPos + 1;
-			
-			map[i - 1].topRight.pos.x = ((i-1) % sizeX) + 1;
-			map[i - 1].topRight.pos.y = yPos + 1;
-
-			if (array[i - 1])
+			switch (array[i - 1])
 			{
-				map[i - 1].botLeft.col.y = 0.0f;
-				map[i - 1].botLeft.col.x = 0.0f;
-				map[i - 1].botLeft.col.z = 0.6f;
+			case 0:
+				map[i - 1].botLeft.pos.x = ((i - 1) % sizeX) + COLLECTIBLESIZE;
+				map[i - 1].botLeft.pos.y = (yPos)+COLLECTIBLESIZE;
 
-				map[i - 1].botRight.col.x = 0.0f;
-				map[i - 1].botRight.col.y = 0.0f;
-				map[i - 1].botRight.col.z = 0.6f;
-		
-				map[i - 1].topLeft.col.x = 0.0f;
-				map[i - 1].topLeft.col.y = 0.0f;
-				map[i - 1].topLeft.col.z = 0.6f;
+				map[i - 1].botRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
+				map[i - 1].botRight.pos.y = (yPos)+COLLECTIBLESIZE;
 
-				map[i - 1].topRight.col.x = 0.0f;
-				map[i - 1].topRight.col.y = 0.0f;
-				map[i - 1].topRight.col.z = 0.6f;
-			}
-			else
-			{
+				map[i - 1].topLeft.pos.x = ((i - 1) % sizeX) + COLLECTIBLESIZE;
+				map[i - 1].topLeft.pos.y = (yPos + 1) - COLLECTIBLESIZE;
+
+				map[i - 1].topRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
+				map[i - 1].topRight.pos.y = (yPos + 1) - COLLECTIBLESIZE;
+
 				map[i - 1].botLeft.col.y = 1.0f;
 				map[i - 1].botLeft.col.z = 1.0f;
 				map[i - 1].botLeft.col.x = 1.0f;
@@ -92,8 +77,55 @@ namespace framework {
 				map[i - 1].topRight.col.x = 1.0f;
 				map[i - 1].topRight.col.y = 1.0f;
 				map[i - 1].topRight.col.z = 1.0f;
-			}
+				break;
+			case 1:
+				map[i - 1].botLeft.pos.x = (i - 1) % sizeX;
+				map[i - 1].botLeft.pos.y = yPos;
 
+				map[i - 1].botRight.pos.x = ((i - 1) % sizeX) + 1;
+				map[i - 1].botRight.pos.y = yPos;
+
+				map[i - 1].topLeft.pos.x = (i - 1) % sizeX;
+				map[i - 1].topLeft.pos.y = yPos + 1;
+
+				map[i - 1].topRight.pos.x = ((i - 1) % sizeX) + 1;
+				map[i - 1].topRight.pos.y = yPos + 1;
+
+				map[i - 1].botLeft.col.y = 0.0f;
+				map[i - 1].botLeft.col.x = 0.0f;
+				map[i - 1].botLeft.col.z = 0.6f;
+
+				map[i - 1].botRight.col.x = 0.0f;
+				map[i - 1].botRight.col.y = 0.0f;
+				map[i - 1].botRight.col.z = 0.6f;
+
+				map[i - 1].topLeft.col.x = 0.0f;
+				map[i - 1].topLeft.col.y = 0.0f;
+				map[i - 1].topLeft.col.z = 0.6f;
+
+				map[i - 1].topRight.col.x = 0.0f;
+				map[i - 1].topRight.col.y = 0.0f;
+				map[i - 1].topRight.col.z = 0.6f;
+				break;
+			case 2: case 3:
+				Tile temp;
+				temp.botLeft.pos.x = (i - 1) % sizeX;
+				temp.botLeft.pos.y = yPos;
+				
+				temp.botRight.pos.x = ((i - 1) % sizeX) + 1;
+				temp.botRight.pos.y = yPos;
+				
+				temp.topLeft.pos.x = (i - 1) % sizeX;
+				temp.topLeft.pos.y = yPos + 1;
+				
+				temp.topRight.pos.x = ((i - 1) % sizeX) + 1;
+				temp.topRight.pos.y = yPos + 1;
+
+				playerGhostPos.push_back(temp);
+				break;
+			default:
+				break;
+			}
 			if (i % sizeX == 0 && i != 0)
 				yPos++;
 		}

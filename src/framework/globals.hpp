@@ -14,8 +14,8 @@ namespace framework {
 	const std::string CHARVERTGSHADERPATH = "../res/shaders/character.vert";
 	const std::string CHARFRAGSHADERPATH = "../res/shaders/character.frag";
 
-	const int WINDOWSIZEX = 28*20, WINDOWSIZEY = 36*20;
-	
+	const int WINDOWSIZEX = 28*28, WINDOWSIZEY = 36*28;
+	const float COLLECTIBLESIZE = 0.35f;
 
 
 //-------------------------------------------------------------------------------------

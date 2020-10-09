@@ -47,8 +47,8 @@ int main(void)
 
     // Getting the map data
     framework::ShaderVertData vertices = map1.retMapVertices();
-    std::vector<GLuint> wallIndices = map1.retMapIndices(map1.getNumWalls());
-    std::vector<GLuint> collIndices = map1.retMapIndices(map1.getNumCollecs());
+    std::vector<GLuint> wallIndices = map1.retMapIndices(map1.GetNumWalls());
+    std::vector<GLuint> collIndices = map1.retMapIndices(map1.GetNumCollecs());
 
     //  These vertices contain: Position, Color and Texture Coords for pacman
     framework::Vertex CharacterVertices[4] = {
@@ -104,6 +104,7 @@ int main(void)
     glfwSetInputMode(window, GLFW_KEY_UP, GL_TRUE);
     glfwSetInputMode(window, GLFW_KEY_DOWN, GL_TRUE);
 
+
     // Preparing walls
 
     framework::VertexArray tileVao;               // Create a vertex array
@@ -125,12 +126,8 @@ int main(void)
     framework::VertexArray collVao;
 
     framework::VertexBuffer collVbo(vertices.collectibleVertices);
-    framework::VertexBufferLayout collVbl;          // Create a vertex buffer layout
 
-    vbl.Push<GLfloat>(2);                       // Adding position floats to layout
-    vbl.Push<GLfloat>(3);                       // Adding color floats to layout
-    vbl.Push<GLfloat>(2);                       // Adding tex coords floats to layout
-    collVao.AddBuffer(collVbo, collVbl);
+    collVao.AddBuffer(collVbo, vbl);
 
     framework::IndexBuffer collIbo(collIndices);
 
