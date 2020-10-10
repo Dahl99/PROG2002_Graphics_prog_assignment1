@@ -37,7 +37,6 @@ void Pacman::UpdateSprite(framework::Shader& shader, const GLint& dir)
 		else
 			animTimer = 0.0f;
 		break;
-		break;
 	case 1:
 		if (animTimer <= 1.0f)
 		{
@@ -85,7 +84,6 @@ void Pacman::UpdateSprite(framework::Shader& shader, const GLint& dir)
 		}
 		else
 			animTimer = 0.0f;
-		break;
 		break;
 	case 3:
 		if (animTimer <= 1.0f)
