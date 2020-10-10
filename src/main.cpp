@@ -180,12 +180,14 @@ int main(void)
 
         renderer.Draw(collVao, collIbo, tileShader);
 
-        // Move forward
+        removeCollectible(vertices.collectibleVertices, pacman.GetPos().x, pacman.GetPos().y);
+
+        // Move up
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 0);
             pacman.UpdateSprite(charShader, 0);
         }
-        // Move backward
+        // Move down
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 2);
             pacman.UpdateSprite(charShader, 2);
@@ -289,8 +291,20 @@ MessageCallback(GLenum source,
         ", message =" << message << "\n";
 }
 
-bool removeCollectible(std::vector<framework::Vertex>& collectibles, int xPos, int yPos)
+// Recieves player position and the collectibles container, goes through the container until it finds the element with
+//  the correct data and removes the 4 vertices from that one;
+bool removeCollectible(std::vector<framework::Vertex> &collectibles, int xPos, int yPos)
 {
+    for (int i = 0; i < collectibles.size(); i++)
+    {
 
+        glm::vec2 position = collectibles[i].pos;
+        if (position.x = xPos && position.y == yPos)
+        {
+            collectibles.erase(collectibles.begin() + i - 1, collectibles.begin() + i + 2);
+            return 1;
+        }
+    }
+    return 0;
 }
 
