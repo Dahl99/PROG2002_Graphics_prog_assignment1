@@ -36,4 +36,9 @@ namespace framework {
 		std::vector<framework::Vertex> wallVertices;
 		std::vector<framework::Vertex> collectibleVertices;
 	};
+
+	struct EntityPosData {
+		std::vector<Vertex> vertices;
+		std::vector<glm::vec3> positions;
+	};
 }

@@ -77,13 +77,6 @@ int main(void)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    glfwSetInputMode(window, GLFW_KEY_ESCAPE, GL_TRUE);
-    glfwSetInputMode(window, GLFW_KEY_LEFT, GL_TRUE);
-    glfwSetInputMode(window, GLFW_KEY_RIGHT, GL_TRUE);
-    glfwSetInputMode(window, GLFW_KEY_UP, GL_TRUE);
-    glfwSetInputMode(window, GLFW_KEY_DOWN, GL_TRUE);
-
-
     // Preparing walls
 
     framework::VertexArray tileVao;               // Create a vertex array
@@ -111,8 +104,9 @@ int main(void)
     framework::IndexBuffer collIbo(collIndices);
 
 
-    auto charPositions = map1.GetPGPos();
+    auto entityData = map1.GetPGPos(); // Fetching player and ghost positions as well as vertices
 
+    // These indices will be used for player and ghosts
     std::vector<GLuint> charIndices;
     charIndices.push_back(0);
     charIndices.push_back(1);
@@ -121,25 +115,28 @@ int main(void)
     charIndices.push_back(3);
     charIndices.push_back(1);
 
-    std::vector<framework::Vertex> vPos;
-    vPos.push_back(charPositions[3].botLeft);
-    vPos.push_back(charPositions[3].botRight);
-    vPos.push_back(charPositions[3].topLeft);
-    vPos.push_back(charPositions[3].topRight);
-
-    vPos[0].tex = glm::vec2(0.0f, 0.0f);
-    vPos[1].tex = glm::vec2(1.0f / 6.0f, 0.0f);
-    vPos[2].tex = glm::vec2(0.0f, 1.0f / 4.0f);
-    vPos[3].tex = glm::vec2(1.0f / 6.0f, 1.0f / 4.0f);
-
+    // Setting texture coordinates for player
+    entityData.vertices[0].tex = glm::vec2(0.0f, 0.0f);
+    entityData.vertices[1].tex = glm::vec2(1.0f / 6.0f, 0.0f);
+    entityData.vertices[2].tex = glm::vec2(0.0f, 1.0f / 4.0f);
+    entityData.vertices[3].tex = glm::vec2(1.0f / 6.0f, 1.0f / 4.0f);
 
     // Creating pacman character
-    Pacman pacman(glm::vec3(0.0f), vPos, charIndices);
-    vPos.clear();
+    Pacman pacman(entityData.positions[0], entityData.vertices, charIndices);
 
-    /*std::vector<std::unique_ptr<Ghost>> Ghosts;
-    for (element : charPositions)
-        auto ghost = std::make_shared<Ghost>();*/
+    // Setting texture coordinates for ghosts
+    entityData.vertices[0].tex = glm::vec2(2.0f / 3.0f, 0.0f);
+    entityData.vertices[1].tex = glm::vec2(5.0f / 6.0f, 0.0f);
+    entityData.vertices[2].tex = glm::vec2(2.0f / 3.0f, 1.0f / 4.0f);
+    entityData.vertices[3].tex = glm::vec2(5.0f / 6.0f, 1.0f / 4.0f);
+
+    // Creating ghosts and adding them to a vector
+    std::vector<std::shared_ptr<Ghost>> ghosts;
+    for (int i = 1; i < entityData.positions.size(); i++)
+    {
+        auto ghost = std::make_shared<Ghost>(entityData.positions[i], entityData.vertices, charIndices);
+        ghosts.push_back(ghost);
+    }
 
     // Creating the MVP matrix
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.0f));
@@ -147,7 +144,7 @@ int main(void)
     //glm::mat4 MVP = projection;
 
 
-    // Shaders
+    // Initializing shaders, setting projection matrix and texture for entities
 
     framework::Shader tileShader(framework::TILEVERTSHADERPATH, framework::TILEFRAGSHADERPATH);
     tileShader.Bind();
@@ -163,13 +160,14 @@ int main(void)
 
     framework::Renderer renderer;
 
+    // Variables used to find delta time
     GLfloat dt, curTime, lastTime;
     dt = curTime = lastTime = 0.0f;
 
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
-        updateDeltaTime(dt, curTime, lastTime);
+        updateDeltaTime(dt, curTime, lastTime); // Updating delta time
         glfwPollEvents();
 
         renderer.Clear();   // Clearing screen
@@ -201,7 +199,13 @@ int main(void)
             pacman.UpdateSprite(charShader, 3);
         }
 
-        pacman.Draw(charShader);                        // Drawing pacman
+        pacman.Draw(charShader);                  // Drawing pacman
+
+        for (auto& ghost : ghosts)                // Drawing all ghosts
+        {
+            //ghost->UpdateSprite(charShader, 1);
+            ghost->Draw(charShader);
+        }
 
         glfwSwapBuffers(window);
 

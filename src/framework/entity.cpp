@@ -24,6 +24,7 @@ namespace framework
 		vao->Bind();
 		ibo->Bind();
 
+		// Setting the model matrix and passing it to shader as an uniform
 		auto model = glm::translate(glm::mat4(1.f), pos);
 		shader.SetUniformMat4f("u_Model", model);
 
@@ -32,18 +33,19 @@ namespace framework
 
 	void Entity::UpdatePos(const GLfloat& dt, const GLint& dir)
 	{
+		// Updates position based on direction
 		switch (dir)
 		{
-		case 0:
+		case 0: // Up
 			pos.y += dt * mvSpeed;
 			break;
-		case 1:
+		case 1: // Right
 			pos.x += dt * mvSpeed;
 			break;
-		case 2:
+		case 2: // Down
 			pos.y -= dt * mvSpeed;
 			break;
-		case 3:
+		case 3: // Left
 			pos.x -= dt * mvSpeed;
 			break;
 		default:

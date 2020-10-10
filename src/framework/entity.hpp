@@ -25,9 +25,9 @@ namespace framework {
 	public:
 		Entity(glm::vec3 pos, std::vector<Vertex>& vertices, std::vector<GLuint>& indices);
 
-		void Draw(Shader& shader) const; // Draws pacman onto screen
-		void UpdatePos(const GLfloat& dt, const GLint& dir);
-		inline glm::vec3 GetPos() const { return pos; };
+		void Draw(Shader& shader) const;						// Draws entity onto screen
+		void UpdatePos(const GLfloat& dt, const GLint& dir);	// Updates entity position
+		inline glm::vec3 GetPos() const { return pos; };		// Fetches the position of entity
 	};
 
 }

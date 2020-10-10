@@ -1,11 +1,16 @@
 #include "pacman.hpp"
 
-Pacman::Pacman(glm::vec3 pos, std::vector<framework::Vertex>& vertices, std::vector<GLuint>& indices) : Entity(pos, vertices, indices)
+Pacman::Pacman(glm::vec3 pos, std::vector<framework::Vertex>& vertices, std::vector<GLuint>& indices) 
+	: Entity(pos, vertices, indices)
 {
 	animTimer = 0.0f;
 	animReverse = GL_FALSE;
 }
 
+/*
+* Updating sprite by using a unfiform based on direction and an animation timer
+* sprite will also be reversed if it's the last sprite in line for smoother animation
+*/
 void Pacman::UpdateSprite(framework::Shader& shader, const GLint& dir)
 {
 	shader.Bind();

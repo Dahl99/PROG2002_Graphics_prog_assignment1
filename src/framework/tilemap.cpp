@@ -41,6 +41,8 @@ namespace framework {
 	void Map::CreateMap()
 	{
 		map = new framework::Tile[sizeArray];
+		glm::vec3 playerPos;
+		std::vector<glm::vec3> ghostPos;
 
 		int yPos = 0;
 		// For the the map read in the constructor, check each number and assign possition and colour 
@@ -107,21 +109,11 @@ namespace framework {
 				map[i - 1].topRight.col.y = 0.0f;
 				map[i - 1].topRight.col.z = 0.6f;
 				break;
-			case 2: case 3:
-				Tile temp;
-				temp.botLeft.pos.x = (i - 1) % sizeX;
-				temp.botLeft.pos.y = yPos;
-				
-				temp.botRight.pos.x = ((i - 1) % sizeX) + 1;
-				temp.botRight.pos.y = yPos;
-				
-				temp.topLeft.pos.x = (i - 1) % sizeX;
-				temp.topLeft.pos.y = yPos + 1;
-				
-				temp.topRight.pos.x = ((i - 1) % sizeX) + 1;
-				temp.topRight.pos.y = yPos + 1;
-
-				playerGhostPos.push_back(temp);
+			case 2: // Sets player pos if tile type is 2
+				playerPos = glm::vec3((float)(i % sizeX), (float)(yPos), 1.0f);
+				break;
+			case 3: // Sets ghost position if tile type is 3
+				ghostPos.push_back(glm::vec3((float)(i % sizeX)-1, (float)(yPos), 1.0f));
 				break;
 			default:
 				break;
@@ -129,6 +121,17 @@ namespace framework {
 			if (i % sizeX == 0 && i != 0)
 				yPos++;
 		}
+
+		// Adding vertices and entity positions to entityData
+		entityData.vertices.push_back(map[0].botLeft);
+		entityData.vertices.push_back(map[0].botRight);
+		entityData.vertices.push_back(map[0].topLeft);
+		entityData.vertices.push_back(map[0].topRight);
+
+		entityData.positions.push_back(playerPos); // Player pos gets added first
+
+		for (const auto& element : ghostPos)	   // Ghost pos gets added last
+			entityData.positions.push_back(element);
 	}
 
 	// Function to print map, used to see if its read correctly
