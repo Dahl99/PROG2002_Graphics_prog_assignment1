@@ -152,10 +152,10 @@ int main(void)
     tileShader.Bind();
     tileShader.SetUniformMat4f("u_Projection", projection);
 
-    framework::Shader charShader(framework::CHARVERTGSHADERPATH, framework::CHARFRAGSHADERPATH);
-    charShader.Bind();
-    charShader.SetUniformMat4f("u_Projection", projection);
-    charShader.SetUniform1i("uTexture", 0);
+    framework::Shader entityShader(framework::CHARVERTGSHADERPATH, framework::CHARFRAGSHADERPATH);
+    entityShader.Bind();
+    entityShader.SetUniformMat4f("u_Projection", projection);
+    entityShader.SetUniform1i("uTexture", 0);
 
     framework::Texture texture(framework::PACMANPICTUREPATH);
     texture.Bind(0);    //  Binding to texture slot 0
@@ -183,30 +183,30 @@ int main(void)
         // Move up
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 0);
-            pacman.UpdateSprite(charShader, 0);
+            pacman.UpdateSprite(entityShader, 0);
         }
         // Move down
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 2);
-            pacman.UpdateSprite(charShader, 2);
+            pacman.UpdateSprite(entityShader, 2);
         }
         // Strafe right
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 1);
-            pacman.UpdateSprite(charShader, 1);
+            pacman.UpdateSprite(entityShader, 1);
         }
         // Strafe left
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 3);
-            pacman.UpdateSprite(charShader, 3);
+            pacman.UpdateSprite(entityShader, 3);
         }
 
-        pacman.Draw(charShader);                  // Drawing pacman
+        pacman.Draw(entityShader);                  // Drawing pacman
 
         for (auto& ghost : ghosts)                // Drawing all ghosts
         {
-            //ghost->UpdateSprite(charShader, 1);
-            ghost->Draw(charShader);
+            ghost->UpdateSprite(entityShader, 1);
+            ghost->Draw(entityShader);
         }
 
         glfwSwapBuffers(window);
