@@ -24,6 +24,8 @@
 GLFWwindow* initWindow();
 
 void updateDeltaTime(GLfloat& dt, GLfloat& ct, GLfloat& lt);
+bool removeCollectible(std::vector<framework::Vertex>& collectibles, int xPos, int yPos);
+
 
 // Error function for GLFW
 void GLFWErrorCallback(int code, const char* description);
@@ -285,5 +287,10 @@ MessageCallback(GLenum source,
         "type = 0x" << type <<
         ", severity = 0x" << severity <<
         ", message =" << message << "\n";
+}
+
+bool removeCollectible(std::vector<framework::Vertex>& collectibles, int xPos, int yPos)
+{
+
 }
 
