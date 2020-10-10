@@ -178,8 +178,6 @@ int main(void)
 
         renderer.Draw(collVao, collIbo, tileShader);
 
-
-
         // Move forward
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 0);

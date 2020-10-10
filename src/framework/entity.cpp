@@ -24,7 +24,7 @@ namespace framework
 		vao->Bind();
 		ibo->Bind();
 
-		auto model = glm::translate(glm::mat4(1.f), pos);
+		auto model = glm::translate(glm::mat4(1.f), glm::vec3(pos));
 		shader.SetUniformMat4f("u_Model", model);
 
 		glDrawElements(GL_TRIANGLES, ibo->GetCount(), GL_UNSIGNED_INT, nullptr);
