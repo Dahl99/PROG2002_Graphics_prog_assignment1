@@ -180,12 +180,12 @@ int main(void)
 
 
 
-        // Move forward
+        // Move up
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 0);
             pacman.UpdateSprite(charShader, 0);
         }
-        // Move backward
+        // Move down
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
             pacman.UpdatePos(dt, 2);
             pacman.UpdateSprite(charShader, 2);
