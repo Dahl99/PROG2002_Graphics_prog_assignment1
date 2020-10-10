@@ -134,7 +134,7 @@ int main(void)
 
 
     // Creating pacman character
-    Pacman pacman(glm::vec3(1.0f), vPos, charIndices);
+    Pacman pacman(glm::vec3(0.0f), vPos, charIndices);
     vPos.clear();
 
     /*std::vector<std::unique_ptr<Ghost>> Ghosts;
