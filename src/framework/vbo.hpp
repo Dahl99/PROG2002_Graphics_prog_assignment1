@@ -20,5 +20,6 @@ namespace framework
 
 		void Bind() const;		//	Binds the vbo
 		void Unbind() const;	//	Unbinds the vbo
+		void UpdateData(const std::vector<framework::Vertex>& data);
 	};
 }

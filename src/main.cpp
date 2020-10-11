@@ -180,31 +180,46 @@ int main(void)
         renderer.Clear();   // Clearing screen
 
         renderer.Draw(tileVao, tileIbo, tileShader);    // Drawing map
+        
+                                                        // add 0.5 to get center of player
+        removeCollectible(vertices.collectibleVertices, pacman.GetPos().x + 0.5, pacman.GetPos().y + 0.5); 
 
+        collVbo.UpdateData(vertices.collectibleVertices);
         renderer.Draw(collVao, collIbo, tileShader);
-
-        removeCollectible(vertices.collectibleVertices, pacman.GetPos().x, pacman.GetPos().y);
 
         // Move up
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-            pacman.UpdatePos(dt, framework::Direction::UP);
-            pacman.UpdateSprite(pacmanShader, framework::Direction::UP);
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.5))] != 1)
+            {
+                pacman.UpdatePos(dt, framework::Direction::UP);
+                pacman.UpdateSprite(pacmanShader, framework::Direction::UP);
+            }
         }
         // Move down
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-            pacman.UpdatePos(dt, framework::Direction::DOWN);
-            pacman.UpdateSprite(pacmanShader, framework::Direction::DOWN);
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.5))] != 1)
+            {
+                pacman.UpdatePos(dt, framework::Direction::DOWN);
+                pacman.UpdateSprite(pacmanShader, framework::Direction::DOWN);
+            }
         }
         // Strafe right
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-            pacman.UpdatePos(dt, framework::Direction::RIGHT);
-            pacman.UpdateSprite(pacmanShader, framework::Direction::RIGHT);
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1)
+            {
+                pacman.UpdatePos(dt, framework::Direction::RIGHT);
+                pacman.UpdateSprite(pacmanShader, framework::Direction::RIGHT);
+            }
         }
         // Strafe left
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            pacman.UpdatePos(dt, framework::Direction::LEFT);
-            pacman.UpdateSprite(pacmanShader, framework::Direction::LEFT);
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1)
+            {
+                pacman.UpdatePos(dt, framework::Direction::LEFT);
+                pacman.UpdateSprite(pacmanShader, framework::Direction::LEFT);
+            }
         }
+
 
         pacman.Draw(pacmanShader);                  // Drawing pacman
 
@@ -304,13 +319,30 @@ MessageCallback(GLenum source,
 //  the correct data and removes the 4 vertices from that one;
 bool removeCollectible(std::vector<framework::Vertex> &collectibles, int xPos, int yPos)
 {
-    for (int i = 0; i < collectibles.size(); i++)
+    for (int i = 0; i < collectibles.size(); i+=4)
     {
-
         glm::vec2 position = collectibles[i].pos;
-        if (position.x = xPos && position.y == yPos)
+        int x = position.x, y = position.y;
+        
+
+        if (x == xPos && y == yPos)
         {
-            collectibles.erase(collectibles.begin() + i - 1, collectibles.begin() + i + 2);
+            collectibles[i].col.x = 0;
+            collectibles[i].col.y = 0;
+            collectibles[i].col.z = 0;
+            
+            collectibles[(i + 1)].col.x = 0;
+            collectibles[(i + 1)].col.y = 0;
+            collectibles[(i + 1)].col.z = 0;
+            
+            collectibles[(i + 2)].col.x = 0;
+            collectibles[(i + 2)].col.y = 0;
+            collectibles[(i + 2)].col.z = 0;
+            
+            collectibles[(i + 3)].col.x = 0;
+            collectibles[(i + 3)].col.y = 0;
+            collectibles[(i + 3)].col.z = 0;
+            //collectibles.erase(collectibles.begin() + i, collectibles.begin() + i + 3);
             return 1;
         }
     }

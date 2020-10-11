@@ -34,4 +34,10 @@ namespace framework
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, 0);							//	Unbinding vbo
 	}
+
+	void VertexBuffer::UpdateData(const std::vector<framework::Vertex>& data)
+	{
+		glBindBuffer(GL_ARRAY_BUFFER, m_RendererID);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(framework::Vertex) * data.size(), data.data());
+	}
 }

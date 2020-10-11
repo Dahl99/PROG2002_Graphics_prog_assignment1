@@ -9,7 +9,6 @@ namespace framework{
 	private:
 		int sizeX, sizeY, sizeArray;
 		int numWalls, numCollecs;
-		//int* array;
 		std::vector<int> array;
 		framework::Tile* map;
 		EntityPosData entityData;
@@ -28,6 +27,8 @@ namespace framework{
 		inline framework::Tile* GetMap() const { return map; }
 		inline int GetNumWalls() const{ return numWalls; }
 		inline int GetNumCollecs() const{ return numCollecs; }
+		inline int GetSizeX() const{ return sizeX; }
+		inline int GetSizeY() const{ return sizeY; }
 		inline framework::EntityPosData GetPGPos() const { return entityData; }
 
 	};
