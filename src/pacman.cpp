@@ -276,3 +276,4 @@ void Pacman::Teleport(int xLoc)
 {
 	ModPos(xLoc);
 }
+

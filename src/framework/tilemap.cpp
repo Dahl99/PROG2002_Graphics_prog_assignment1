@@ -8,21 +8,23 @@ namespace framework {
 	// Gets filepath as parameter and reads the tilemap from file
 	Map::Map(const std::string& levelPath)
 	{
+		numWalls = numCollecs = 0;
+
 		std::ifstream stream(levelPath);		
 		if (stream) 
 		{
-			numWalls = numCollecs = 0;
+			// Get map width and heigth and read in the appropriate amount
 			stream >> sizeX >> sizeY;
 			sizeArray = sizeX * sizeY;
-			//array = new int[sizeArray];
 			for (int i = 0; i < sizeArray; i++)
 			{
 				int x;
 				stream >> x;
-				array.insert(array.begin(), x);
-				//stream >> array[sizeArray - (i + 1)];
-			}
 
+				// Insert read data into the first location in the array. This is because the map in the level file is read\
+					top down but is drawn bottom up, since the space we opperate in goes from 0 x and y and up
+				array.insert(array.begin(), x);									
+			}
 			CreateMap();
 		}
 		else std::cout << "Failed to read map!\n";
