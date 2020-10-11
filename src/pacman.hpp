@@ -10,4 +10,5 @@ public:
 	Pacman(glm::vec3 pos, std::vector<framework::Vertex>& vertices, std::vector<GLuint>& indices);
 
 	void UpdateSprite(framework::Shader& shader, const framework::Direction& dir);
+	void Teleport(int xLoc);
 };

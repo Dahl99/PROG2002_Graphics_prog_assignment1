@@ -30,8 +30,6 @@ namespace framework {
 
 	Map::~Map()
 	{
-		//if (array)
-			//delete[] array;
 
 		if (map)
 			delete[] map;
@@ -113,7 +111,36 @@ namespace framework {
 				map[i - 1].topRight.col.z = 0.6f;
 				break;
 			case 2: // Sets player pos if tile type is 2
+
 				playerPos = glm::vec3((float)(i % sizeX), (float)(yPos), 1.0f);
+
+				map[i - 1].botLeft.pos.x = ((i - 1) % sizeX) + COLLECTIBLESIZE;
+				map[i - 1].botLeft.pos.y = (yPos)+COLLECTIBLESIZE;
+
+				map[i - 1].botRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
+				map[i - 1].botRight.pos.y = (yPos)+COLLECTIBLESIZE;
+
+				map[i - 1].topLeft.pos.x = ((i - 1) % sizeX) + COLLECTIBLESIZE;
+				map[i - 1].topLeft.pos.y = (yPos + 1) - COLLECTIBLESIZE;
+
+				map[i - 1].topRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
+				map[i - 1].topRight.pos.y = (yPos + 1) - COLLECTIBLESIZE;
+
+				map[i - 1].botLeft.col.y = 1.0f;
+				map[i - 1].botLeft.col.z = 1.0f;
+				map[i - 1].botLeft.col.x = 1.0f;
+
+				map[i - 1].botRight.col.x = 1.0f;
+				map[i - 1].botRight.col.y = 1.0f;
+				map[i - 1].botRight.col.z = 1.0f;
+
+				map[i - 1].topLeft.col.x = 1.0f;
+				map[i - 1].topLeft.col.y = 1.0f;
+				map[i - 1].topLeft.col.z = 1.0f;
+
+				map[i - 1].topRight.col.x = 1.0f;
+				map[i - 1].topRight.col.y = 1.0f;
+				map[i - 1].topRight.col.z = 1.0f;
 				break;
 			case 3: // Sets ghost position if tile type is 3
 				ghostPos.push_back(glm::vec3((float)(i % sizeX)-1, (float)(yPos), 1.0f));
