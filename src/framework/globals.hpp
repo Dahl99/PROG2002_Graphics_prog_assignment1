@@ -14,6 +14,9 @@ namespace framework {
 	const std::string CHARVERTGSHADERPATH = "../res/shaders/character.vert";
 	const std::string CHARFRAGSHADERPATH = "../res/shaders/character.frag";
 
+	//const std::string SOUNDTRACK = "../res/music/PacMan_Original_Theme.mp3";
+	const std::string SOUNDTRACK = "../res/music/pacman.wav";
+
 	const int WINDOWSIZEX = 28*28, WINDOWSIZEY = 36*28;
 	const float COLLECTIBLESIZE = 0.35f;
 	const int COLLECTIBLESCORE = 10;

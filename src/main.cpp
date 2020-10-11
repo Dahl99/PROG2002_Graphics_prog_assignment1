@@ -6,6 +6,7 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include <irrKlang.h>
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -81,6 +82,11 @@ int main(void)
     // Enabling blending
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
+
+    irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
+    irrklang::ISound* music = soundEngine->play2D(framework::SOUNDTRACK.c_str(), GL_TRUE, GL_FALSE, GL_TRUE);
+    music->setVolume(0.3f);
+
 
     // Preparing walls
 
