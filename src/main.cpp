@@ -43,21 +43,17 @@ MessageCallback(GLenum source,
     const GLchar* message,
     const void* userParam);
 
-// Entry point
+//------------------------------------------------------------------------------------
+//                                     Main
+//------------------------------------------------------------------------------------
+
 int main(void)
 {
-    // Reading and creating the map
-    framework::Map map1(framework::LEVELPATH0);
 
-    map1.PrintMap();
-
-    // Getting the map data
-    framework::ShaderVertData vertices = map1.retMapVertices();
-    std::vector<GLuint> wallIndices = map1.retMapIndices(map1.GetNumWalls());
-    std::vector<GLuint> collIndices = map1.retMapIndices(map1.GetNumCollecs());
+    //-------------- OpenGL initialization --------------
 
     glfwSetErrorCallback(GLFWErrorCallback);
-
+    
     auto window = initWindow();
     if (window == nullptr)
     {
@@ -82,10 +78,29 @@ int main(void)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glEnable(GL_BLEND);
 
-    // Preparing walls
+
+    //------------------- Getting and preparing data --------------------
+
+    // Reading and creating the map
+    framework::Map map1(framework::LEVELPATH0);
+    map1.PrintMap();
+
+    // Getting the map data
+    framework::ShaderVertData vertices = map1.retMapVertices();
+    std::vector<GLuint> wallIndices = map1.retMapIndices(map1.GetNumWalls());
+    std::vector<GLuint> collIndices = map1.retMapIndices(map1.GetNumCollecs());
+
+    framework::Renderer renderer;
+
+    // Variables used to find delta time
+    GLfloat dt, curTime, lastTime;
+    dt = curTime = lastTime = 0.0f;
+
+    int pelletsCollected = 0; // Keeps track of how many pellets are collected
+
+    //                      Preparing walls
 
     framework::VertexArray tileVao;               // Create a vertex array
-
     framework::VertexBuffer tileVbo(vertices.wallVertices);    // Create a vertex buffer
 
     framework::VertexBufferLayout vbl;            // Create a vertex buffer layout
@@ -94,20 +109,17 @@ int main(void)
     vbl.Push<GLfloat>(2);                         // Adding tex coords floats to layout
 
     tileVao.AddBuffer(tileVbo, vbl);              // Populating the vertex buffer
-
     framework::IndexBuffer tileIbo(wallIndices);
 
 
-    // Preparing collectibles
+    //                      Preparing collectibles
 
     framework::VertexArray collVao;
-
     framework::VertexBuffer collVbo(vertices.collectibleVertices);
-
     collVao.AddBuffer(collVbo, vbl);
-
     framework::IndexBuffer collIbo(collIndices);
 
+    //                      Preparing player and Ghosts
 
     auto entityData = map1.GetPGPos(); // Fetching player and ghost positions as well as vertices
 
@@ -143,10 +155,12 @@ int main(void)
         ghosts.push_back(ghost);
     }
 
+
+    //                      Preparing to send data
+
     // Creating the MVP matrix
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.0f));
     glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
-    //glm::mat4 MVP = projection;
 
 
     // Initializing shaders, setting projection matrix and texture for entities
@@ -168,13 +182,7 @@ int main(void)
     framework::Texture texture(framework::PACMANPICTUREPATH);
     texture.Bind(0);    //  Binding to texture slot 0
 
-    framework::Renderer renderer;
 
-    // Variables used to find delta time
-    GLfloat dt, curTime, lastTime;
-    dt = curTime = lastTime = 0.0f;
-
-    int pelletsCollected = 0; // Keeps track of how many pellets are collected
 
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -188,14 +196,21 @@ int main(void)
     window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
 
 
-    // Main loop
+ 
+//------------------------------------------------------------------------------------
+//                                 Game loop
+//------------------------------------------------------------------------------------
+
     while (!glfwWindowShouldClose(window))
     {
+        //                   Preparation
         updateDeltaTime(dt, curTime, lastTime); // Updating delta time
         glfwPollEvents();
 
         renderer.Clear();   // Clearing screen
 
+
+        // ImGui
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
@@ -205,25 +220,19 @@ int main(void)
         ImGui::Text("Current score: %d", pelletsCollected * 10);
         ImGui::End();
 
-
-        renderer.Draw(tileVao, tileIbo, tileShader);    // Drawing map
-        
-                                                        // add 0.5 to get center of player
+        // Score counting
         if (removeCollectible(vertices.collectibleVertices, pacman.GetPos().x + 0.5, pacman.GetPos().y + 0.5))
         {
             pelletsCollected++; // Ups by 1 if pellet is collected
-
             if (pelletsCollected == map1.GetNumCollecs()) // Freezing game if all pellets are collected
             {
                 system("PAUSE");
             }
         }
 
+        
+        //                          Player movement and collision calculations
 
-        collVbo.UpdateData(vertices.collectibleVertices);
-        renderer.Draw(collVao, collIbo, tileShader);
-
-        // Move up
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
             if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.1))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.9))] != 1)
@@ -276,6 +285,11 @@ int main(void)
         }
 
 
+        //                              Draw calls
+
+        renderer.Draw(tileVao, tileIbo, tileShader);    // Drawing map
+        collVbo.UpdateData(vertices.collectibleVertices);
+        renderer.Draw(collVao, collIbo, tileShader);
         pacman.Draw(pacmanShader);                  // Drawing pacman
 
         for (auto& ghost : ghosts)                // Drawing all ghosts
@@ -307,14 +321,15 @@ int main(void)
 //                                  Functions
 //------------------------------------------------------------------------------------------
 
+// GLFW and window initialization
 GLFWwindow* initWindow()
 {
     if (!glfwInit())
     {
-        std::cin.get();
         return nullptr;
     }
 
+    // Window hints
     glfwWindowHint(GLFW_RESIZABLE, false);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -325,11 +340,7 @@ GLFWwindow* initWindow()
     if (window == nullptr)
     {
         glfwTerminate();
-
-        //std::cin.get();
-
         return nullptr;
-        //return EXIT_FAILURE;
     }
 
     glfwMakeContextCurrent(window);
@@ -337,25 +348,13 @@ GLFWwindow* initWindow()
     GLenum error = glewInit();
     if (error != GLEW_OK)
     {
-        //std::cerr << "GLEW intialization failure:" << glewGetErrorString(error) << "\n";
-        //std::cin.get();
-
         glfwTerminate();
-
         return nullptr;
-        //return EXIT_FAILURE;
     }
 
     glfwSetInputMode(window, GLFW_STICKY_KEYS, GL_TRUE);
     glfwSwapInterval(1);
     return window;
-}
-
-void updateDeltaTime(GLfloat& dt, GLfloat& ct, GLfloat& lt)
-{
-    ct = static_cast<GLfloat>(glfwGetTime());
-    dt = ct - lt;
-    lt = ct;
 }
 
 void GLFWErrorCallback(int code, const char* description)
@@ -378,16 +377,24 @@ MessageCallback(GLenum source,
         ", message =" << message << "\n";
 }
 
+void updateDeltaTime(GLfloat& dt, GLfloat& ct, GLfloat& lt)
+{
+    ct = static_cast<GLfloat>(glfwGetTime());
+    dt = ct - lt;
+    lt = ct;
+}
+
 // Recieves player position and the collectibles container, goes through the container until it finds the element with
 //  the correct data and removes the 4 vertices from that one;
 bool removeCollectible(std::vector<framework::Vertex> &collectibles, int xPos, int yPos)
 {
+    // Goes through every collectible
     for (int i = 0; i < collectibles.size(); i+=4)
     {
         glm::vec2 position = collectibles[i].pos;
         int x = position.x, y = position.y;
         
-
+        // If position is the same as player and not black, paint it black
         if (x == xPos && y == yPos && collectibles[i].col.x != 0)
         {
             collectibles[i].col.x = 0;
@@ -405,7 +412,6 @@ bool removeCollectible(std::vector<framework::Vertex> &collectibles, int xPos, i
             collectibles[(i + 3)].col.x = 0;
             collectibles[(i + 3)].col.y = 0;
             collectibles[(i + 3)].col.z = 0;
-            //collectibles.erase(collectibles.begin() + i, collectibles.begin() + i + 3);
             return 1;
         }
     }
