@@ -176,9 +176,10 @@ int main(void)
 
         renderer.Draw(tileVao, tileIbo, tileShader);    // Drawing map
 
-        renderer.Draw(collVao, collIbo, tileShader);
+        removeCollectible(vertices.collectibleVertices, pacman.GetPos().x + 0.5, pacman.GetPos().y + 0.5);
 
-        removeCollectible(vertices.collectibleVertices, pacman.GetPos().x, pacman.GetPos().y);
+        collVbo.UpdateData(vertices.collectibleVertices);
+        renderer.Draw(collVao, collIbo, tileShader);
 
         // Move up
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
@@ -299,13 +300,30 @@ MessageCallback(GLenum source,
 //  the correct data and removes the 4 vertices from that one;
 bool removeCollectible(std::vector<framework::Vertex> &collectibles, int xPos, int yPos)
 {
-    for (int i = 0; i < collectibles.size(); i++)
+    for (int i = 0; i < collectibles.size(); i+=4)
     {
-
         glm::vec2 position = collectibles[i].pos;
-        if (position.x = xPos && position.y == yPos)
+        int x = position.x, y = position.y;
+        
+
+        if (x == xPos && y == yPos)
         {
-            collectibles.erase(collectibles.begin() + i - 1, collectibles.begin() + i + 2);
+            collectibles[i].col.x = 0;
+            collectibles[i].col.y = 0;
+            collectibles[i].col.z = 0;
+            
+            collectibles[(i + 1)].col.x = 0;
+            collectibles[(i + 1)].col.y = 0;
+            collectibles[(i + 1)].col.z = 0;
+            
+            collectibles[(i + 2)].col.x = 0;
+            collectibles[(i + 2)].col.y = 0;
+            collectibles[(i + 2)].col.z = 0;
+            
+            collectibles[(i + 3)].col.x = 0;
+            collectibles[(i + 3)].col.y = 0;
+            collectibles[(i + 3)].col.z = 0;
+            //collectibles.erase(collectibles.begin() + i, collectibles.begin() + i + 3);
             return 1;
         }
     }
