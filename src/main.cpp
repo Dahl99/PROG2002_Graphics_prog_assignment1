@@ -171,6 +171,8 @@ int main(void)
     GLfloat dt, curTime, lastTime;
     dt = curTime = lastTime = 0.0f;
 
+    int pelletsCollected = 0; // Keeps track of how many pellets are collected
+
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
@@ -182,7 +184,16 @@ int main(void)
         renderer.Draw(tileVao, tileIbo, tileShader);    // Drawing map
         
                                                         // add 0.5 to get center of player
-        removeCollectible(vertices.collectibleVertices, pacman.GetPos().x + 0.5, pacman.GetPos().y + 0.5); 
+        if (removeCollectible(vertices.collectibleVertices, pacman.GetPos().x + 0.5, pacman.GetPos().y + 0.5))
+        {
+            pelletsCollected++; // Ups by 1 if pellet is collected
+
+            if (pelletsCollected == map1.GetNumCollecs()) // Freezing game if all pellets are collected
+            {
+                system("PAUSE");
+            }
+        }
+
 
         collVbo.UpdateData(vertices.collectibleVertices);
         renderer.Draw(collVao, collIbo, tileShader);
