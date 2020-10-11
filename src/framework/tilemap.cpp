@@ -4,6 +4,7 @@
 #include "tilemap.hpp"
 
 namespace framework {
+
 	// Gets filepath as parameter and reads the tilemap from file
 	Map::Map(const std::string& levelPath)
 	{
@@ -21,6 +22,7 @@ namespace framework {
 				array.insert(array.begin(), x);
 				//stream >> array[sizeArray - (i + 1)];
 			}
+
 			CreateMap();
 		}
 		else std::cout << "Failed to read map!\n";
@@ -30,7 +32,6 @@ namespace framework {
 
 	Map::~Map()
 	{
-
 		if (map)
 			delete[] map;
 	}
@@ -41,103 +42,111 @@ namespace framework {
 	void Map::CreateMap()
 	{
 		map = new framework::Tile[sizeArray];
+
+		// Declaration of some variables
 		glm::vec3 playerPos;
 		std::vector<glm::vec3> ghostPos;
 
 		int yPos = 0;
 		int playerLoc = 0;
+
 		// For the the map read in the constructor, check each number and assign possition and colour 
+		//  starting at i = 1 because of mod
 		for (int i = 1; i <= sizeArray; i++)
 		{
-
+			// The cases are Collectibles, walls, player and ghost respectively
 			switch (array[i - 1])
 			{
-			case 0:
+			case 0:	// Each vertice of an collectible gets added or subtracted a const
+					//  to the vertice positions in order to reduce the size of the collectible
+
+				// Bottom left vertex
 				map[i - 1].botLeft.pos.x = ((i - 1) % sizeX) + COLLECTIBLESIZE;
 				map[i - 1].botLeft.pos.y = (yPos)+COLLECTIBLESIZE;
-
-				map[i - 1].botRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
-				map[i - 1].botRight.pos.y = (yPos)+COLLECTIBLESIZE;
-
-				map[i - 1].topLeft.pos.x = ((i - 1) % sizeX) + COLLECTIBLESIZE;
-				map[i - 1].topLeft.pos.y = (yPos + 1) - COLLECTIBLESIZE;
-
-				map[i - 1].topRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
-				map[i - 1].topRight.pos.y = (yPos + 1) - COLLECTIBLESIZE;
-
 				map[i - 1].botLeft.col.y = 1.0f;
 				map[i - 1].botLeft.col.z = 1.0f;
 				map[i - 1].botLeft.col.x = 1.0f;
 
+				// Bottom right vertex
+				map[i - 1].botRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
+				map[i - 1].botRight.pos.y = (yPos)+COLLECTIBLESIZE;
 				map[i - 1].botRight.col.x = 1.0f;
 				map[i - 1].botRight.col.y = 1.0f;
 				map[i - 1].botRight.col.z = 1.0f;
 
+				// Top left vertex
+				map[i - 1].topLeft.pos.x = ((i - 1) % sizeX) + COLLECTIBLESIZE;
+				map[i - 1].topLeft.pos.y = (yPos + 1) - COLLECTIBLESIZE;
 				map[i - 1].topLeft.col.x = 1.0f;
 				map[i - 1].topLeft.col.y = 1.0f;
 				map[i - 1].topLeft.col.z = 1.0f;
 
+				// Top right vertex
+				map[i - 1].topRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
+				map[i - 1].topRight.pos.y = (yPos + 1) - COLLECTIBLESIZE;
 				map[i - 1].topRight.col.x = 1.0f;
 				map[i - 1].topRight.col.y = 1.0f;
 				map[i - 1].topRight.col.z = 1.0f;
 				break;
+
 			case 1:
+				// Bottom left vertex
 				map[i - 1].botLeft.pos.x = (i - 1) % sizeX;
 				map[i - 1].botLeft.pos.y = yPos;
-
-				map[i - 1].botRight.pos.x = ((i - 1) % sizeX) + 1;
-				map[i - 1].botRight.pos.y = yPos;
-
-				map[i - 1].topLeft.pos.x = (i - 1) % sizeX;
-				map[i - 1].topLeft.pos.y = yPos + 1;
-
-				map[i - 1].topRight.pos.x = ((i - 1) % sizeX) + 1;
-				map[i - 1].topRight.pos.y = yPos + 1;
-
 				map[i - 1].botLeft.col.y = 0.0f;
 				map[i - 1].botLeft.col.x = 0.0f;
 				map[i - 1].botLeft.col.z = 0.6f;
 
+				// Bottom right vertex
+				map[i - 1].botRight.pos.x = ((i - 1) % sizeX) + 1;
+				map[i - 1].botRight.pos.y = yPos;
 				map[i - 1].botRight.col.x = 0.0f;
 				map[i - 1].botRight.col.y = 0.0f;
 				map[i - 1].botRight.col.z = 0.6f;
 
+				// Top left vertex
+				map[i - 1].topLeft.pos.x = (i - 1) % sizeX;
+				map[i - 1].topLeft.pos.y = yPos + 1;
 				map[i - 1].topLeft.col.x = 0.0f;
 				map[i - 1].topLeft.col.y = 0.0f;
 				map[i - 1].topLeft.col.z = 0.6f;
 
+				// Top right vertex
+				map[i - 1].topRight.pos.x = ((i - 1) % sizeX) + 1;
+				map[i - 1].topRight.pos.y = yPos + 1;
 				map[i - 1].topRight.col.x = 0.0f;
 				map[i - 1].topRight.col.y = 0.0f;
 				map[i - 1].topRight.col.z = 0.6f;
 				break;
-			case 2: // Sets player pos if tile type is 2
+
+			case 2: // Sets player pos if tile type is 2, also adds collectible vertices
 
 				playerPos = glm::vec3((float)(i % sizeX), (float)(yPos), 1.0f);
 
+				// Bottom left vertex
 				map[i - 1].botLeft.pos.x = ((i - 1) % sizeX) + COLLECTIBLESIZE;
 				map[i - 1].botLeft.pos.y = (yPos)+COLLECTIBLESIZE;
-
-				map[i - 1].botRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
-				map[i - 1].botRight.pos.y = (yPos)+COLLECTIBLESIZE;
-
-				map[i - 1].topLeft.pos.x = ((i - 1) % sizeX) + COLLECTIBLESIZE;
-				map[i - 1].topLeft.pos.y = (yPos + 1) - COLLECTIBLESIZE;
-
-				map[i - 1].topRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
-				map[i - 1].topRight.pos.y = (yPos + 1) - COLLECTIBLESIZE;
-
 				map[i - 1].botLeft.col.y = 1.0f;
 				map[i - 1].botLeft.col.z = 1.0f;
 				map[i - 1].botLeft.col.x = 1.0f;
 
+				// Bottom right vertex
+				map[i - 1].botRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
+				map[i - 1].botRight.pos.y = (yPos)+COLLECTIBLESIZE;
 				map[i - 1].botRight.col.x = 1.0f;
 				map[i - 1].botRight.col.y = 1.0f;
 				map[i - 1].botRight.col.z = 1.0f;
 
+				// Top left vertex
+				map[i - 1].topLeft.pos.x = ((i - 1) % sizeX) + COLLECTIBLESIZE;
+				map[i - 1].topLeft.pos.y = (yPos + 1) - COLLECTIBLESIZE;
 				map[i - 1].topLeft.col.x = 1.0f;
 				map[i - 1].topLeft.col.y = 1.0f;
 				map[i - 1].topLeft.col.z = 1.0f;
 
+				// Top right vertex
+				map[i - 1].topRight.pos.x = (((i - 1) % sizeX) + 1) - COLLECTIBLESIZE;
+				map[i - 1].topRight.pos.y = (yPos + 1) - COLLECTIBLESIZE;
 				map[i - 1].topRight.col.x = 1.0f;
 				map[i - 1].topRight.col.y = 1.0f;
 				map[i - 1].topRight.col.z = 1.0f;
@@ -148,6 +157,8 @@ namespace framework {
 			default:
 				break;
 			}
+
+			// Updates yPos to ensure correct coordinates
 			if (i % sizeX == 0 && i != 0)
 				yPos++;
 		}
@@ -183,8 +194,10 @@ namespace framework {
 	//  one for walls and one for collectibles
 	ShaderVertData Map::retMapVertices()
 	{
+		// Creates the return data container
 		ShaderVertData mapVertices;
 
+		// Goes through the map and puts each vertice of each tile into either the walls or collectibles container
 		for (int i = 0; i < sizeArray; i++)
 		{
 			if(array[i] && array[i] != 2)
@@ -204,7 +217,6 @@ namespace framework {
 				numCollecs++;
 			}
 		}
-
 		return mapVertices;
 	}
 
@@ -212,8 +224,11 @@ namespace framework {
 	// Creates the indice arrays for the map
 	std::vector<GLuint> Map::retMapIndices(int iterations)
 	{
+		// Create the return value container
 		std::vector<GLuint> indices;
 
+		// Adds the indices to create the two triangles of each square\
+			the order is 1, 2, 3 and 3, 4, 1 because vertexes are added in botleft, botright, topleft, topright
 		for (GLuint i = 0; i < iterations; i++)
 		{
 			indices.push_back(i * 4);
