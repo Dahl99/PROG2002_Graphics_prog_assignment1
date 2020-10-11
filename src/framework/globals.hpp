@@ -21,6 +21,8 @@ namespace framework {
 	const float COLLECTIBLESIZE = 0.35f;
 	const int COLLECTIBLESCORE = 10;
 
+	const float MUSICVOLUME = 0.25f;
+
 
 //-------------------------------------------------------------------------------------
 //									Tile Structs

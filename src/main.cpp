@@ -82,7 +82,7 @@ int main(void)
     // Initializing music
     irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
     irrklang::ISound* music = soundEngine->play2D(framework::SOUNDTRACK.c_str(), GL_TRUE, GL_FALSE, GL_TRUE);
-    music->setVolume(0.3f);
+    music->setVolume(framework::MUSICVOLUME);
 
 
     //------------------- Getting and preparing data --------------------
@@ -189,16 +189,14 @@ int main(void)
     texture.Bind(0);    //  Binding to texture slot 0
 
 
-
+    // ImGui setup
     ImGui::CreateContext();
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 430 core");
 
     ImGuiWindowFlags window_flags = 0;
     window_flags |= ImGuiWindowFlags_NoMove;
-    window_flags |= ImGuiWindowFlags_NoResize;
-    window_flags |= ImGuiWindowFlags_NoCollapse;
-    window_flags |= ImGuiWindowFlags_NoTitleBar;
+    window_flags |= ImGuiWindowFlags_NoDecoration;
     window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
 
 
@@ -216,7 +214,7 @@ int main(void)
         renderer.Clear();   // Clearing screen
 
 
-        // ImGui
+        // Creating ImGui textbox for displaying current score
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
