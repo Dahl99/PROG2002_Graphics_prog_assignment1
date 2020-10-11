@@ -207,16 +207,27 @@ int main(void)
         }
         // Strafe right
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.9) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1 &&
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] == 2 && 
+                pacman.GetPos().x >= map1.GetSizeX() / 2)
+            {
+                pacman.Teleport(0);
+            }
+            else if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.9) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1)
             {
                 pacman.UpdatePos(dt, framework::Direction::RIGHT);
                 pacman.UpdateSprite(pacmanShader, framework::Direction::RIGHT);
             }
+
         }
         // Strafe left
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.9) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1 &&
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] == 2 &&
+                pacman.GetPos().x <= map1.GetSizeX() / 2)
+            {
+                pacman.Teleport(map1.GetSizeX() - 1);
+            }
+            else if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.9) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.1) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1)
             {
                 pacman.UpdatePos(dt, framework::Direction::LEFT);

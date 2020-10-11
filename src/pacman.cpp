@@ -270,3 +270,9 @@ void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction&
 
 	shader.SetUniform2fv("posTex", texPos);
 }
+
+
+void Pacman::Teleport(int xLoc)
+{
+	ModPos(xLoc);
+}
