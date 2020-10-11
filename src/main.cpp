@@ -217,7 +217,7 @@ int main(void)
 
         ImGui::SetNextWindowPos(ImVec2(0, 0));
         ImGui::Begin("Score", NULL, window_flags);
-        ImGui::Text("Current score: %d", pelletsCollected * 10);
+        ImGui::Text("Current score: %d", pelletsCollected * framework::COLLECTIBLESCORE);
         ImGui::End();
 
         // Score counting
@@ -230,7 +230,13 @@ int main(void)
             }
         }
 
+        // Checking if a ghost collides with pacman
+        for (int i = 0; i < 3; i++)
+            if (ghosts[i]->CollisionCheck(pacman.GetPos()))
+                system("PAUSE");
         
+
+
         //                          Player movement and collision calculations
 
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
@@ -294,8 +300,7 @@ int main(void)
 
         for (auto& ghost : ghosts)                // Drawing all ghosts
         {
-            ghost->Behaviour(map1.GetArray(), map1.GetSizeX(), dt);
-            ghost->UpdateSprite(ghostShader, framework::Direction::RIGHT);
+            ghost->Behaviour(map1.GetArray(), map1.GetSizeX(), dt, ghostShader);
             ghost->Draw(ghostShader);
         }
 
