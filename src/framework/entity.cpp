@@ -31,21 +31,21 @@ namespace framework
 		glDrawElements(GL_TRIANGLES, ibo->GetCount(), GL_UNSIGNED_INT, nullptr);
 	}
 
-	void Entity::UpdatePos(const GLfloat& dt, const GLint& dir)
+	void Entity::UpdatePos(const GLfloat& dt, const Direction& dir)
 	{
 		// Updates position based on direction
 		switch (dir)
 		{
-		case 0: // Up
+		case Direction::UP:
 			pos.y += dt * mvSpeed;
 			break;
-		case 1: // Right
+		case Direction::RIGHT:
 			pos.x += dt * mvSpeed;
 			break;
-		case 2: // Down
+		case Direction::DOWN:
 			pos.y -= dt * mvSpeed;
 			break;
-		case 3: // Left
+		case Direction::LEFT:
 			pos.x -= dt * mvSpeed;
 			break;
 		default:

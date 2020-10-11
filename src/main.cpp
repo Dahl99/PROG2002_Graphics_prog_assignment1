@@ -152,10 +152,15 @@ int main(void)
     tileShader.Bind();
     tileShader.SetUniformMat4f("u_Projection", projection);
 
-    framework::Shader entityShader(framework::CHARVERTGSHADERPATH, framework::CHARFRAGSHADERPATH);
-    entityShader.Bind();
-    entityShader.SetUniformMat4f("u_Projection", projection);
-    entityShader.SetUniform1i("uTexture", 0);
+    framework::Shader pacmanShader(framework::CHARVERTGSHADERPATH, framework::CHARFRAGSHADERPATH);
+    pacmanShader.Bind();
+    pacmanShader.SetUniformMat4f("u_Projection", projection);
+    pacmanShader.SetUniform1i("uTexture", 0);
+    
+    framework::Shader ghostShader(framework::CHARVERTGSHADERPATH, framework::CHARFRAGSHADERPATH);
+    ghostShader.Bind();
+    ghostShader.SetUniformMat4f("u_Projection", projection);
+    ghostShader.SetUniform1i("uTexture", 0);
 
     framework::Texture texture(framework::PACMANPICTUREPATH);
     texture.Bind(0);    //  Binding to texture slot 0
@@ -187,8 +192,8 @@ int main(void)
             if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.1))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.9))] != 1)
             {
-                pacman.UpdatePos(dt, 0);
-                pacman.UpdateSprite(entityShader, 0);
+                pacman.UpdatePos(dt, framework::Direction::UP);
+                pacman.UpdateSprite(pacmanShader, framework::Direction::UP);
             }
         }
         // Move down
@@ -196,8 +201,8 @@ int main(void)
             if (map1.GetArray()[(int)(((int)(pacman.GetPos().y) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.1))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.9))] != 1)
             {
-                pacman.UpdatePos(dt, 2);
-                pacman.UpdateSprite(entityShader, 2);
+                pacman.UpdatePos(dt, framework::Direction::DOWN);
+                pacman.UpdateSprite(pacmanShader, framework::Direction::DOWN);
             }
         }
         // Strafe right
@@ -205,8 +210,8 @@ int main(void)
             if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.9) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1)
             {
-                pacman.UpdatePos(dt, 1);
-                pacman.UpdateSprite(entityShader, 1);
+                pacman.UpdatePos(dt, framework::Direction::RIGHT);
+                pacman.UpdateSprite(pacmanShader, framework::Direction::RIGHT);
             }
         }
         // Strafe left
@@ -214,17 +219,18 @@ int main(void)
             if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.9) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.1) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1)
             {
-                pacman.UpdatePos(dt, 3);
-                pacman.UpdateSprite(entityShader, 3);
+                pacman.UpdatePos(dt, framework::Direction::LEFT);
+                pacman.UpdateSprite(pacmanShader, framework::Direction::LEFT);
             }
         }
 
-        pacman.Draw(entityShader);                  // Drawing pacman
+
+        pacman.Draw(pacmanShader);                  // Drawing pacman
 
         for (auto& ghost : ghosts)                // Drawing all ghosts
         {
-            ghost->UpdateSprite(entityShader, 1);
-            ghost->Draw(entityShader);
+            ghost->UpdateSprite(ghostShader, framework::Direction::RIGHT);
+            ghost->Draw(ghostShader);
         }
 
         glfwSwapBuffers(window);

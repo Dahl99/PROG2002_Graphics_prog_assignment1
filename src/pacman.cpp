@@ -11,7 +11,7 @@ Pacman::Pacman(glm::vec3 pos, std::vector<framework::Vertex>& vertices, std::vec
 * Updating sprite by using a unfiform based on direction and an animation timer
 * sprite will also be reversed if it's the last sprite in line for smoother animation
 */
-void Pacman::UpdateSprite(framework::Shader& shader, const GLint& dir)
+void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction& dir)
 {
 	shader.Bind();
 	GLfloat texPos[2];
@@ -19,7 +19,7 @@ void Pacman::UpdateSprite(framework::Shader& shader, const GLint& dir)
 	{
 		switch (dir)
 		{
-		case 0:
+		case framework::Direction::UP:
 			if (animTimer <= 1.0f)
 			{
 				texPos[0] = 0.0f;
@@ -48,7 +48,7 @@ void Pacman::UpdateSprite(framework::Shader& shader, const GLint& dir)
 				texPos[1] = 1.0f / 2.0f;
 			}
 			break;
-		case 1:
+		case framework::Direction::RIGHT:
 			if (animTimer <= 1.0f)
 			{
 				texPos[0] = 0.0f;
@@ -77,7 +77,7 @@ void Pacman::UpdateSprite(framework::Shader& shader, const GLint& dir)
 				texPos[1] = 0.0f;
 			}
 			break;
-		case 2:
+		case framework::Direction::DOWN:
 			if (animTimer <= 1.0f)
 			{
 				texPos[0] = 0.0f;
@@ -106,7 +106,7 @@ void Pacman::UpdateSprite(framework::Shader& shader, const GLint& dir)
 				texPos[1] = 3.0f / 4.0f;
 			}
 			break;
-		case 3:
+		case framework::Direction::LEFT:
 			if (animTimer <= 1.0f)
 			{
 				texPos[0] = 0.0f;
