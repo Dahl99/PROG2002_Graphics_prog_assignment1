@@ -94,7 +94,7 @@ void Ghost::UpdateSprite(framework::Shader& shader, const framework::Direction& 
 }
 
 
-void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt)
+void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt, framework::Shader& shader)
 {
 
 	switch (dir) {
@@ -102,6 +102,7 @@ void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt)
 		if (map[(int)(((int)(GetPos().y + 1) * sizeX) + (int)(GetPos().x + 0.5))] != 1)
 		{
 			UpdatePos(dt, framework::Direction(dir));
+			UpdateSprite(shader, framework::Direction::UP);
 		}
 		else //change dir
 		{
@@ -115,6 +116,7 @@ void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt)
 		if (map[(int)(((int)(GetPos().y + 0.5) * sizeX) + (int)(GetPos().x + 1))] != 1)
 		{
 			UpdatePos(dt, framework::Direction(dir));
+			UpdateSprite(shader, framework::Direction::RIGHT);
 		}
 		else
 		{
@@ -127,6 +129,7 @@ void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt)
 		if (map[(int)(((int)(GetPos().y) * sizeX) + (int)(GetPos().x + 0.5))] != 1)
 		{
 			UpdatePos(dt, framework::Direction(dir));
+			UpdateSprite(shader, framework::Direction::DOWN);
 		}
 		else //change dir
 		{
@@ -139,6 +142,7 @@ void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt)
 		if (map[(int)(((int)(GetPos().y + 0.5) * sizeX) + (int)(GetPos().x))] != 1)
 		{
 			UpdatePos(dt, framework::Direction(dir));
+			UpdateSprite(shader, framework::Direction::LEFT);
 		}
 		else //change dir
 		{
@@ -154,4 +158,13 @@ void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt)
 	{
 
 	}
+}
+
+bool Ghost::CollisionCheck(const glm::vec3& pacmanPos)
+{
+	const glm::vec3& pos = GetPos();
+	if ((int)pacmanPos.x == (int)pos.x && (int)pacmanPos.y == (int)pos.y)
+		return true;
+	else
+		return false;
 }

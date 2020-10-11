@@ -16,6 +16,7 @@ namespace framework {
 
 	const int WINDOWSIZEX = 28*28, WINDOWSIZEY = 36*28;
 	const float COLLECTIBLESIZE = 0.35f;
+	const int COLLECTIBLESCORE = 10;
 
 
 //-------------------------------------------------------------------------------------
