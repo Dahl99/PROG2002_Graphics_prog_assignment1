@@ -184,7 +184,8 @@ int main(void)
 
         // Move up
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.5))] != 1)
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.1))] != 1 &&
+                map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.9))] != 1)
             {
                 pacman.UpdatePos(dt, 0);
                 pacman.UpdateSprite(entityShader, 0);
@@ -192,7 +193,8 @@ int main(void)
         }
         // Move down
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.5))] != 1)
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.1))] != 1 &&
+                map1.GetArray()[(int)(((int)(pacman.GetPos().y) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.9))] != 1)
             {
                 pacman.UpdatePos(dt, 2);
                 pacman.UpdateSprite(entityShader, 2);
@@ -200,7 +202,8 @@ int main(void)
         }
         // Strafe right
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1)
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.9) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1 &&
+                map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1)
             {
                 pacman.UpdatePos(dt, 1);
                 pacman.UpdateSprite(entityShader, 1);
@@ -208,7 +211,8 @@ int main(void)
         }
         // Strafe left
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1)
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.9) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1 &&
+                map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.1) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1)
             {
                 pacman.UpdatePos(dt, 3);
                 pacman.UpdateSprite(entityShader, 3);
@@ -319,7 +323,7 @@ bool removeCollectible(std::vector<framework::Vertex> &collectibles, int xPos, i
         int x = position.x, y = position.y;
         
 
-        if (x == xPos && y == yPos)
+        if (x == xPos && y == yPos && collectibles[i].col.x != 0)
         {
             collectibles[i].col.x = 0;
             collectibles[i].col.y = 0;
