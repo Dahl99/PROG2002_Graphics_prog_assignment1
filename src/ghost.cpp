@@ -162,7 +162,9 @@ void Ghost::Behaviour(std::vector<int> & map, int sizeX, GLfloat & dt, framework
 bool Ghost::CollisionCheck(const glm::vec3& pacmanPos)
 {
 	const glm::vec3& pos = GetPos();
-	if ((int)pacmanPos.x == (int)pos.x && (int)pacmanPos.y == (int)pos.y)
+
+	// If pacman and the ghost are on the same tile (adds 0.5 to calculate from the midpoint of the sprites
+	if ((int)(pacmanPos.x + 0.5) == (int)(pos.x + 0.5) && (int)(pacmanPos.y + 0.5) == (int)(pos.y + 0.5))
 		return true;
 	else
 		return false;
