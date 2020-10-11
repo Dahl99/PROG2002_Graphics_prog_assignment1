@@ -24,7 +24,11 @@ void Ghost::UpdateSprite(framework::Shader& shader, const framework::Direction& 
 			texPos[1] = 1.0f / 2.0f;
 		}
 		else
+		{
 			animTimer = 0.0f;
+			texPos[0] = 1.0f / 6.0f;
+			texPos[1] = 1.0f / 2.0f;
+		}
 		break;
 	case framework::Direction::RIGHT:
 		if (animTimer <= 1.0f)
@@ -38,7 +42,11 @@ void Ghost::UpdateSprite(framework::Shader& shader, const framework::Direction& 
 			texPos[1] = 0.0f;
 		}
 		else
+		{
 			animTimer = 0.0f;
+			texPos[0] = 1.0f / 6.0f;
+			texPos[1] = 0.0f;
+		}
 		break;
 	case framework::Direction::DOWN:
 		if (animTimer <= 1.0f)
@@ -52,7 +60,11 @@ void Ghost::UpdateSprite(framework::Shader& shader, const framework::Direction& 
 			texPos[1] = 3.0f / 4.0f;
 		}
 		else
+		{
 			animTimer = 0.0f;
+			texPos[0] = 1.0f / 6.0f;
+			texPos[1] = 3.0f / 4.0f;
+		}
 		break;
 	case framework::Direction::LEFT:
 		if (animTimer <= 1.0f)
@@ -66,7 +78,11 @@ void Ghost::UpdateSprite(framework::Shader& shader, const framework::Direction& 
 			texPos[1] = 1.0f / 4.0f;
 		}
 		else
+		{
 			animTimer = 0.0f;
+			texPos[0] = 1.0f / 6.0f;
+			texPos[1] = 1.0f / 4.0f;
+		}
 		break;
 	default:
 		break;

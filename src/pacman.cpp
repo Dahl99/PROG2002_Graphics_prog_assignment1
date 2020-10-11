@@ -27,24 +27,24 @@ void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction&
 			}
 			else if (animTimer <= 2.0f)
 			{
-				texPos[0] = 1.0 / 6.0f;
+				texPos[0] = 1.0f / 6.0f;
 				texPos[1] = 1.0f / 2.0f;
 			}
 			else if (animTimer <= 3.0f)
 			{
-				texPos[0] = 1.0 / 3.0f;
+				texPos[0] = 1.0f / 3.0f;
 				texPos[1] = 1.0f / 2.0f;
 			}
 			else if (animTimer <= 4.0f)
 			{
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 1.0f / 2.0f;
 			}
 			else if (animTimer > 4.0f)
 			{
 				animReverse = !animReverse;
 				animTimer = 4.0f;
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 1.0f / 2.0f;
 			}
 			break;
@@ -56,24 +56,24 @@ void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction&
 			}
 			else if (animTimer <= 2.0f)
 			{
-				texPos[0] = 1.0 / 6.0f;
+				texPos[0] = 1.0f / 6.0f;
 				texPos[1] = 0.0f;
 			}
 			else if (animTimer <= 3.0f)
 			{
-				texPos[0] = 1.0 / 3.0f;
+				texPos[0] = 1.0f / 3.0f;
 				texPos[1] = 0.0f;
 			}
 			else if (animTimer <= 4.0f)
 			{
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 0.0f;
 			}
 			else if (animTimer > 4.0f)
 			{
 				animReverse = !animReverse;
 				animTimer = 4.0f;
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 0.0f;
 			}
 			break;
@@ -85,24 +85,24 @@ void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction&
 			}
 			else if (animTimer <= 2.0f)
 			{
-				texPos[0] = 1.0 / 6.0f;
+				texPos[0] = 1.0f / 6.0f;
 				texPos[1] = 3.0f / 4.0f;
 			}
 			else if (animTimer <= 3.0f)
 			{
-				texPos[0] = 1.0 / 3.0f;
+				texPos[0] = 1.0f / 3.0f;
 				texPos[1] = 3.0f / 4.0f;
 			}
 			else if (animTimer <= 4.0f)
 			{
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 3.0f / 4.0f;
 			}
 			else if (animTimer > 4.0f)
 			{
 				animReverse = !animReverse;
 				animTimer = 4.0f;
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 3.0f / 4.0f;
 			}
 			break;
@@ -114,24 +114,24 @@ void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction&
 			}
 			else if (animTimer <= 2.0f)
 			{
-				texPos[0] = 1.0 / 6.0f;
+				texPos[0] = 1.0f / 6.0f;
 				texPos[1] = 1.0f / 4.0f;
 			}
 			else if (animTimer <= 3.0f)
 			{
-				texPos[0] = 1.0 / 3.0f;
+				texPos[0] = 1.0f / 3.0f;
 				texPos[1] = 1.0f / 4.0f;
 			}
 			else if (animTimer <= 4.0f)
 			{
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 1.0f / 4.0f;
 			}
 			else if (animTimer > 4.0f)
 			{
 				animReverse = !animReverse;
 				animTimer = 4.0f;
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 1.0f / 4.0f;
 			}
 			break;
@@ -148,17 +148,17 @@ void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction&
 		case 0:
 			if (animTimer >= 3.0f)
 			{
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 1.0f / 2.0f;
 			}
 			else if (animTimer >= 2.0f)
 			{
-				texPos[0] = 1.0 / 3.0f;
+				texPos[0] = 1.0f / 3.0f;
 				texPos[1] = 1.0f / 2.0f;
 			}
 			else if (animTimer >= 1.0f)
 			{
-				texPos[0] = 1.0 / 6.0f;
+				texPos[0] = 1.0f / 6.0f;
 				texPos[1] = 1.0f / 2.0f;
 			}
 			else if (animTimer >= 0.0f)
@@ -177,17 +177,17 @@ void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction&
 		case 1:
 			if (animTimer >= 3.0f)
 			{
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 0.0f;
 			}
 			else if (animTimer >= 2.0f)
 			{
-				texPos[0] = 1.0 / 3.0f;
+				texPos[0] = 1.0f / 3.0f;
 				texPos[1] = 0.0f;
 			}
 			else if (animTimer >= 1.0f)
 			{
-				texPos[0] = 1.0 / 3.0f;
+				texPos[0] = 1.0f / 3.0f;
 				texPos[1] = 0.0f;
 			}
 			else if (animTimer >= 0.0f)
@@ -206,17 +206,17 @@ void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction&
 		case 2:
 			if (animTimer >= 3.0f)
 			{
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 3.0f / 4.0f;
 			}
 			else if (animTimer >= 2.0f)
 			{
-				texPos[0] = 1.0 / 3.0f;
+				texPos[0] = 1.0f / 3.0f;
 				texPos[1] = 3.0f / 4.0f;
 			}
 			else if (animTimer >= 1.0f)
 			{
-				texPos[0] = 1.0 / 6.0f;
+				texPos[0] = 1.0f / 6.0f;
 				texPos[1] = 3.0f / 4.0f;
 			}
 			else if (animTimer >= 0.0f)
@@ -235,17 +235,17 @@ void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction&
 		case 3:
 			if (animTimer >= 3.0f)
 			{
-				texPos[0] = 1.0 / 2.0f;
+				texPos[0] = 1.0f / 2.0f;
 				texPos[1] = 1.0f / 4.0f;
 			}
 			else if (animTimer >= 2.0f)
 			{
-				texPos[0] = 1.0 / 3.0f;
+				texPos[0] = 1.0f / 3.0f;
 				texPos[1] = 1.0f / 4.0f;
 			}
 			else if (animTimer >= 1.0f)
 			{
-				texPos[0] = 1.0 / 6.0f;
+				texPos[0] = 1.0f / 6.0f;
 				texPos[1] = 1.0f / 4.0f;
 			}
 			else if (animTimer >= 0.0f)
