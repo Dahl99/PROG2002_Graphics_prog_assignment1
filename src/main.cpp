@@ -175,31 +175,44 @@ int main(void)
         renderer.Clear();   // Clearing screen
 
         renderer.Draw(tileVao, tileIbo, tileShader);    // Drawing map
-
-        removeCollectible(vertices.collectibleVertices, pacman.GetPos().x + 0.5, pacman.GetPos().y + 0.5);
+        
+                                                        // add 0.5 to get center of player
+        removeCollectible(vertices.collectibleVertices, pacman.GetPos().x + 0.5, pacman.GetPos().y + 0.5); 
 
         collVbo.UpdateData(vertices.collectibleVertices);
         renderer.Draw(collVao, collIbo, tileShader);
 
         // Move up
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
-            pacman.UpdatePos(dt, 0);
-            pacman.UpdateSprite(entityShader, 0);
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.5))] != 1)
+            {
+                pacman.UpdatePos(dt, 0);
+                pacman.UpdateSprite(entityShader, 0);
+            }
         }
         // Move down
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-            pacman.UpdatePos(dt, 2);
-            pacman.UpdateSprite(entityShader, 2);
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.5))] != 1)
+            {
+                pacman.UpdatePos(dt, 2);
+                pacman.UpdateSprite(entityShader, 2);
+            }
         }
         // Strafe right
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-            pacman.UpdatePos(dt, 1);
-            pacman.UpdateSprite(entityShader, 1);
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1)
+            {
+                pacman.UpdatePos(dt, 1);
+                pacman.UpdateSprite(entityShader, 1);
+            }
         }
         // Strafe left
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            pacman.UpdatePos(dt, 3);
-            pacman.UpdateSprite(entityShader, 3);
+            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1)
+            {
+                pacman.UpdatePos(dt, 3);
+                pacman.UpdateSprite(entityShader, 3);
+            }
         }
 
         pacman.Draw(entityShader);                  // Drawing pacman
