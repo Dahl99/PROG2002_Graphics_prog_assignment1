@@ -207,6 +207,8 @@ int main(void)
         }
         // Strafe right
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+
+            // If at right edge and moving right teleport to left edge
             if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] == 2 && 
                 pacman.GetPos().x >= map1.GetSizeX() / 2)
             {
@@ -222,6 +224,8 @@ int main(void)
         }
         // Strafe left
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+
+            // If at left edge and moving left teleport to right edge
             if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] == 2 &&
                 pacman.GetPos().x <= map1.GetSizeX() / 2)
             {
@@ -240,6 +244,7 @@ int main(void)
 
         for (auto& ghost : ghosts)                // Drawing all ghosts
         {
+            ghost->Behaviour(map1.GetArray(), map1.GetSizeX(), dt);
             ghost->UpdateSprite(ghostShader, framework::Direction::RIGHT);
             ghost->Draw(ghostShader);
         }

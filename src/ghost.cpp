@@ -4,6 +4,7 @@ Ghost::Ghost(glm::vec3 pos, std::vector<framework::Vertex>& vertices, std::vecto
 	: Entity(pos, vertices, indices)
 {
 	animTimer = 0.0f;
+	dir = 0;
 }
 
 void Ghost::UpdateSprite(framework::Shader& shader, const framework::Direction& dir)
@@ -90,4 +91,67 @@ void Ghost::UpdateSprite(framework::Shader& shader, const framework::Direction& 
 
 	animTimer += 0.05f;
 	shader.SetUniform2fv("posTex", texPos);
+}
+
+
+void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt)
+{
+
+	switch (dir) {
+	case 0:
+		if (map[(int)(((int)(GetPos().y + 1) * sizeX) + (int)(GetPos().x + 0.5))] != 1)
+		{
+			UpdatePos(dt, framework::Direction(dir));
+		}
+		else //change dir
+		{
+			if (rand() % 2)
+				dir += 1;
+			else dir = 3;
+			
+		}
+		break;
+	case 1:
+		if (map[(int)(((int)(GetPos().y + 0.5) * sizeX) + (int)(GetPos().x + 1))] != 1)
+		{
+			UpdatePos(dt, framework::Direction(dir));
+		}
+		else
+		{
+			if (rand() % 2)
+				dir += 1;
+			else dir -= 1;
+		}
+		break;
+	case 2:
+		if (map[(int)(((int)(GetPos().y) * sizeX) + (int)(GetPos().x + 0.5))] != 1)
+		{
+			UpdatePos(dt, framework::Direction(dir));
+		}
+		else //change dir
+		{
+			if (rand() % 2)
+				dir += 1;
+			else dir -= 1;
+		}
+		break;
+	case 3:
+		if (map[(int)(((int)(GetPos().y + 0.5) * sizeX) + (int)(GetPos().x))] != 1)
+		{
+			UpdatePos(dt, framework::Direction(dir));
+		}
+		else //change dir
+		{
+			if (rand() % 2)
+				dir = 0;
+			else dir -= 1;
+		}
+		break;
+	default:
+		break;
+	}
+	if (map[(int)(((int)(GetPos().y + 0.5) * sizeX) + (int)(GetPos().x + 1))] == 1)
+	{
+
+	}
 }
