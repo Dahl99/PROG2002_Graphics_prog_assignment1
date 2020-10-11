@@ -6,6 +6,9 @@
 #include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
 
 
 #include "framework/globals.hpp"
@@ -173,6 +176,18 @@ int main(void)
 
     int pelletsCollected = 0; // Keeps track of how many pellets are collected
 
+    ImGui::CreateContext();
+    ImGui_ImplGlfw_InitForOpenGL(window, true);
+    ImGui_ImplOpenGL3_Init("#version 430 core");
+
+    ImGuiWindowFlags window_flags = 0;
+    window_flags |= ImGuiWindowFlags_NoMove;
+    window_flags |= ImGuiWindowFlags_NoResize;
+    window_flags |= ImGuiWindowFlags_NoCollapse;
+    window_flags |= ImGuiWindowFlags_NoTitleBar;
+    window_flags |= ImGuiWindowFlags_AlwaysAutoResize;
+
+
     // Main loop
     while (!glfwWindowShouldClose(window))
     {
@@ -180,6 +195,16 @@ int main(void)
         glfwPollEvents();
 
         renderer.Clear();   // Clearing screen
+
+        ImGui_ImplOpenGL3_NewFrame();
+        ImGui_ImplGlfw_NewFrame();
+        ImGui::NewFrame();
+
+        ImGui::SetNextWindowPos(ImVec2(0, 0));
+        ImGui::Begin("Score", NULL, window_flags);
+        ImGui::Text("Current score: %d", pelletsCollected * 10);
+        ImGui::End();
+
 
         renderer.Draw(tileVao, tileIbo, tileShader);    // Drawing map
         
@@ -260,11 +285,18 @@ int main(void)
             ghost->Draw(ghostShader);
         }
 
+        ImGui::Render();
+        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
         glfwSwapBuffers(window);
 
         // Exit the loop if escape is pressed
         if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) break;
     }
+
+    ImGui_ImplOpenGL3_Shutdown();
+    ImGui_ImplGlfw_Shutdown();
+    ImGui::DestroyContext();
 
     glfwTerminate();
 

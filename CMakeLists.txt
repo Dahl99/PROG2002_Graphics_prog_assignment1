@@ -57,10 +57,30 @@ add_executable(Assignment1
 	res/shaders/tile.vert
 	res/shaders/tile.frag
 	res/shaders/character.vert
-	res/shaders/character.frag)
+	res/shaders/character.frag
+	
+	external/imgui/imconfig.h
+    external/imgui/imgui.cpp
+    external/imgui/imgui_draw.cpp
+    external/imgui/imgui.h
+    external/imgui/imgui_impl_glfw.cpp
+    external/imgui/imgui_impl_glfw.h
+    external/imgui/imgui_impl_opengl3.cpp
+    external/imgui/imgui_impl_opengl3.h
+    external/imgui/imgui_internal.h
+    external/imgui/imgui_widgets.cpp)
 
 
 target_compile_definitions(Assignment1 PRIVATE GLEW_STATIC)
+
+# Set include directories
+target_include_directories(
+    ${PROJECT_NAME}
+    PRIVATE
+    ${CMAKE_CURRENT_LIST_DIR}/src
+    ${CMAKE_CURRENT_LIST_DIR}/external/imgui
+)
+
 
 target_link_libraries(Assignment1
 	libglew_static
