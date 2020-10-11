@@ -93,22 +93,20 @@ void Ghost::UpdateSprite(framework::Shader& shader, const framework::Direction& 
 	shader.SetUniform2fv("posTex", texPos);
 }
 
-
+// Ghost movement function
 void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt)
 {
-
 	switch (dir) {
 	case 0:
 		if (map[(int)(((int)(GetPos().y + 1) * sizeX) + (int)(GetPos().x + 0.5))] != 1)
 		{
 			UpdatePos(dt, framework::Direction(dir));
 		}
-		else //change dir
+		else // Change dir
 		{
 			if (rand() % 2)
 				dir += 1;
 			else dir = 3;
-			
 		}
 		break;
 	case 1:
@@ -116,7 +114,7 @@ void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt)
 		{
 			UpdatePos(dt, framework::Direction(dir));
 		}
-		else
+		else // Change dir
 		{
 			if (rand() % 2)
 				dir += 1;
@@ -149,9 +147,5 @@ void Ghost::Behaviour(std::vector<int> &map, int sizeX, GLfloat &dt)
 		break;
 	default:
 		break;
-	}
-	if (map[(int)(((int)(GetPos().y + 0.5) * sizeX) + (int)(GetPos().x + 1))] == 1)
-	{
-
 	}
 }
