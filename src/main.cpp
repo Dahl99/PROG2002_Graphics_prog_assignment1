@@ -81,7 +81,7 @@ int main(void)
 
     // Initializing music
     irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
-    irrklang::ISound* music = soundEngine->play2D(framework::SOUNDTRACK.c_str(), GL_TRUE, GL_FALSE, GL_TRUE);
+    irrklang::ISound* music = soundEngine->play2D(framework::SOUNDTRACKPATH.c_str(), GL_TRUE, GL_FALSE, GL_TRUE);
     music->setVolume(framework::MUSICVOLUME);
 
 
