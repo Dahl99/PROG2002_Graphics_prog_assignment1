@@ -74,6 +74,7 @@ add_executable(Assignment1
 	src/framework/globals.hpp
 	
 	res/levels/level0 
+	res/levels/level1
 	res/shaders/tile.vert
 	res/shaders/tile.frag
 	res/shaders/character.vert

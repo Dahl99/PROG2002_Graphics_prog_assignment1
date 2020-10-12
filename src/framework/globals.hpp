@@ -5,6 +5,7 @@
 namespace framework {
 
 	const std::string LEVELPATH0 = "../res/levels/level0";
+	const std::string LEVELPATH1 = "../res/levels/level1";
 
 	const std::string PACMANPICTUREPATH = "../res/assets/pacman.png";
 
@@ -17,6 +18,7 @@ namespace framework {
 	const std::string SOUNDTRACKPATH = "../res/music/pacman.wav";
 	const float MUSICVOLUME = 0.25f;
 
+	const int MAXWINDOWSIZEY = 1000, MAXWINDOWSIZEX = (MAXWINDOWSIZEY * (28 / 36));
 	const int WINDOWSIZEX = 28*27, WINDOWSIZEY = 36*27;
 	const float COLLECTIBLESIZE = 0.35f;
 	const int COLLECTIBLESCORE = 10;
