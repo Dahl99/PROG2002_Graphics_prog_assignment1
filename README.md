@@ -1,11 +1,11 @@
-# Assignment 1: 2D Pac-Man
+# Assignment 1: Pac-Man
 
 ## About
 
-This project contains a remake of Pac-Man in C++ using OpenGL 4.3. In the game you're able to move around using the arrow keys and collect pellets. 
-There's also 3 ghosts which roams around the map and tries to catch you. Both Pac-Man and ghosts are animated using a spritesheet and the level is 
-loaded from a tilemap. The tilemap can be changed or it's also possible to add other levels. The current score is also being kept track of and 
-displayed in the upper left corner. The soundtrack from the original game is also playing in the backround while the game is running. After collecting 
+This project contains a remake of Pac-Man in C++ using OpenGL 4.3. In the game you're able to move around using the arrow keys and collect pellets.
+There's also 3 ghosts which roams around the map and tries to catch you. Both Pac-Man and ghosts are animated using a spritesheet and the level is
+loaded from a tilemap. The tilemap can be changed and it's also possible to add other levels. The current score is also being kept track of and
+displayed in the upper left corner. The soundtrack from the original game is also playing in the backround while the game is running. After collecting
 all pellets or being caught by a ghost causes the game to *freeze*. The game can also be ended by pressing *escape*
 
 ## Built With
