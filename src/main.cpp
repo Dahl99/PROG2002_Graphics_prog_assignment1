@@ -25,7 +25,7 @@
 #include "ghost.hpp"
 
 // Function declarations
-GLFWwindow* initWindow();
+GLFWwindow* initWindow(int sizeX, int sizeY);
 
 void updateDeltaTime(GLfloat& dt, GLfloat& ct, GLfloat& lt);
 bool removeCollectible(std::vector<framework::Vertex>& collectibles, int xPos, int yPos);
@@ -50,12 +50,17 @@ MessageCallback(GLenum source,
 
 int main(void)
 {
+    // Reading and creating the map
+    //framework::Map map1(framework::LEVELPATH0);
+    framework::Map map1(framework::LEVELPATH1);
+    map1.PrintMap();
 
     //-------------- OpenGL initialization --------------
 
     glfwSetErrorCallback(GLFWErrorCallback);
     
-    auto window = initWindow();
+    auto window = initWindow(map1.GetSizeX()*(framework::MAXWINDOWSIZEY/ map1.GetSizeY()), 
+        map1.GetSizeY() * (framework::MAXWINDOWSIZEY / map1.GetSizeY()));
     if (window == nullptr)
     {
         glfwTerminate();
@@ -87,9 +92,6 @@ int main(void)
 
     //------------------- Getting and preparing data --------------------
 
-    // Reading and creating the map
-    framework::Map map1(framework::LEVELPATH0);
-    map1.PrintMap();
 
     // Getting the map data
     framework::ShaderVertData vertices = map1.retMapVertices();
@@ -160,7 +162,7 @@ int main(void)
 
     // Creating the MVP matrix
     glm::mat4 scale = glm::scale(glm::mat4(1.0f), glm::vec3(0.8f, 0.8f, 0.0f));
-    glm::mat4 projection = glm::ortho(0.0f, 28.0f, 0.0f, 36.0f, -1.0f, 1.0f);
+    glm::mat4 projection = glm::ortho(0.0f, (float)map1.GetSizeX(), 0.0f, (float)map1.GetSizeY(), -1.0f, 1.0f);
 
 
     // Initializing shaders, setting projection matrix and texture for entities
@@ -345,7 +347,7 @@ int main(void)
 //------------------------------------------------------------------------------------------
 
 // GLFW and window initialization
-GLFWwindow* initWindow()
+GLFWwindow* initWindow(int sizeX, int sizeY)
 {
     if (!glfwInit())
     {
@@ -359,7 +361,7 @@ GLFWwindow* initWindow()
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
     // Open a window and create its OpenGL context
-    GLFWwindow* window = glfwCreateWindow(framework::WINDOWSIZEX, framework::WINDOWSIZEY, "2D PacMan", nullptr, nullptr);
+    GLFWwindow* window = glfwCreateWindow(sizeX, sizeY, "2D PacMan", nullptr, nullptr);
     if (window == nullptr)
     {
         glfwTerminate();
