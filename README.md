@@ -55,3 +55,4 @@ This project was developed by:
 ## Acknowledgements
 
 * After all pellets are collected the game *freezes*, but the current score isn't updated with the score from the last pellet
+* We've also added another level using another tilemap, to load this level instead of default level: comment out line 54 in main.cpp and uncomment line 55 in main.cpp
