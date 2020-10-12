@@ -80,8 +80,8 @@ int main(void)
     glEnable(GL_BLEND);
 
     // Initializing music
-    irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
-    irrklang::ISound* music = soundEngine->play2D(framework::SOUNDTRACKPATH.c_str(), GL_TRUE, GL_FALSE, GL_TRUE);
+    static irrklang::ISoundEngine* soundEngine = irrklang::createIrrKlangDevice();
+    static irrklang::ISound* music = soundEngine->play2D(framework::SOUNDTRACKPATH.c_str(), GL_TRUE, GL_FALSE, GL_TRUE);
     music->setVolume(framework::MUSICVOLUME);
 
 
@@ -96,13 +96,13 @@ int main(void)
     std::vector<GLuint> wallIndices = map1.retMapIndices(map1.GetNumWalls());
     std::vector<GLuint> collIndices = map1.retMapIndices(map1.GetNumCollecs());
 
-    framework::Renderer renderer;
+    static framework::Renderer renderer;
 
     // Variables used to find delta time
-    GLfloat dt, curTime, lastTime;
+    static GLfloat dt, curTime, lastTime;
     dt = curTime = lastTime = 0.0f;
 
-    int pelletsCollected = 0; // Keeps track of how many pellets are collected
+    static int pelletsCollected = 0; // Keeps track of how many pellets are collected
 
     //                      Preparing walls
 
@@ -130,13 +130,7 @@ int main(void)
     auto entityData = map1.GetPGPos(); // Fetching player and ghost positions as well as vertices
 
     // These indices will be used for player and ghosts
-    std::vector<GLuint> charIndices;
-    charIndices.push_back(0);
-    charIndices.push_back(1);
-    charIndices.push_back(2);
-    charIndices.push_back(2);
-    charIndices.push_back(3);
-    charIndices.push_back(1);
+    std::vector<GLuint> charIndices = { 0, 1, 2, 2, 3, 1 };
 
     // Setting texture coordinates for player
     entityData.vertices[0].tex = glm::vec2(0.0f, 0.0f);
@@ -145,7 +139,7 @@ int main(void)
     entityData.vertices[3].tex = glm::vec2(1.0f / 6.0f, 1.0f / 4.0f);
 
     // Creating pacman character
-    Pacman pacman(entityData.positions[0], entityData.vertices, charIndices);
+    static Pacman pacman(entityData.positions[0], entityData.vertices, charIndices);
 
     // Setting texture coordinates for ghosts
     entityData.vertices[0].tex = glm::vec2(2.0f / 3.0f, 0.0f);
@@ -229,9 +223,7 @@ int main(void)
         {
             pelletsCollected++; // Ups by 1 if pellet is collected
             if (pelletsCollected == map1.GetNumCollecs()) // Freezing game if all pellets are collected
-            {
                 system("PAUSE");
-            }
         }
 
         // Checking if a ghost collides with pacman
