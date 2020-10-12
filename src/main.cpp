@@ -227,7 +227,7 @@ int main(void)
         }
 
         // Checking if a ghost collides with pacman
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < framework::NUMGHOSTS; i++)
             if (ghosts[i]->CollisionCheck(pacman.GetPos()))
                 system("PAUSE");
         
@@ -236,6 +236,15 @@ int main(void)
         //                          Player movement and collision calculations
 
         if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+
+            // If at the top and moving up teleport to the bottom (this feature does not exist in current map)
+            if ((int)(pacman.GetPos().y + 1) == map1.GetSizeY())
+            {
+                pacman.Teleport(0, 0);
+            }
+            // Otherwise move up unless there is a wall there. 
+            //  (0.1 and 0.9 indicates the hitbox's top and botom when moving up in this case,
+            //  if put at 1 and 0 pacman will be unable to move)
             if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.1))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y + 1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.9))] != 1)
             {
@@ -245,7 +254,16 @@ int main(void)
         }
         // Move down
         if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
-            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.1))] != 1 &&
+
+            // If at the bottom and moving down teleport to top (this feature does not exist in current map)
+            if ((int)(pacman.GetPos().y + 1) == 0)
+            {
+                pacman.Teleport(map1.GetSizeY() - 1, 0);
+            }
+            // Otherwise move down unless there is a wall there. 
+            //  (0.1 and 0.9 indicates the hitbox's top and botom when moving down in this case,
+            //  if put at 1 and 0 pacman will be unable to move)
+            else if (map1.GetArray()[(int)(((int)(pacman.GetPos().y) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.1))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 0.9))] != 1)
             {
                 pacman.UpdatePos(dt, framework::Direction::DOWN);
@@ -256,11 +274,13 @@ int main(void)
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
 
             // If at right edge and moving right teleport to left edge
-            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] == 2 && 
-                pacman.GetPos().x >= map1.GetSizeX() / 2)
+            if ((int)(pacman.GetPos().x + 1) == map1.GetSizeX())
             {
-                pacman.Teleport(0);
+                pacman.Teleport(0, 1);
             }
+            // Otherwise move to the right unless there is a wall there 
+            //  (0.1 and 0.9 indicates the hitbox's top and botom when moving to the right in this case, 
+            //  if put at 1 and 0 pacman will be unable to move)
             else if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.9) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.1) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] != 1)
             {
@@ -273,11 +293,13 @@ int main(void)
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
 
             // If at left edge and moving left teleport to right edge
-            if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.5) * map1.GetSizeX()) + (int)(pacman.GetPos().x + 1))] == 2 &&
-                pacman.GetPos().x <= map1.GetSizeX() / 2)
+            if ((int)(pacman.GetPos().x + 1) == 0)
             {
-                pacman.Teleport(map1.GetSizeX() - 1);
+                pacman.Teleport(map1.GetSizeX() - 1, 1);
             }
+            // Otherwise move to the left unless there is a wall there. 
+            //  (0.1 and 0.9 indicates the hitbox's top and botom when moving to the left in this case,
+            //  if put at 1 and 0 pacman will be unable to move)
             else if (map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.9) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1 &&
                 map1.GetArray()[(int)(((int)(pacman.GetPos().y + 0.1) * map1.GetSizeX()) + (int)(pacman.GetPos().x))] != 1)
             {

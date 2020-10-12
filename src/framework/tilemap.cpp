@@ -1,5 +1,6 @@
 #include <fstream>
 #include <iostream>
+#include <string>
 #include <GL/glew.h>
 #include "tilemap.hpp"
 
@@ -13,8 +14,17 @@ namespace framework {
 		std::ifstream stream(levelPath);		
 		if (stream) 
 		{
+			std::string temp, temp2[2];
+
+			stream >> temp;
+
 			// Get map width and heigth and read in the appropriate amount
-			stream >> sizeX >> sizeY;
+			temp2[0] = temp.substr(0, temp.find('x'));
+			temp2[1] = temp.substr(temp.find('x') + 1, temp.size());
+			sizeX = std::stoi(temp2[0]);
+			sizeY = std::stoi(temp2[1]);
+
+
 			sizeArray = sizeX * sizeY;
 			for (int i = 0; i < sizeArray; i++)
 			{
@@ -153,12 +163,10 @@ namespace framework {
 				map[i - 1].topRight.col.y = 1.0f;
 				map[i - 1].topRight.col.z = 1.0f;
 				break;
-			case 3: // Sets ghost position if tile type is 3
-				ghostPos.push_back(glm::vec3((float)(i % sizeX)-1, (float)(yPos), 1.0f));
-				break;
 			default:
 				break;
 			}
+
 
 			// Updates yPos to ensure correct coordinates
 			if (i % sizeX == 0 && i != 0)
@@ -173,8 +181,6 @@ namespace framework {
 
 		entityData.positions.push_back(playerPos); // Player pos gets added first
 
-		for (const auto& element : ghostPos)	   // Ghost pos gets added last
-			entityData.positions.push_back(element);
 	}
 
 	// Function to print map, used to see if its read correctly
@@ -219,6 +225,16 @@ namespace framework {
 				numCollecs++;
 			}
 		}
+		std::vector<glm::vec3> ghostPos;
+
+		for (int i = 0; i < NUMGHOSTS; i++)
+		{
+			ghostPos.push_back(glm::vec3(mapVertices.collectibleVertices[((numCollecs / 4) * 4) + (i * 4)].pos, 1.0f));
+		}
+
+		for (const auto& element : ghostPos)	   // Ghost pos gets added last
+			entityData.positions.push_back(element);
+
 		return mapVertices;
 	}
 

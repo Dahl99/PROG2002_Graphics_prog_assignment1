@@ -17,9 +17,10 @@ namespace framework {
 	const std::string SOUNDTRACKPATH = "../res/music/pacman.wav";
 	const float MUSICVOLUME = 0.25f;
 
-	const int WINDOWSIZEX = 28*28, WINDOWSIZEY = 36*28;
+	const int WINDOWSIZEX = 28*27, WINDOWSIZEY = 36*27;
 	const float COLLECTIBLESIZE = 0.35f;
 	const int COLLECTIBLESCORE = 10;
+	const int NUMGHOSTS = 3;
 
 
 

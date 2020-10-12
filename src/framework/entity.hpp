@@ -36,7 +36,7 @@ namespace framework {
 		void Draw(Shader& shader) const;						// Draws entity onto screen
 		void UpdatePos(const GLfloat& dt, const Direction& dir);	// Updates entity position
 		inline glm::vec3 GetPos() const { return pos; };		// Fetches the position of entity
-		void ModPos(int loc) { pos.x = loc; };
+		void ModPos(int loc, bool xFlip) { xFlip ? pos.x = loc : pos.y = loc; };
 	};
 
 }

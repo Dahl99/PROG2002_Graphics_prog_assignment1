@@ -272,8 +272,8 @@ void Pacman::UpdateSprite(framework::Shader& shader, const framework::Direction&
 }
 
 
-void Pacman::Teleport(int xLoc)
+void Pacman::Teleport(int xLoc, bool xFlip)
 {
-	ModPos(xLoc);
+	ModPos(xLoc, xFlip);
 }
 
