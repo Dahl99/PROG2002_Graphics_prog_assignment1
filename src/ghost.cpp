@@ -153,10 +153,6 @@ void Ghost::Behaviour(std::vector<int> & map, int sizeX, GLfloat & dt, framework
 		break;
 	}
 
-	if (map[(int)(((int)(GetPos().y + 0.5) * sizeX) + (int)(GetPos().x + 1))] == 1)
-	{
-
-	}
 }
 
 bool Ghost::CollisionCheck(const glm::vec3& pacmanPos)
